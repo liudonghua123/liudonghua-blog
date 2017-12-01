@@ -24,7 +24,7 @@ date: 2014-10-02 21:56:14
 最后再把这几个文件打包成一个zip文件
 <span style="line-height: 1.5;">目录层次结构如下</span>
 
-xxx.zip(附上我自己做的[runjettyrun_1.3.3.201203161919](http://202.203.209.55:8080/wp-content/uploads/2014/10/runjettyrun_1.3.3.201203161919.zip)方便懒人下载 )
+xxx.zip(附上我自己做的[runjettyrun_1.3.3.201203161919](/resources/2014/10/runjettyrun_1.3.3.201203161919.zip)方便懒人下载 )
 site.xml
 content.jar
 artifacts.jar

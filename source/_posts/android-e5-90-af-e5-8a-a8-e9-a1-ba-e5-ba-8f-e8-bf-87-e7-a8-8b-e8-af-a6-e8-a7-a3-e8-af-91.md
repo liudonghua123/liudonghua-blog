@@ -33,7 +33,7 @@ Android启动顺序是什么样的？
 Android是基于开源的Linux系统，[x86](http://en.wikipedia.org/wiki/X86)（x86是基于Intel 8086 CPU的一系列电脑微处理器指令集架构）是Linux内核使用最多的架构，但是Android设备通常运行在[ARM](http://en.wikipedia.org/wiki/ARM)处理器（ARM是Advanced RISC Machine或之前的Acorn RISC Machine的简称）上，[Intel Xolo](http://xolo.in/xolo-x900-features)设备除外。Xolo装备有Atom 1.6GHz x86处理器。Android启动顺序或嵌入式设备或基于ARM的Linux系统相比桌面Linux有一些区别。在这篇文章里，我将只讲解Android的启动顺序，[Linux启动进程](http://www.ibm.com/developerworks/linux/library/l-linuxboot/)是一篇讲解桌面Linux启动顺序的好文章。
 
 Android设备但你按开机键之后又如下启动阶段
-[![Android Boot Squence](http://202.203.209.55:8080/wp-content/uploads/2014/11/Android-Boot-Squence.png)](http://202.203.209.55:8080/wp-content/uploads/2014/11/Android-Boot-Squence.png)
+[![Android Boot Squence](/resources/2014/11/Android-Boot-Squence.png)](/resources/2014/11/Android-Boot-Squence.png)
 
 # 阶段1：开机和系统初始化
 
@@ -46,7 +46,7 @@ Bootloader是一个很小的程序在启动Android系统之前运行，它是第
 Bootloader的运行有两个阶段，第一阶段：检测外部RAM和加载帮助第二阶段的程序；第二阶段：设置网络，内存等运行内核所必须的环境，bootloader还能提供运行kernel特定的参数或输入来完成特殊任务
 
 Android bootloader代码位于
-&lt;Android Source&gt;\bootable\bootloader\legacy\usbloader
+<Android Source>\bootable\bootloader\legacy\usbloader
 legacy loader含有两个主要的文件
 1\. init.s 初始化stacks、对BSS段清零，调用main.c中的_main()
 2\. main.c 初始化硬件（时钟、主板、键盘、控制台），创建Linux tags
@@ -69,22 +69,22 @@ readme.txt在这里/system/core/init/readme.txt
 Android的init.rc有特殊的格式和规则，他们是Actions、Commands、Services、Options
 
 语法
-on &lt;trigger&gt;
-&lt;command&gt;
-&lt;command&gt;
-&lt;command&gt;
+on <trigger>
+<command>
+<command>
+<command>
 
 Service : Services是由init启动，当退出时可能会重启
 
-service &lt;name&gt; &lt;pathname&gt; [ &lt;argument&gt; ]*
-&lt;option&gt;
-&lt;option&gt;
+service <name> <pathname> [ <argument> ]*
+<option>
+<option>
 ...
 
 Options : Options是Service的参数，影响service如何以及怎样运行
 
 让我们看一下默认的init.rc文件，这里我只列出了主要的events和services
-[![init.rc_action_service](http://202.203.209.55:8080/wp-content/uploads/2014/11/init.rc_action_service.png)](http://202.203.209.55:8080/wp-content/uploads/2014/11/init.rc_action_service.png)
+[![init.rc_action_service](/resources/2014/11/init.rc_action_service.png)](/resources/2014/11/init.rc_action_service.png)
 这个阶段，你可以在屏幕上看到Android的logo
 
 # 阶段5：Zygote and Dalvik
@@ -93,9 +93,9 @@ Options : Options是Service的参数，影响service如何以及怎样运行
 
 Zygote加载过程
 1\. 加载[Zygote](http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/2.2_r1.1/com/android/internal/os/ZygoteInit.java)类
-&lt;Android Source&gt;/frameworks/base/core/java/com/android/internal/os/ZygoteInit.java
+<Android Source>/frameworks/base/core/java/com/android/internal/os/ZygoteInit.java
 2\. registerZygoteSocket() - 为zygote命令连接注册一个server socket
-3\. preloadClasses() - "preloaded-classes" 是一个含有需要预加载的类的文本文件，可以在这里找到 &lt;Android Source&gt;/frameworks/base
+3\. preloadClasses() - "preloaded-classes" 是一个含有需要预加载的类的文本文件，可以在这里找到 <Android Source>/frameworks/base
 4\. preloadResources() - preloadResources即原生主题和布局，包括android.R，这些都将通过这个方法加载
 
 这时你可以看到启动动画
@@ -140,7 +140,7 @@ Other services
 
 一旦System Services在内存中启动后，Android就完成了启动过程，这时"ACTION_BOOT_COMPLETED"标准广播就会触发
 
-&nbsp;
+ 
 了解相关更多内容可参考
 [what is the need of second stage boot loader ? why different bootloaders like first stage and second stage?](http://stackoverflow.com/questions/22455153/what-is-the-need-of-second-stage-boot-loader-why-different-bootloaders-like-fi)
 [Android_Booting](http://elinux.org/Android_Booting)

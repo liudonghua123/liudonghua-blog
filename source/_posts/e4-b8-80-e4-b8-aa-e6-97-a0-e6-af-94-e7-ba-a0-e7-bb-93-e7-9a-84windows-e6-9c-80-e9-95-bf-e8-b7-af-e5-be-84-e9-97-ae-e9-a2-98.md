@@ -13,13 +13,13 @@ date: 2014-12-24 10:28:54
 
 但按照gist的[README文档](https://github.com/neo4j-contrib/graphgist)，在Windows环境下操作，执行到"bower install"就遇到一个无比烦恼的问题，提示如下错误
 
-[shell]
+```shell
 Checking connectivity... done.
 fatal: cannot create directory at 'node_modules/grunt-contrib-uglify/node_modules/maxmin/node_modules/gzip-size/node_modules/concat-stream/node_modules/readable-stream/node_modules/core-util-is': File name too long
 warning: Clone succeeded, but checkout failed.
 You can inspect what was checked out with 'git status'
 and retry the checkout with 'git checkout -f HEAD'
-[/shell]
+```
 
 后来在bower.json中一个一个去掉测试发现是由于安装"jquery-mutate"这个依赖导致的问题，单独在一个非常短路径下执行"bower install jquery-mutate"也会提示如下错误，后来找到"jquery-mutate"的github主页，直接clone是可以的。
 

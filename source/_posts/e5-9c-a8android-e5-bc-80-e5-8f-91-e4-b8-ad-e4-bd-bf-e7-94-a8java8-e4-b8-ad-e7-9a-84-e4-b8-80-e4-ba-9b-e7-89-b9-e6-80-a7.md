@@ -25,23 +25,23 @@ date: 2015-05-05 12:59:55
 请仔细参考原文，这里只是提供几个优化过的脚本以及配置文件，可以在最新的ADT下运行。
 
 gradle_build.cmd
-[shell]
+```shell
 @echo off
 echo Starting the build %1 process...
 gradle assembleDebug
 pause
-[/shell]
+```
 
 gradle_clean.cmd
-[shell]
+```shell
 @echo off
 echo Cleaning the %1 project...
 gradle clean
 pause
-[/shell]
+```
 
 gradle_post_build.cmd
-[shell]
+```shell
 @echo off
 
 if exist build\outputs\apk\%1-debug-unaligned.apk (
@@ -50,15 +50,15 @@ if exist build\outputs\apk\%1-debug-unaligned.apk (
 ) else (
 	echo Build project %1 error. Check the problems window for details...
 )
-[/shell]
+```
 
 builder配置如下图所示
-[![eclipse_android_gradle](http://202.203.209.55:8080/wp-content/uploads/2015/05/eclipse_android_gradle.png)
-](http://202.203.209.55:8080/wp-content/uploads/2015/05/eclipse_android_gradle.png)
+[![eclipse_android_gradle](/resources/2015/05/eclipse_android_gradle.png)
+](/resources/2015/05/eclipse_android_gradle.png)
 
 原文中提供的build.gradle有些陈旧，这里提供一个较新的
 build.gradle
-[java]
+```java
 buildscript {
     repositories {
         mavenCentral()
@@ -104,9 +104,9 @@ android {
         // Move the tests to tests/java, tests/res, etc...
         instrumentTest.setRoot('tests')
 
-        // Move the build types to build-types/&lt;type&gt;
+        // Move the build types to build-types/<type>
         // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
-        // This moves them out of them default location under src/&lt;type&gt;/... which would
+        // This moves them out of them default location under src/<type>/... which would
         // conflict with src/ being used by the main source set.
         // Adding new build types or product flavors should be accompanied
         // by a similar customization.
@@ -115,7 +115,7 @@ android {
     }
 }
 
-[/java]
+```
 
 如果使用的是Android Studio几乎就不需要什么多余的操作，只需要在build.gradle中添加classpath 'me.tatarka:gradle-retrolambda:3.1.0'的dependence以及apply plugin: 'me.tatarka.retrolambda'即可
 

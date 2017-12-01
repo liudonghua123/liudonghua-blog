@@ -13,16 +13,16 @@ date: 2014-12-02 15:52:42
 
 Ruby中也有类似于jQuery解析HTML的方式的库——[nokogiri](http://www.nokogiri.org/)，还是上一篇的那个例子，实现代码也非常少，如下
 
-[ruby]
+```ruby
 require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
 
-page = Nokogiri::HTML(open(&quot;http://item.jd.com/1164932931.html&quot;))
+page = Nokogiri::HTML(open("http://item.jd.com/1164932931.html"))
 page.css('div.breadcrumb a').each do |el|
   puts el.text
 end
-[/ruby]
+```
 
 嗯，非常不错，已经帮我处理了编解码问题！！！
 

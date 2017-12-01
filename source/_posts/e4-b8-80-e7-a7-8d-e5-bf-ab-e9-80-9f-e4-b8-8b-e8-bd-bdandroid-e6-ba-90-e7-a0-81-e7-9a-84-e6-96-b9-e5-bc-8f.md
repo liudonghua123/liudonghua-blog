@@ -39,7 +39,7 @@ python-markdown libxml2-utils xsltproc zlib1g-dev
 mkdir ~/bin
 PATH=~/bin:$PATH
 
-curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo
+curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
 chmod a+x ~/bin/repo
 
 mkdir android
@@ -51,10 +51,10 @@ w3m https://android.googlesource.com/new-password
 repo init -u https://android.googlesource.com/a/platform/manifest
 
 # 记录下载Android源码日志（通过tee同时写到标准输出和文件）
-repo sync -j2 2&gt;&amp;1 | tee ~/android_source_sync.log
+repo sync -j2 2>&1 | tee ~/android_source_sync.log
 
 以下命令计算上一条命令的运行时间
 start_time=`date +%s` \
-&amp;&amp; repo sync -j2 2&gt;&amp;1 | tee ~/android_source_sync.log \
-&amp;&amp; end_time=`date +%s` \
-&amp;&amp; echo execution time was `expr $end_time - $start_time` s.
+&& repo sync -j2 2>&1 | tee ~/android_source_sync.log \
+&& end_time=`date +%s` \
+&& echo execution time was `expr $end_time - $start_time` s.

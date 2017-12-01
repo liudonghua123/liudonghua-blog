@@ -17,27 +17,27 @@ Windows安装软件的方式一般要下载安装包（exe、msi等格式）或�
 
 安装chocolatey的方式，以管理员权限运行cmd，然后在其中执行
 
-[shell]
-@powershell -NoProfile -ExecutionPolicy unrestricted -Command &quot;iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))&quot; &amp;&amp; SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
-[/shell]
+```shell
+@powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+```
 
 其实就是调用powershell，也可以直接在powershell中执行
 
-[shell]
+```shell
 iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
-[/shell]
+```
 
 安装好chocolatey之后以后安装什么软件就可以直接运行"choco install **package_name**"，如安装git直接调用"choco install git"，安装vlc直接"choco install vlc"，安装强大的[spf13-vim](https://github.com/liudonghua123/spf13-vim)(vim+bundles)要使用以下多条命令(chocolatey还不支持自动解决依赖关系)
 
-[shell]
+```shell
 cinst git
 cinst curl
 cinst ctags
 cinst spf13.vim
-[/shell]
+```
 
 这里附上Linux常用包管理的运行参数
-[![linux-package-management-cheatsheet](http://202.203.209.55:8080/wp-content/uploads/2014/11/linux-package-management-cheatsheet.png)](http://202.203.209.55:8080/wp-content/uploads/2014/11/linux-package-management-cheatsheet.png)
+[![linux-package-management-cheatsheet](/resources/2014/11/linux-package-management-cheatsheet.png)](/resources/2014/11/linux-package-management-cheatsheet.png)
 
 参考资料：
 1. [chocolatey](https://chocolatey.org/)

@@ -24,6 +24,6 @@ date: 2014-12-08 12:20:43
 
 参考资料
 1\. [HowTo: Configure Ubuntu to be able to use and respond to NetBIOS hostname queries like Windows does](http://www.serenux.com/2009/09/howto-configure-ubuntu-to-be-able-to-use-and-respond-to-netbios-hostname-queries-like-windows-does/)
-2\. [一个局域网内，没有dns服务器时，机器名到ip的解析由谁来负责呢？](http://bbs.51cto.com/viewthread.php?tid=730638&amp;page=1#pid3633721)
+2\. [一个局域网内，没有dns服务器时，机器名到ip的解析由谁来负责呢？](http://bbs.51cto.com/viewthread.php?tid=730638&page=1#pid3633721)
 3. [Windows hostnames are not resolved](http://askubuntu.com/questions/93302/windows-hostnames-are-not-resolved/380521#380521)
 4\. [ubuntu-server-not-resolving-lan-hostnames](http://askubuntu.com/questions/244865/ubuntu-server-not-resolving-lan-hostnames)

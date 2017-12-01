@@ -15,4 +15,4 @@ date: 2014-11-14 15:16:01
 在一个局域网里，一般都已经有一台DHCP服务器，而普通网络安装要求把DHCP服务器也作为TFTP服务器使用，这种方式比较简单（也可以直接把两台电脑通过一根网线连接，然后一台电脑上同时启动DHCP、TFTP给另一台待安装系统的电脑提供服务，可参考"[how-to-boot-from-the-network-pxe-boot-with-tftp-and-windows-pe](http://blog.ryantadams.com/2008/02/01/how-to-boot-from-the-network-pxe-boot-with-tftp-and-windows-pe/)"）。但如果局域网已有DHCP服务器或没有办法那台DHCP服务器，就只能使用[proxyDHCP](http://en.wikipedia.org/wiki/Preboot_Execution_Environment)，这里使用一个软件[Serva](http://www.vercot.com/~serva/default.html)（功能很强大，可以作为HTTP/FTP/TFTP/DHCP/proxyDHCP/...等服务器使用），参考"[How to Install Any Version of Windows from Other Network Computers](http://www.7tutorials.com/how-install-any-version-windows-other-network-computers)"。这种方法我已试验过，是可行的，但要注意如果使用免费版，会有一些连接限制，局域网里电脑（并不仅仅是待安装系统的电脑）太多，可以先网络模式启动待安装系统的电脑，然后再运行Serva。
 
 DHCP v.s. proxyDHCP
-[![Windows1_DHCP_m](http://202.203.209.55:8080/wp-content/uploads/2014/11/Windows1_DHCP_m.png)](http://202.203.209.55:8080/wp-content/uploads/2014/11/Windows1_DHCP_m.png "http://www.vercot.com/~serva/an/WindowsPXE1.html")
+[![Windows1_DHCP_m](/resources/2014/11/Windows1_DHCP_m.png)](/resources/2014/11/Windows1_DHCP_m.png "http://www.vercot.com/~serva/an/WindowsPXE1.html")

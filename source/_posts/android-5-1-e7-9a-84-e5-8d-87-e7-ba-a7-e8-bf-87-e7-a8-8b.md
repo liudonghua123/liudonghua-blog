@@ -15,9 +15,9 @@ tags:
 
 第一次OTA升级时主要提示如下错误
 
-[shell highlight="18"]
+```shell
 Now send the package you want to apply
-to the device with &quot;adb sideload &lt;filename&gt;&quot;...
+to the device with "adb sideload <filename>"...
 Starting to open usb_init()
 unix_open to open usb_init(): -1
 sideload-host file size 231406578 block size 65536
@@ -33,28 +33,28 @@ I:whole-file signature verified against RSA key 0
 I:verify_file returned 0
 Installing update...
 Verifying current system...
-file &quot;/system/bin/install-recovery.sh&quot; doesn't have any of expected sha1 sums; checking cache
-failed to stat &quot;/cache/saved.file&quot;: No such file or directory
+file "/system/bin/install-recovery.sh" doesn't have any of expected sha1 sums; checking cache
+failed to stat "/cache/saved.file": No such file or directory
 failed to load cache file
-script aborted: &quot;/system/bin/install-recovery.sh&quot; has unexpected contents.
-&quot;/system/bin/install-recovery.sh&quot; has unexpected contents.
+script aborted: "/system/bin/install-recovery.sh" has unexpected contents.
+"/system/bin/install-recovery.sh" has unexpected contents.
 E:Error in /sideload/package.zip
 (Status 7)
-[/shell]
+```
 
 查看升级包中updater-script的有如下片段
 
-[shell]
-apply_patch_check(&quot;/system/bin/install-recovery.sh&quot;, &quot;fe314eac1400ea76e9e7cfef55ed1779663e848a&quot;, &quot;53b2a90b71a9b73f3857bb3ea0d3dc0cbac481b5&quot;) || abort(&quot;\&quot;/system/bin/install-recovery.sh\&quot; has unexpected contents.&quot;);
-[/shell]
+```shell
+apply_patch_check("/system/bin/install-recovery.sh", "fe314eac1400ea76e9e7cfef55ed1779663e848a", "53b2a90b71a9b73f3857bb3ea0d3dc0cbac481b5") || abort("\"/system/bin/install-recovery.sh\" has unexpected contents.");
+```
 
 并且提取lrx22c的system.img中的install-recovery.sh检查sha1符合53B2A90B71A9B73F3857BB3EA0D3DC0CBAC481B5，所以用之替换掉现有的。
 
 再次OTA升级又有如下错误
 
-[shell highlight="20,21"]
+```shell
 Now send the package you want to apply
-to the device with &quot;adb sideload &lt;filename&gt;&quot;...
+to the device with "adb sideload <filename>"...
 Starting to open usb_init()
 unix_open to open usb_init(): -1
 sideload-host file size 231406578 block size 65536
@@ -70,23 +70,23 @@ I:whole-file signature verified against RSA key 0
 I:verify_file returned 0
 Installing update...
 Verifying current system...
-failed to stat &quot;system/priv-app/Hangouts/Hangouts.apk&quot;: No such file or directory
-failed to stat &quot;system/priv-app/Hangouts/lib/arm/libvideochat_jni.so&quot;: No such file or directory
-contents of partition &quot;/dev/block/platform/msm_sdcc.1/by-name/boot&quot; didn't match EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0
-file &quot;EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0&quot; doesn't have any of expected sha1 sums; checking cache
-failed to stat &quot;/cache/saved.file&quot;: No such file or directory
+failed to stat "system/priv-app/Hangouts/Hangouts.apk": No such file or directory
+failed to stat "system/priv-app/Hangouts/lib/arm/libvideochat_jni.so": No such file or directory
+contents of partition "/dev/block/platform/msm_sdcc.1/by-name/boot" didn't match EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0
+file "EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0" doesn't have any of expected sha1 sums; checking cache
+failed to stat "/cache/saved.file": No such file or directory
 failed to load cache file
-script aborted: &quot;EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0&quot; has unexpected contents.
-&quot;EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0&quot; has unexpected contents.
+script aborted: "EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0" has unexpected contents.
+"EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0" has unexpected contents.
 E:Error in /sideload/package.zip
 (Status 7)
-[/shell]
+```
 
 查看升级包中updater-script的有如下片段
 
-[shell]
-apply_patch_check(&quot;EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0&quot;) || abort(&quot;\&quot;EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0\&quot; has unexpected contents.&quot;);
-[/shell]
+```shell
+apply_patch_check("EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0") || abort("\"EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0\" has unexpected contents.");
+```
 
 虽然不清楚EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:98295c341828085ec8722608a27a112ea9057ece:9144320:b0c48c1d1c9c0c1434804e127d2b9dfc94cc93c0"是什么，但由于CF-Auto-Root会修改boot分区，所以猜测这应该是boot分区对应的文件或挂载点，所以重刷lrx22c的boot.img。
 
@@ -97,7 +97,7 @@ apply_patch_check(&quot;EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448
 2\. 重启手机到recovery模式
 3\. 选择"_apply update from adb_ "
 4\. PC端使用"adb sideload **_your_ota_package_**.zip"
-5\. 升级错误日志见/cache/recovery/last_log(.&lt;num&gt;)，其中时间顺序最近依次是last_log、last_log.1、last_log.2、......
+5\. 升级错误日志见/cache/recovery/last_log(.<num>)，其中时间顺序最近依次是last_log、last_log.1、last_log.2、......
 
 这次root时就不用CF-Auto-Root了，还是规规矩矩在CMW Recovery下刷[UPDATE-SuperSU](http://download.chainfire.eu/696/SuperSU/UPDATE-SuperSU-v2.46.zip?retrieve_file=1)吧！这样至少install-recovery.sh会备份并且知道它安装的过程，修改了哪些文件！
 
@@ -105,4 +105,4 @@ apply_patch_check(&quot;EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448
 1\. [How to Extract system.img File or Get System Dump of Android Devices on Windows](http://www.droidviews.com/extract-system-img-files-or-system-dump-of-android-devices-on-windows/)
 2\. [CF-Auto-Root](http://autoroot.chainfire.eu/)
 3. [How to manually install the Lollipop OTA on your Nexus device, download links included [updated with 5.1 links]](http://www.talkandroid.com/guides/beginner/how-to-install-the-lollipop-ota-on-your-nexus-device-download-links-included/)
-4. [ext4_unpacker+ext2explore](http://202.203.209.55:8080/wp-content/uploads/2015/03/ext4_unpacker-ext2explore.zip)
+4. [ext4_unpacker+ext2explore](/resources/2015/03/ext4_unpacker-ext2explore.zip)

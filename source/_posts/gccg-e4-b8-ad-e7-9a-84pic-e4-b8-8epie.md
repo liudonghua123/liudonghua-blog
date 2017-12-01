@@ -15,9 +15,9 @@ date: 2014-10-26 19:36:57
 
 今天想在我的Android 5.0系统上抓包，可是运行tcpdump时提示如下错误
 
-[shell gutter="false"]
+```shell
 error: only position independent executables (PIE) are supported.
-[/shell]
+```
 
 <!--more-->
 在[这里](http://blog.csdn.net/hxdanya/article/details/39371759)提到如下内容
@@ -39,7 +39,7 @@ PIC——Position-Independent-Code
 
 以下内容选自man手册
 
-[shell gutter="false"]
+```shell
 -pie
     Produce a position independent executable on targets that support it.  For predictable
     results, you must also specify the same set of options used for compilation (-fpie,
@@ -59,7 +59,7 @@ PIC——Position-Independent-Code
     machines.  For the 386, GCC supports PIC for System V but not for the Sun 386i.  Code
     generated for the IBM RS/6000 is always position-independent.
 
-    When this flag is set, the macros &quot;__pic__&quot; and &quot;__PIC__&quot; are defined to 1.
+    When this flag is set, the macros "__pic__" and "__PIC__" are defined to 1.
 
 -fPIC
     If supported for the target machine, emit position-independent code, suitable for dynamic
@@ -69,7 +69,7 @@ PIC——Position-Independent-Code
     Position-independent code requires special support, and therefore works only on certain
     machines.
 
-    When this flag is set, the macros &quot;__pic__&quot; and &quot;__PIC__&quot; are defined to 2.
+    When this flag is set, the macros "__pic__" and "__PIC__" are defined to 2.
 
 -fpie
 -fPIE
@@ -77,14 +77,14 @@ PIC——Position-Independent-Code
     be only linked into executables.  Usually these options are used when -pie GCC option is
     used during linking.
 
-    -fpie and -fPIE both define the macros &quot;__pie__&quot; and &quot;__PIE__&quot;.  The macros have the
+    -fpie and -fPIE both define the macros "__pie__" and "__PIE__".  The macros have the
     value 1 for -fpie and 2 for -fPIE.
 
-[/shell]
+```
 
 PIE与none-PIE的程序可通过file来识别
 
-[shell gutter="false"]
+```shell
 liudonghua@www:~/code$ g++ -o test_non_pie test.cpp
 liudonghua@www:~/code$ g++ -o test_pie -fpie -pie test.cpp
 liudonghua@www:~/code$ file test_pie
@@ -92,17 +92,17 @@ test_pie: ELF 64-bit LSB  shared object, x86-64, version 1 (SYSV), dynamically l
 liudonghua@www:~/code$ file test_non_pie
 test_non_pie: ELF 64-bit LSB  executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.24, BuildID[sha1]=4112d35f407b9f99b335e6e4a1b6a36bc52d679d, not stripped
 liudonghua@www:~/code$
-[/shell]
+```
 
 注意上面的shared object与executable的微小区别
 
 那么之前遇到的那个问题就迎刃而解了
 修改external/tcpdump下的Android.mk文件，添加如下选项
 
-[shell gutter="false"]
+```shell
 LOCAL_CFLAGS += -pie -fPIE
 LOCAL_LDFLAGS += -pie -fPIE
-[/shell]
+```
 
 参考文档
 [GCC中的pie和fpie选项](http://www.lingcc.com/2010/01/08/10609/)

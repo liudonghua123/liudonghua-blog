@@ -13,12 +13,12 @@ date: 2014-12-03 10:16:27
 之前在AWS的EC2上下载Android源码，然后再下载到本地很麻烦，并且本地源码更新也经常会出现网络连接问题，后来突然想到不妨在AWS上设置代理，然后连接AWS上的代理更新本地代码。<!--more-->
 
 所以今天就尝试一下，由于我的AWS上EC2安装的是ubuntu系统，所以搜索了一下ubuntu下的代理服务器，一般都是用squid，那就这个吧。以下我以最少/最简配置说明，毕竟只是临时的。执行以下命令安装
-[shell gutter="false"]
+```shell
 sudo apt-get update
 sudo apt-get install squid3
 sudo cp /etc/squid3/squid.conf /etc/squid3/squid.conf.original
 sudo chmod a-w /etc/squid3/squid.conf.original
-[/shell]
+```
 然后修改/etc/squid3/squid.conf配置文件
 端口默认是http_port 3128
 acl默认配置了一些允许或禁止访问规则（详见配置文件中的http_access allow xxx/http_access deny xxx），我为了简单，把http_access deny all注释掉，然后最后加上http_access allow all。然后重启squid服务器sudo service squid3 restart，这样远程代理服务器就配置好了。

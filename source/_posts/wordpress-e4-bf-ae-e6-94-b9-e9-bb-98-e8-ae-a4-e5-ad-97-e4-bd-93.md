@@ -30,4 +30,4 @@ font-family: Avenir, 'Lucida Grande', Calibri, Helvetica, Arial, 'Microsoft YaHe
 这需要根据自己使用的主题，如我使用的eighties主题，没找到后台管理页面的修改地方，只能直接修改相应的css文件，我修改的是wp-content/themes/eighties/css/editor.css
 同样修改里面的font-family
 这样写文章时显示的字体也漂亮很多了，如下图所示
-[![wordpress_tinymce_font-family](http://202.203.209.55:8080/wp-content/uploads/2014/10/wordpress_tinymce_font-family.png)](http://202.203.209.55:8080/wp-content/uploads/2014/10/wordpress_tinymce_font-family.png)
+[![wordpress_tinymce_font-family](/resources/2014/10/wordpress_tinymce_font-family.png)](/resources/2014/10/wordpress_tinymce_font-family.png)

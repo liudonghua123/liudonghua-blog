@@ -11,19 +11,19 @@ date: 2014-12-05 17:20:49
 
 在Android 5.0之前，root后经过[一些操作](http://blog.apkudo.com/2012/07/26/enabling-hierarchyviewer-on-rooted-android-devices/)就可以在真机上使用hierarchyviewer查看应用界面布局结构，非常实用的一项功能，但我用之前的那些步骤在新系统上操作时，到这里卡住了
 
-[shell]
-E:\hierarchyviewer_enable&gt;java -jar D:\android\decompile\baksmali.jar -x -a 21 -c /system/framework/core-libart.jar:/system/framework/conscrypt.jar:/system/framework/okhttp.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/apache-xml.jar  ./system/framework/services.odex
-Exception in thread &quot;main&quot; org.jf.util.ExceptionWithContext: .\system\framework\services.odex is not an apk, dex file or odex file.
+```shell
+E:\hierarchyviewer_enable>java -jar D:\android\decompile\baksmali.jar -x -a 21 -c /system/framework/core-libart.jar:/system/framework/conscrypt.jar:/system/framework/okhttp.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/apache-xml.jar  ./system/framework/services.odex
+Exception in thread "main" org.jf.util.ExceptionWithContext: .\system\framework\services.odex is not an apk, dex file or odex file.
         at org.jf.dexlib2.DexFileFactory.loadDexFile(DexFileFactory.java:111)
         at org.jf.dexlib2.DexFileFactory.loadDexFile(DexFileFactory.java:54)
         at org.jf.baksmali.main.main(main.java:252)
-[/shell]
+```
 
 大概是因为Android 5.0变化了很多，使用的ART代替了Dalvik，并且/system/framework下的services.jar/services.odex位置也变了，原来services.odex在/system/framework下，现在位于/system/framework/arm，或者可能是smali/baksmali不支持新的odex格式，还有待继续研究。
 
 后来我就想在Android源码里编译，然后替换手机里的services.jar/odex，使用和我手机匹配的combo（lunch之后选择"13\. aosp_hammerhead-userdebug"），初始编译成功，接着我修改WindowManagerService.java之后再增量编译。
 
-[shell]
+```shell
 liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$ git diff
 diff --git a/services/core/java/com/android/server/wm/WindowManagerService.java b/services/core/java/com/android/server/wm/WindowManagerService.java
 index 1c03ced..6aad481 100644
@@ -33,20 +33,20 @@ index 1c03ced..6aad481 100644
      }
 
      private boolean isSystemSecure() {
--        return &quot;1&quot;.equals(SystemProperties.get(SYSTEM_SECURE, &quot;1&quot;)) &amp;&amp;
--                &quot;0&quot;.equals(SystemProperties.get(SYSTEM_DEBUGGABLE, &quot;0&quot;));
-+        //return &quot;1&quot;.equals(SystemProperties.get(SYSTEM_SECURE, &quot;1&quot;)) &amp;&amp;
-+        //        &quot;0&quot;.equals(SystemProperties.get(SYSTEM_DEBUGGABLE, &quot;0&quot;));
+-        return "1".equals(SystemProperties.get(SYSTEM_SECURE, "1")) &&
+-                "0".equals(SystemProperties.get(SYSTEM_DEBUGGABLE, "0"));
++        //return "1".equals(SystemProperties.get(SYSTEM_SECURE, "1")) &&
++        //        "0".equals(SystemProperties.get(SYSTEM_DEBUGGABLE, "0"));
 +        return false;
      }
 
      /**
 liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$
-[/shell]
+```
 
 使用mma编译
 
-[shell highlight="79,103"]
+```shell
 liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$ mm WITH_DEXPREOPT=true
 ...................
 target Dex: framework
@@ -164,11 +164,11 @@ make: Leaving directory `/home/liudonghua/android'
 #### make completed successfully (51:09 (mm:ss)) ####
 
 liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$
-[/shell]
+```
 
 之后把services.jar/services.odex取出来替换系统原来的文件（注意修复权限），但这次不像之前系统一样会自动给你重启然后重建dalvik-cache，我手动重启了也效果，也确认编译出的odex包含修改的代码（编译生成的中间文件在out/target/common/obj/JAVA_LIBRARIES/services_intermediates），后来尝试删除/data/dalvik-cache/arm/system@framework@services.jar@classes.dex想让他重建这个文件，但重启之后，过了很长时间始终在加载界面不动，最后就没办法，查看日志相关错误显示如下
 
-[shell]
+```shell
 I/dex2oat ( 8445): /system/bin/dex2oat --zip-fd=6 --zip-location=/system/framework/services.jar --oat-fd=7 --oat-location=/data/dalvik-cache/arm/system@framework@services.jar@classes.dex --instruction-set=arm --instruction-set-features=div --runtime-arg -Xms64m --runtime-arg -Xmx512m
 E/dex2oat ( 8445): Failed to open dex from file descriptor for zip file '/system/framework/services.jar': Entry not found
 I/dex2oat ( 8445): dex2oat took 248.448ms (threads: 4)
@@ -190,7 +190,7 @@ E/Zygote  ( 8430):      at java.lang.Class.classForName(Native Method)
 E/Zygote  ( 8430):      at java.lang.Class.forName(Class.java:308)
 E/Zygote  ( 8430):      at com.android.internal.os.RuntimeInit.invokeStaticMain(RuntimeInit.java:202)
 E/Zygote  ( 8430):      ... 5 more
-E/Zygote  ( 8430): Caused by: java.lang.ClassNotFoundException: Didn't find class &quot;com.android.server.SystemServer&quot; on path: DexPathList[[zip file &quot;/system/framework/services.jar&quot;, zip file &quot;/system/framework/ethernet-service.jar&quot;, zip file &quot;/system/framework/wifi-service.jar&quot;],nativeLibraryDirectories=[/vendor/lib, /system/lib]]
+E/Zygote  ( 8430): Caused by: java.lang.ClassNotFoundException: Didn't find class "com.android.server.SystemServer" on path: DexPathList[[zip file "/system/framework/services.jar", zip file "/system/framework/ethernet-service.jar", zip file "/system/framework/wifi-service.jar"],nativeLibraryDirectories=[/vendor/lib, /system/lib]]
 E/Zygote  ( 8430):      at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)
 E/Zygote  ( 8430):      at java.lang.ClassLoader.loadClass(ClassLoader.java:511)
 E/Zygote  ( 8430):      at java.lang.ClassLoader.loadClass(ClassLoader.java:469)
@@ -198,13 +198,13 @@ E/Zygote  ( 8430):      ... 8 more
 E/Zygote  ( 8430):      Suppressed: java.io.IOException: Zip archive '/system/framework/services.jar' doesn't contain classes.dex (error msg: Entry not found)
 E/Zygote  ( 8430):              at dalvik.system.DexFile.openDexFileNative(Native Method)
 E/Zygote  ( 8430):              at dalvik.system.DexFile.openDexFile(DexFile.java:295)
-E/Zygote  ( 8430):              at dalvik.system.DexFile.&lt;init&gt;(DexFile.java:80)
-E/Zygote  ( 8430):              at dalvik.system.DexFile.&lt;init&gt;(DexFile.java:59)
+E/Zygote  ( 8430):              at dalvik.system.DexFile.<init>(DexFile.java:80)
+E/Zygote  ( 8430):              at dalvik.system.DexFile.<init>(DexFile.java:59)
 E/Zygote  ( 8430):              at dalvik.system.DexPathList.loadDexFile(DexPathList.java:262)
 E/Zygote  ( 8430):              at dalvik.system.DexPathList.makeDexElements(DexPathList.java:231)
-E/Zygote  ( 8430):              at dalvik.system.DexPathList.&lt;init&gt;(DexPathList.java:109)
-E/Zygote  ( 8430):              at dalvik.system.BaseDexClassLoader.&lt;init&gt;(BaseDexClassLoader.java:48)
-E/Zygote  ( 8430):              at dalvik.system.PathClassLoader.&lt;init&gt;(PathClassLoader.java:38)
+E/Zygote  ( 8430):              at dalvik.system.DexPathList.<init>(DexPathList.java:109)
+E/Zygote  ( 8430):              at dalvik.system.BaseDexClassLoader.<init>(BaseDexClassLoader.java:48)
+E/Zygote  ( 8430):              at dalvik.system.PathClassLoader.<init>(PathClassLoader.java:38)
 E/Zygote  ( 8430):              at com.android.internal.os.ZygoteInit.handleSystemServerProcess(ZygoteInit.java:530)
 E/Zygote  ( 8430):              ... 2 more
 E/Zygote  ( 8430):      Caused by: java.io.IOException: Failed to open oat file from dex location '/system/framework/services.jar'
@@ -213,7 +213,7 @@ E/Zygote  ( 8430):      Caused by: java.io.IOException: Failed to open oat file 
 E/Zygote  ( 8430):              ... 12 more
 E/Zygote  ( 8430):      Caused by: java.io.IOException:
 E/Zygote  ( 8430):              ... 12 more
-E/Zygote  ( 8430):      Suppressed: java.lang.ClassNotFoundException: Didn't find class &quot;com.android.server.SystemServer&quot; on path: DexPathList[[directory &quot;.&quot;],nativeLibraryDirectories=[/vendor/lib, /system/lib]]
+E/Zygote  ( 8430):      Suppressed: java.lang.ClassNotFoundException: Didn't find class "com.android.server.SystemServer" on path: DexPathList[[directory "."],nativeLibraryDirectories=[/vendor/lib, /system/lib]]
 E/Zygote  ( 8430):              at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)
 E/Zygote  ( 8430):              at java.lang.ClassLoader.loadClass(ClassLoader.java:511)
 E/Zygote  ( 8430):              at java.lang.ClassLoader.loadClass(ClassLoader.java:504)
@@ -239,7 +239,7 @@ E/AndroidRuntime( 8430):        at java.lang.Class.classForName(Native Method)
 E/AndroidRuntime( 8430):        at java.lang.Class.forName(Class.java:308)
 E/AndroidRuntime( 8430):        at com.android.internal.os.RuntimeInit.invokeStaticMain(RuntimeInit.java:202)
 E/AndroidRuntime( 8430):        ... 5 more
-E/AndroidRuntime( 8430): Caused by: java.lang.ClassNotFoundException: Didn't find class &quot;com.android.server.SystemServer&quot; on path: DexPathList[[zip file &quot;/system/framework/services.jar&quot;, zip file &quot;/system/framework/ethernet-service.jar&quot;, zip file &quot;/system/framework/wifi-service.jar&quot;],nativeLibraryDirectories=[/vendor/lib, /system/lib]]
+E/AndroidRuntime( 8430): Caused by: java.lang.ClassNotFoundException: Didn't find class "com.android.server.SystemServer" on path: DexPathList[[zip file "/system/framework/services.jar", zip file "/system/framework/ethernet-service.jar", zip file "/system/framework/wifi-service.jar"],nativeLibraryDirectories=[/vendor/lib, /system/lib]]
 E/AndroidRuntime( 8430):        at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)
 E/AndroidRuntime( 8430):        at java.lang.ClassLoader.loadClass(ClassLoader.java:511)
 E/AndroidRuntime( 8430):        at java.lang.ClassLoader.loadClass(ClassLoader.java:469)
@@ -247,13 +247,13 @@ E/AndroidRuntime( 8430):        ... 8 more
 E/AndroidRuntime( 8430):        Suppressed: java.io.IOException: Zip archive '/system/framework/services.jar' doesn't contain classes.dex (error msg: Entry not found)
 E/AndroidRuntime( 8430):                at dalvik.system.DexFile.openDexFileNative(Native Method)
 E/AndroidRuntime( 8430):                at dalvik.system.DexFile.openDexFile(DexFile.java:295)
-E/AndroidRuntime( 8430):                at dalvik.system.DexFile.&lt;init&gt;(DexFile.java:80)
-E/AndroidRuntime( 8430):                at dalvik.system.DexFile.&lt;init&gt;(DexFile.java:59)
+E/AndroidRuntime( 8430):                at dalvik.system.DexFile.<init>(DexFile.java:80)
+E/AndroidRuntime( 8430):                at dalvik.system.DexFile.<init>(DexFile.java:59)
 E/AndroidRuntime( 8430):                at dalvik.system.DexPathList.loadDexFile(DexPathList.java:262)
 E/AndroidRuntime( 8430):                at dalvik.system.DexPathList.makeDexElements(DexPathList.java:231)
-E/AndroidRuntime( 8430):                at dalvik.system.DexPathList.&lt;init&gt;(DexPathList.java:109)
-E/AndroidRuntime( 8430):                at dalvik.system.BaseDexClassLoader.&lt;init&gt;(BaseDexClassLoader.java:48)
-E/AndroidRuntime( 8430):                at dalvik.system.PathClassLoader.&lt;init&gt;(PathClassLoader.java:38)
+E/AndroidRuntime( 8430):                at dalvik.system.DexPathList.<init>(DexPathList.java:109)
+E/AndroidRuntime( 8430):                at dalvik.system.BaseDexClassLoader.<init>(BaseDexClassLoader.java:48)
+E/AndroidRuntime( 8430):                at dalvik.system.PathClassLoader.<init>(PathClassLoader.java:38)
 E/AndroidRuntime( 8430):                at com.android.internal.os.ZygoteInit.handleSystemServerProcess(ZygoteInit.java:530)
 E/AndroidRuntime( 8430):                ... 2 more
 E/AndroidRuntime( 8430):        Caused by: java.io.IOException: Failed to open oat file from dex location '/system/framework/services.jar'
@@ -262,7 +262,7 @@ E/AndroidRuntime( 8430):        Caused by: java.io.IOException: Failed to open o
 E/AndroidRuntime( 8430):                ... 12 more
 E/AndroidRuntime( 8430):        Caused by: java.io.IOException:
 E/AndroidRuntime( 8430):                ... 12 more
-E/AndroidRuntime( 8430):        Suppressed: java.lang.ClassNotFoundException: Didn't find class &quot;com.android.server.SystemServer&quot; on path: DexPathList[[directory &quot;.&quot;],nativeLibraryDirectories=[/vendor/lib, /system/lib]]
+E/AndroidRuntime( 8430):        Suppressed: java.lang.ClassNotFoundException: Didn't find class "com.android.server.SystemServer" on path: DexPathList[[directory "."],nativeLibraryDirectories=[/vendor/lib, /system/lib]]
 E/AndroidRuntime( 8430):                at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)
 E/AndroidRuntime( 8430):                at java.lang.ClassLoader.loadClass(ClassLoader.java:511)
 E/AndroidRuntime( 8430):                at java.lang.ClassLoader.loadClass(ClassLoader.java:504)
@@ -281,7 +281,7 @@ E/AndroidRuntime( 8430):        at java.lang.ThreadGroup.uncaughtException(Threa
 E/AndroidRuntime( 8430):        at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:690)
 I/Process ( 8430): Sending signal. PID: 8430 SIG: 9
 E/Zygote  ( 8205): Exit zygote because system server (8430) has terminated
-[/shell]
+```
 
 彻底没辙了，看样子还有待深入研究，暂时只能先恢复吧，不然没手机用了，此时adb shell进去，发现su执行不生效，心中咯噔一下，不好，难道是要重刷系统，oh，不！最后还好连蒙带猜进到TWRP recovery(装[Multirom](http://forum.xda-developers.com/google-nexus-5/orig-development/mod-multirom-v24-t2571011)自带的)模式，挂载system分区，adb shell进去就已经是root权限，于是恢复之前备份的系统文件（这里可以看出备份重要文件的重要性了！！），还得注意一下权限是不是644，权限不对也进不了系统。最终终于进去系统了。
 

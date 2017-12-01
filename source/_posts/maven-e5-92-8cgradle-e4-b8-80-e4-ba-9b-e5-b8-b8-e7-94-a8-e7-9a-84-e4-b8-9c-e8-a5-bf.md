@@ -20,74 +20,74 @@ Maven中定义的依赖库默认是不下载源码和javadoc的，如果需要�
 1\. 可以在命令行上参数方式
 同时下载源码和javadoc
 
-[shell gutter="false"]
+```shell
 mvn depdency:resolve -DdownloadSources -DdownloadJavadocs
-[/shell]
+```
 
 只下载源码
 
-[shell gutter="false"]
+```shell
 mvn dependency:sources
-[/shell]
+```
 
 只下载javadoc
 
-[shell gutter="false"]
+```shell
 mvn dependency:resolve -Dclassifier=javadoc
-[/shell]
+```
 
 2\. 在项目pom.xml文件中添加如下配置
 
-[shell gutter="false" highlight="7,8"]
-&lt;build&gt;
-    &lt;plugins&gt;
-        &lt;plugin&gt;
-            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
-            &lt;configuration&gt;
-                &lt;downloadSources&gt;true&lt;/downloadSources&gt;
-                &lt;downloadJavadocs&gt;true&lt;/downloadJavadocs&gt;
-            &lt;/configuration&gt;
-        &lt;/plugin&gt;
-    &lt;/plugins&gt;
-&lt;/build&gt;
-[/shell]
+```shell
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-eclipse-plugin</artifactId>
+            <configuration>
+                <downloadSources>true</downloadSources>
+                <downloadJavadocs>true</downloadJavadocs>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
 
 3\. 在更高层次全局设置(~/.m2/settings.xml).
 
-[shell gutter="false" highlight="5,6,12"]
-&lt;profiles&gt;
-    &lt;profile&gt;
-        &lt;id&gt;downloadSources&lt;/id&gt;
-        &lt;properties&gt;
-            &lt;downloadSources&gt;true&lt;/downloadSources&gt;
-            &lt;downloadJavadocs&gt;true&lt;/downloadJavadocs&gt;
-        &lt;/properties&gt;
-    &lt;/profile&gt;
-&lt;/profiles&gt;
+```shell
+<profiles>
+    <profile>
+        <id>downloadSources</id>
+        <properties>
+            <downloadSources>true</downloadSources>
+            <downloadJavadocs>true</downloadJavadocs>
+        </properties>
+    </profile>
+</profiles>
 
-&lt;activeProfiles&gt;
-    &lt;activeProfile&gt;downloadSources&lt;/activeProfile&gt;
-&lt;/activeProfiles&gt;
-[/shell]
+<activeProfiles>
+    <activeProfile>downloadSources</activeProfile>
+</activeProfiles>
+```
 
 4\. 在Eclipse的maven插件设置中设置，如下图所示
-[![eclipse_maven_settings](http://202.203.209.55:8080/wp-content/uploads/2014/10/eclipse_maven_settings-293x300.png)](http://202.203.209.55:8080/wp-content/uploads/2014/10/eclipse_maven_settings.png)
+[![eclipse_maven_settings](/resources/2014/10/eclipse_maven_settings-293x300.png)](/resources/2014/10/eclipse_maven_settings.png)
 
 ###### **Maven创建web工程**
 
 使用如下命令
 
-[shell gutter="false"]
+```shell
 mvn archetype:generate -DgroupId={project-packaging} -DartifactId={project-name} -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
-[/shell]
+```
 
 进一步使用以下命令可以生成eclipse java web工程项目，并且下载依赖项，然后就可以在eclipse中导入已存在的普通eclipse项目。
 或者也可以不执行以下命令，直接在eclipse中导入maven项目。
 
-[shell]
+```shell
 mvn eclipse:eclipse -Dwtpversion=2.0
-[/shell]
+```
 
 mvn eclipse:eclipse 把maven项目转换成eclipse项目，"-Dwtpversion=2.0"是指定转换成eclipse web项目。
 
@@ -95,7 +95,7 @@ mvn eclipse:eclipse 把maven项目转换成eclipse项目，"-Dwtpversion=2.0"是
 
 目前官方暂时不支持，见[Provide a 'provided' configuration](https://issues.gradle.org/browse/GRADLE-784)，不过可以通过以下方式，在gradle中添加
 
-[shell gutter="false"]
+```shell
 apply plugin: 'eclipse'  // Eclipse users only
 
 configurations {
@@ -109,7 +109,7 @@ sourceSets {
 }
 
 eclipse.classpath.plusConfigurations += configurations.provided  // Eclipse users only
-[/shell]
+```
 
 第一行和最后一行仅针对eclipse适用
 
@@ -117,7 +117,7 @@ eclipse.classpath.plusConfigurations += configurations.provided  // Eclipse user
 
 eclipse中通过eclipse插件下载
 
-[shell gutter="false" highlight="6"]
+```shell
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
@@ -126,24 +126,24 @@ eclipse {
        downloadSources=true
     }
 }
-[/shell]
+```
 
 intellij中通过idea插件下载
 
-[shell gutter="false" highlight="19,20"]
+```shell
 apply plugin: 'groovy'
 apply plugin: 'idea'
 
 repositories {
     mavenCentral()
-    mavenRepo name: &quot;Grails&quot;, url: &quot;http://repo.grails.org/grails/repo/&quot;
+    mavenRepo name: "Grails", url: "http://repo.grails.org/grails/repo/"
 }
 
 dependencies {
     groovy 'org.codehaus.groovy:groovy-all:2.0.4'
     compile 'org.slf4j:slf4j-log4j12:1.6.6', 'postgresql:postgresql:9.1-901.jdbc4', 'net.sourceforge.nekohtml:nekohtml:1.9.16'
-    ['core', 'hibernate', 'plugin-datasource', 'plugin-domain-class'].each { plugin -&gt;
-        compile &quot;org.grails:grails-$plugin:2.1.0&quot;
+    ['core', 'hibernate', 'plugin-datasource', 'plugin-domain-class'].each { plugin ->
+        compile "org.grails:grails-$plugin:2.1.0"
     }
 }
 
@@ -162,7 +162,7 @@ jar {
 task wrapper(type: Wrapper) {
     gradleVersion = '1.0'
 }
-[/shell]
+```
 
 ###### **参考资料**
 

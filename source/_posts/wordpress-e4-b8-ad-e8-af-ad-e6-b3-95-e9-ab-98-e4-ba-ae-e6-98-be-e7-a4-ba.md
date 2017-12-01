@@ -14,24 +14,24 @@ date: 2014-10-08 16:41:53
 
 插入的代码如下图所示
 
-[![syntax-highlighter_code_example](http://202.203.209.55:8080/wp-content/uploads/2014/10/syntax-highlighter_code_example.png)](http://202.203.209.55:8080/wp-content/uploads/2014/10/syntax-highlighter_code_example.png)
+[![syntax-highlighter_code_example](/resources/2014/10/syntax-highlighter_code_example.png)](/resources/2014/10/syntax-highlighter_code_example.png)
 
 显示的效果如下所示
 
-&nbsp;
+ 
 
 1\. 使用shortcode方式高亮显示代码
 
-[code language="css"]
+```css
 #button {
 	font-weight: bold;
 	border: 2px solid #fff;
 }
-[/code]
+```
 
 2\. 使用简洁的[language][/language]方式高亮显示代码，显示效果与上述方式相同
 
-[java]
+```java
 
 public class HibernateListener implements ServletContextListener {
 
@@ -51,4 +51,4 @@ public class HibernateListener implements ServletContextListener {
 		}
 	}
 }
-[/java]
+```

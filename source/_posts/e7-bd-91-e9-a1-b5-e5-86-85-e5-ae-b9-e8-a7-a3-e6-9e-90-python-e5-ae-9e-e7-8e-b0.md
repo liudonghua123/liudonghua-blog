@@ -21,7 +21,7 @@ date: 2014-12-02 15:16:28
 
 第一步根据网址获取HTML这就不多说了，查阅Python文档，使用urllib2来实现，大致代码如下
 
-[python]
+```python
 import urllib2
 
 request = urllib2.Request('http://item.jd.com/1164932931.html')
@@ -31,11 +31,11 @@ html = response.read()
 # decode the html content using the charset of HTTP response Content-Type header
 encoding = response.headers['content-type'].split('charset=')[-1]
 html_decoded = html.decode(encoding)
-[/python]
+```
 
 第二步解析HTML获取网页特定信息，这里有很多实现，如使用自带的库HTMLParse（[2.x](https://docs.python.org/2/library/htmlparser.html), [3.x](https://docs.python.org/3/library/html.parser.html)），但这种方式类似于Java中的基于事件的SAX解析方式，需要些很多代码，我想使用DOM方式解析出整颗树，然后利用类似于jQuery中的ID、Class、Tag选择器快捷查找解析功能（如果可能），后来找到有很多这样的库，如[BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/bs4/doc/)、[PyQuery](https://pypi.python.org/pypi/pyquery)，这里用PyQuery来实现，实现的代码如下
 
-[python]
+```python
 from pyquery import PyQuery as pq
 import HTMLParser
 
@@ -43,34 +43,34 @@ import HTMLParser
 # 这里可用未解码的html或解码或的html_decoded，效果一样
 pqHtml = pq(html)
 htmlParser = HTMLParser.HTMLParser()
-# 这里解决解码问题，如果不使用htmlParser.unescape，中文的输出会是如&quot;&amp;#23478;&amp;#20855;&quot;这种信息，不是UTF-8、Unicode、GBK的编码，不能使用str.decode(encoding_name)方式解码
+# 这里解决解码问题，如果不使用htmlParser.unescape，中文的输出会是如"&#23478;&#20855;"这种信息，不是UTF-8、Unicode、GBK的编码，不能使用str.decode(encoding_name)方式解码
 print htmlParser.unescape(str(pqHtml('div.breadcrumb a')))
-[/python]
+```
 
 其实PyQuery 就自带了GET/POST等资源获取方式，以上两部分可以简化为两三行代码（不包括import）
 
-[python]
+```python
 from pyquery import PyQuery as pq
 import HTMLParser
 
 pqHtml=pq(url='http://item.jd.com/1164932931.html')
 htmlParser = HTMLParser.HTMLParser()
 print htmlParser.unescape(str(pqHtml('div.breadcrumb a')))
-[/python]
+```
 
 这样就可以解析出如下一个特定网页中的特定信息(后续还要一点点处理)
-[![jd_html_example](http://202.203.209.55:8080/wp-content/uploads/2014/12/jd_html_example.png)](http://202.203.209.55:8080/wp-content/uploads/2014/12/jd_html_example.png)
+[![jd_html_example](/resources/2014/12/jd_html_example.png)](/resources/2014/12/jd_html_example.png)
 代码输出为
 
-[shell]
-&gt; python AnalysisJD.py
-&lt;a href=&quot;http://channel.jd.com/furniture.html&quot;&gt;家具&lt;/a&gt;&lt;a href=&quot;http://channel.jd.com/9847-9850.html&quot;&gt;餐厅家具&lt;/a&gt; &gt; &lt;a href=&quot;http://list.jd.com/9847-9850-9877.html&quot;&gt;餐桌&lt;/a&gt; &gt; &lt;a href=&quot;http://www.jd.com/pinpai/9877-53848.html&quot;&gt;杰希家具（J&amp;C furniture）&lt;/a&gt; &gt; &lt;a href=&quot;http://item.jd.com/1164932931.html&quot;&gt;杰希家具北欧简约餐桌 时尚设计 大小餐客...&lt;/a&gt;
-[/shell]
+```shell
+> python AnalysisJD.py
+<a href="http://channel.jd.com/furniture.html">家具</a><a href="http://channel.jd.com/9847-9850.html">餐厅家具</a> > <a href="http://list.jd.com/9847-9850-9877.html">餐桌</a> > <a href="http://www.jd.com/pinpai/9877-53848.html">杰希家具（J&C furniture）</a> > <a href="http://item.jd.com/1164932931.html">杰希家具北欧简约餐桌 时尚设计 大小餐客...</a>
+```
 
 最后再提一下Windows下安装PyQuery过程中遇到的问题
 首先直接运行"pip install pyquery"提示如下错误
 
-[shell]
+```shell
 running build_ext
 
 building 'lxml.etree' extension
@@ -80,31 +80,34 @@ C:\Python27\lib\distutils\dist.py:267: UserWarning: Unknown distribution option:
   warnings.warn(msg)
 
 error: Unable to find vcvarsall.bat
-[/shell]
+```
 
 查阅资料因为Python 2.7默认使用VS2008对源码库编译安装，所以可以重新定义VS90COMNTOOLS环境变量
-> For Windows installations:> 
+> For Windows installations:
 > 
-> While running setup.py for package installations, Python 2.7 searches for an installed Visual Studio 2008\. You can trick Python to use a newer Visual Studio by setting the correct path in `VS90COMNTOOLS`environment variable before calling `setup.py`.> 
 > 
-> Execute the following command based on the version of Visual Studio installed:> 
+> While running setup.py for package installations, Python 2.7 searches for an installed Visual Studio 2008\. You can trick Python to use a newer Visual Studio by setting the correct path in `VS90COMNTOOLS`environment variable before calling `setup.py`.
+> 
+> 
+> Execute the following command based on the version of Visual Studio installed:
+> 
 > 
 > *   Visual Studio 2010 (VS10): `SET VS90COMNTOOLS=%VS100COMNTOOLS%`
 > *   Visual Studio 2012 (VS11): `SET VS90COMNTOOLS=%VS110COMNTOOLS%`
 > *   Visual Studio 2013 (VS12): `SET VS90COMNTOOLS=%VS120COMNTOOLS%`
 我电脑上装的是2012，如下设置
 
-[shell]
-C:\Users\Liu.D.H&gt;rem 检测是否有VS120COMNTOOLS环境变量
-C:\Users\Liu.D.H&gt;echo %VS120COMNTOOLS%
+```shell
+C:\Users\Liu.D.H>rem 检测是否有VS120COMNTOOLS环境变量
+C:\Users\Liu.D.H>echo %VS120COMNTOOLS%
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\
-C:\Users\Liu.D.H&gt;rem 重新定义VS90COMNTOOLS环境变量，值为VS120COMNTOOLS
-C:\Users\Liu.D.H&gt;SET VS90COMNTOOLS=%VS120COMNTOOLS%
-[/shell]
+C:\Users\Liu.D.H>rem 重新定义VS90COMNTOOLS环境变量，值为VS120COMNTOOLS
+C:\Users\Liu.D.H>SET VS90COMNTOOLS=%VS120COMNTOOLS%
+```
 
 然后继续执行pip，报以下错误
 
-[shell]
+```shell
 c:\users\liud~1.h\appdata\local\temp\pip_build_Liu.D.H\lxml\src\lxml\includes\etree_defs.h(14) : fatal error C1083: Cannot open include file: 'libxml/xmlversion.h': No such file or directory
 
 C:\Python27\lib\distutils\dist.py:267: UserWarning: Unknown distribution option: 'bugtrack_url'
@@ -112,7 +115,7 @@ C:\Python27\lib\distutils\dist.py:267: UserWarning: Unknown distribution option:
   warnings.warn(msg)
 
 error: command 'C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\BIN\\amd64\\cl.exe' failed with exit status 2
-[/shell]
+```
 
 很明显又是libxml这个库找不到，搜索到[libxml-python](http://users.skynet.be/sbi/libxml-python/)、[lxml](http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml)
 安装过程中提示"Python version 2.7 required, which was not found in the registry"
@@ -120,10 +123,10 @@ error: command 'C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\BIN\\
 安装完前一个还是没用，后一个才可以解决以上头文件找不到问题。
 至此终于安装好pyQuery及其依赖的库，不得不吐槽，太繁琐了，还是Linux或者Mac系统方便，如在Ubuntu下运行以下命令即可
 
-[shell]
+```shell
 sudo apt-get install libxml2-dev libxslt1-dev python-dev
 sudo pip install pyquery
-[/shell]
+```
 
 参考资料
 1. [HOWTO Fetch Internet Resources Using urllib2](https://docs.python.org/2/howto/urllib2.html)

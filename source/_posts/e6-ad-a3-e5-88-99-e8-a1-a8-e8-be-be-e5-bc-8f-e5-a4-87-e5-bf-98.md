@@ -25,8 +25,8 @@ Perl风格的包括纯[Perl](https://www.cs.tut.fi/~jkorpela/perl/regexp.html)�
 
 ?通常情况用于匹配0次或1次，但如果置于*, +, ?, {}这些后面则表示non-greedy
 如下面例子所示
-如我需要在一行文本里(&lt;img src=\"image.url\"&gt;&lt;a href="anchor.url"&gt;anchor&lt;/a&gt;)仅仅匹配&lt;img&gt;标签
-使用[&lt;img\s.*&gt;](http://regexr.com/39k4t)则会同时匹配后面的&lt;a&gt;
-[![greedy_regex](http://202.203.209.55:8080/wp-content/uploads/2014/10/greedy_regex.png)](http://202.203.209.55:8080/wp-content/uploads/2014/10/greedy_regex.png)
-使用[&lt;img\s.*?&gt;](http://regexr.com/39k4q)则可避免这个问题
-[![non-greedy_regex](http://202.203.209.55:8080/wp-content/uploads/2014/10/non-greedy_regex.png)](http://202.203.209.55:8080/wp-content/uploads/2014/10/non-greedy_regex.png)
+如我需要在一行文本里(<img src=\"image.url\"><a href="anchor.url">anchor</a>)仅仅匹配<img>标签
+使用[<img\s.*>](http://regexr.com/39k4t)则会同时匹配后面的<a>
+[![greedy_regex](/resources/2014/10/greedy_regex.png)](/resources/2014/10/greedy_regex.png)
+使用[<img\s.*?>](http://regexr.com/39k4q)则可避免这个问题
+[![non-greedy_regex](/resources/2014/10/non-greedy_regex.png)](/resources/2014/10/non-greedy_regex.png)

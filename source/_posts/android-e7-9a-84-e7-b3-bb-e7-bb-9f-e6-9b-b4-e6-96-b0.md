@@ -17,33 +17,33 @@ date: 2015-03-11 10:05:33
 在Settings的源码下一步一步搜索，最终找到这里
 res\xml\device_info_settings.xml
 
-[xml]
-        &lt;!-- System update settings - launches activity --&gt;
-        &lt;PreferenceScreen android:key=&quot;system_update_settings&quot;
-                android:title=&quot;@string/system_update_settings_list_item_title&quot;
-                android:summary=&quot;@string/system_update_settings_list_item_summary&quot;&gt;
-            &lt;intent android:action=&quot;android.settings.SYSTEM_UPDATE_SETTINGS&quot; /&gt;
-        &lt;/PreferenceScreen&gt;
-[/xml]
+```xml
+        <!-- System update settings - launches activity -->
+        <PreferenceScreen android:key="system_update_settings"
+                android:title="@string/system_update_settings_list_item_title"
+                android:summary="@string/system_update_settings_list_item_summary">
+            <intent android:action="android.settings.SYSTEM_UPDATE_SETTINGS" />
+        </PreferenceScreen>
+```
 
 也就是说在设置里点了系统更新之后，只会发一个"android.settings.SYSTEM_UPDATE_SETTINGS"的广播，然后由注册了这个广播的组件来处理。
 GoogleServicesFramework的AndroidManifest.xml有
 
-[xml]
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;no&quot;?&gt;
-&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:sharedUserId=&quot;com.google.uid.shared&quot; package=&quot;com.google.android.gsf&quot; platformBuildVersionCode=&quot;21&quot; platformBuildVersionName=&quot;5.0.1-1602158&quot;&gt;
-    &lt;application&gt;
+```xml
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:sharedUserId="com.google.uid.shared" package="com.google.android.gsf" platformBuildVersionCode="21" platformBuildVersionName="5.0.1-1602158">
+    <application>
         ......
-        &lt;activity android:enabled=&quot;false&quot; android:hardwareAccelerated=&quot;true&quot; android:label=&quot;@string/system_update_activity_name&quot; android:launchMode=&quot;singleTop&quot; android:name=&quot;.update.SystemUpdateActivity&quot; android:theme=&quot;@android:style/Theme.Holo.NoActionBar&quot;&gt;
-            &lt;intent-filter&gt;
-                &lt;action android:name=&quot;android.settings.SYSTEM_UPDATE_SETTINGS&quot;/&gt;
-                &lt;category android:name=&quot;android.intent.category.DEFAULT&quot;/&gt;
-            &lt;/intent-filter&gt;
-        &lt;/activity&gt;
+        <activity android:enabled="false" android:hardwareAccelerated="true" android:label="@string/system_update_activity_name" android:launchMode="singleTop" android:name=".update.SystemUpdateActivity" android:theme="@android:style/Theme.Holo.NoActionBar">
+            <intent-filter>
+                <action android:name="android.settings.SYSTEM_UPDATE_SETTINGS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         ......
-    &lt;/application&gt;
-&lt;/manifest&gt;
-[/xml]
+    </application>
+</manifest>
+```
 
 对于N5来说，就是由GoogleServicesFramework中的com.google.android.gsf.update.SystemUpdateActivity来处理，由于这部分源码不是开源的，反编译代码错综复杂，现在暂时还没找到。
 

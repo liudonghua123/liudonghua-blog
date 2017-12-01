@@ -24,7 +24,7 @@ ps: 在安装之前需要清空Windows下的HOME环境变量（"set HOME="就可
 并且注意安装完成之后也不能恢复Windows下的HOME环境变量，不过可以修改.babun/babun.bat文件，在其中添加如下第10行就可以解决HOME环境变量的问题。所以如果如果安装之前没有清空Windows下的HOME环境变量，也不想重装，那么也可以先创建/home/YOUR_USERNAME目录，然后unset HOME; babun install，最后同样修改.babun/babun.bat文件。
 总之就是必须修改.babun/babun.bat重新定义babun中的HOME，否则只有清空Windows中的HOME（有风险，非常不建议）
 
-[shell highlight="10"]
+```shell
 @echo off
 setlocal enableextensions enabledelayedexpansion
 
@@ -35,9 +35,9 @@ set BABUN_HOME=%SCRIPT_PATH%
 :BEGIN
 set CYGWIN_HOME=%BABUN_HOME%\cygwin
 set HOME=%CYGWIN_HOME%\home\Liu.D.H
-if exist &quot;%CYGWIN_HOME%\bin\mintty.exe&quot; goto RUN
-if not exist &quot;%CYGWIN_HOME%\bin\mintty.exe&quot; goto NOTFOUND
-[/shell]
+if exist "%CYGWIN_HOME%\bin\mintty.exe" goto RUN
+if not exist "%CYGWIN_HOME%\bin\mintty.exe" goto NOTFOUND
+```
 
 当然还有微软自己在.Net时代改进的Shell——[PowerShell](https://technet.microsoft.com/en-us/scriptcenter/powershell.aspx)，但那东西有点奇葩，太依赖于Windows本身的特性，因此至少目前只能在Windows下工作。
 
@@ -47,6 +47,8 @@ if not exist &quot;%CYGWIN_HOME%\bin\mintty.exe&quot; goto NOTFOUND
 
 ![](http://gooseberrycreative.com/cmder/img/main.jpg)
 
-[video width="1280" height="720" mp4="http://202.203.209.55:8080/wp-content/uploads/2015/05/Introduction-to-the-Babun-Project-HD.mp4"][/video]
+<video width="100%" controls>
+    <source src="/resources/2015/05/Introduction-to-the-Babun-Project-HD.mp4">
+</video>
 
-&nbsp;
+ 

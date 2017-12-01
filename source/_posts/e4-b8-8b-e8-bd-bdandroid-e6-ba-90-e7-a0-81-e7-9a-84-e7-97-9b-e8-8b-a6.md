@@ -21,7 +21,7 @@ date: 2014-11-06 20:37:38
 
 ##### 分卷压缩/解压缩
 
-[shell gutter="false"]
+```shell
 
 #方法一
 # 最大压缩 (tar+bzip2+7z)
@@ -61,33 +61,33 @@ $file full.tar.bz2
 full.tar.bz2: bzip2 compressed data, block size = 900k
 $tar -xjvf full.tar.bz2
 
-[/shell]
+```
 
 ##### 在当前目录运行HTTP服务器
 
-[shell gutter="false"]
-python -m SimpleHTTPServer &amp;
+```shell
+python -m SimpleHTTPServer &
 #或
-ruby -run -e httpd . -p 9090 &amp;
-[/shell]
+ruby -run -e httpd . -p 9090 &
+```
 
 后台运行的程序，如果终端关闭，属于这个终端的程序也会停止，所以就需要使用nohup、bash自带的disown或screen
-1\. nohup在linux下不能针对已经运行的程序通过"nohup -p pid"让程序脱离终端，只能在启动程序时就调用，如"nohup python -m SimpleHTTPServer &amp;"
+1\. nohup在linux下不能针对已经运行的程序通过"nohup -p pid"让程序脱离终端，只能在启动程序时就调用，如"nohup python -m SimpleHTTPServer &"
 2\. [disown](http://www.kossboss.com/linux---move-running-to-process-nohup)的用法是，先让程序后台运行(前台运行时Ctrl+Z)，然后jobs查看id，最后disown -h %id
 3\. screen就更简单screen -S name，建立一个可再次连接的会话，然后再这个会话中操作，连接断了重连事直接screen -x name也可以连上
 
 ##### 暂停和继续程序的运行
 
-[shell gutter="false"]
+```shell
 kill -s STOP pid
 kill -s CONT pid
-[/shell]
+```
 
 ##### rm文件没有释放硬盘空间
 
 有时候删除一些文件，但是df查看时硬盘空间没有释放，正常情况下要等对应程序退出后才会释放。但可以参考[这里](http://serverfault.com/questions/232525/df-in-linux-not-showing-correct-free-space-after-file-removal#answer-573830)提到的方法rm后立刻释放，一下是我的操作示例。
 
-[shell gutter="false" highlight="26,27,40,41,47,48,69"]
+```shell
 ubuntu@ip-172-31-7-84:~$ ls -li
 total 8512136
 405120 -rw-rw-r-- 1 ubuntu ubuntu 54 Nov 7 01:50 android_repo.7z.001.md5
@@ -120,40 +120,40 @@ ubuntu@ip-172-31-7-84:/proc/31737/fd$ ll
 total 0
 dr-x------ 2 ubuntu ubuntu 0 Nov 6 09:19 ./
 dr-xr-xr-x 9 ubuntu ubuntu 0 Nov 6 09:19 ../
-lr-x------ 1 ubuntu ubuntu 64 Nov 7 01:58 0 -&gt; pipe:[722726]
-lrwx------ 1 ubuntu ubuntu 64 Nov 7 01:58 1 -&gt; /dev/pts/2 (deleted)
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 10 -&gt; /home/ubuntu/android_repo.7z.008
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 11 -&gt; /home/ubuntu/android_repo.7z.009
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 12 -&gt; /home/ubuntu/android_repo.7z.010
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 13 -&gt; /home/ubuntu/android_repo.7z.011
-lrwx------ 1 ubuntu ubuntu 64 Nov 6 09:19 2 -&gt; /dev/pts/2 (deleted)
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 3 -&gt; /home/ubuntu/android_repo.7z.001 (deleted)
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 4 -&gt; /home/ubuntu/android_repo.7z.002 (deleted)
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 5 -&gt; /home/ubuntu/android_repo.7z.003
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 6 -&gt; /home/ubuntu/android_repo.7z.004
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 7 -&gt; /home/ubuntu/android_repo.7z.005
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 8 -&gt; /home/ubuntu/android_repo.7z.006
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 9 -&gt; /home/ubuntu/android_repo.7z.007
-ubuntu@ip-172-31-7-84:/proc/31737/fd$ &gt; 3
-ubuntu@ip-172-31-7-84:/proc/31737/fd$ &gt; 4
+lr-x------ 1 ubuntu ubuntu 64 Nov 7 01:58 0 -> pipe:[722726]
+lrwx------ 1 ubuntu ubuntu 64 Nov 7 01:58 1 -> /dev/pts/2 (deleted)
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 10 -> /home/ubuntu/android_repo.7z.008
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 11 -> /home/ubuntu/android_repo.7z.009
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 12 -> /home/ubuntu/android_repo.7z.010
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 13 -> /home/ubuntu/android_repo.7z.011
+lrwx------ 1 ubuntu ubuntu 64 Nov 6 09:19 2 -> /dev/pts/2 (deleted)
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 3 -> /home/ubuntu/android_repo.7z.001 (deleted)
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 4 -> /home/ubuntu/android_repo.7z.002 (deleted)
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 5 -> /home/ubuntu/android_repo.7z.003
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 6 -> /home/ubuntu/android_repo.7z.004
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 7 -> /home/ubuntu/android_repo.7z.005
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 8 -> /home/ubuntu/android_repo.7z.006
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 9 -> /home/ubuntu/android_repo.7z.007
+ubuntu@ip-172-31-7-84:/proc/31737/fd$ > 3
+ubuntu@ip-172-31-7-84:/proc/31737/fd$ > 4
 ubuntu@ip-172-31-7-84:/proc/31737/fd$ ll
 total 0
 dr-x------ 2 ubuntu ubuntu 0 Nov 6 09:19 ./
 dr-xr-xr-x 9 ubuntu ubuntu 0 Nov 6 09:19 ../
-lr-x------ 1 ubuntu ubuntu 64 Nov 7 01:58 0 -&gt; pipe:[722726]
-lrwx------ 1 ubuntu ubuntu 64 Nov 7 01:58 1 -&gt; /dev/pts/2 (deleted)
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 10 -&gt; /home/ubuntu/android_repo.7z.008
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 11 -&gt; /home/ubuntu/android_repo.7z.009
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 12 -&gt; /home/ubuntu/android_repo.7z.010
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 13 -&gt; /home/ubuntu/android_repo.7z.011
-lrwx------ 1 ubuntu ubuntu 64 Nov 6 09:19 2 -&gt; /dev/pts/2 (deleted)
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 3 -&gt; /home/ubuntu/android_repo.7z.001 (deleted)
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 4 -&gt; /home/ubuntu/android_repo.7z.002 (deleted)
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 5 -&gt; /home/ubuntu/android_repo.7z.003
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 6 -&gt; /home/ubuntu/android_repo.7z.004
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 7 -&gt; /home/ubuntu/android_repo.7z.005
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 8 -&gt; /home/ubuntu/android_repo.7z.006
-l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 9 -&gt; /home/ubuntu/android_repo.7z.007
+lr-x------ 1 ubuntu ubuntu 64 Nov 7 01:58 0 -> pipe:[722726]
+lrwx------ 1 ubuntu ubuntu 64 Nov 7 01:58 1 -> /dev/pts/2 (deleted)
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 10 -> /home/ubuntu/android_repo.7z.008
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 11 -> /home/ubuntu/android_repo.7z.009
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 12 -> /home/ubuntu/android_repo.7z.010
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 13 -> /home/ubuntu/android_repo.7z.011
+lrwx------ 1 ubuntu ubuntu 64 Nov 6 09:19 2 -> /dev/pts/2 (deleted)
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 3 -> /home/ubuntu/android_repo.7z.001 (deleted)
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 4 -> /home/ubuntu/android_repo.7z.002 (deleted)
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 5 -> /home/ubuntu/android_repo.7z.003
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 6 -> /home/ubuntu/android_repo.7z.004
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 7 -> /home/ubuntu/android_repo.7z.005
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 8 -> /home/ubuntu/android_repo.7z.006
+l-wx------ 1 ubuntu ubuntu 64 Nov 7 01:58 9 -> /home/ubuntu/android_repo.7z.007
 ubuntu@ip-172-31-7-84:/proc/31737/fd$ df -h
 Filesystem Size Used Avail Use% Mounted on
 /dev/xvda1 30G 26G 2.7G 91% /
@@ -164,21 +164,21 @@ none 5.0M 0 5.0M 0% /run/lock
 none 497M 0 497M 0% /run/shm
 none 100M 0 100M 0% /run/user
 ubuntu@ip-172-31-7-84:/proc/31737/fd$
-[/shell]
+```
 
 ##### 生成文件checksum的脚本
 
 遍历当前目录下满足文件大小的文件，生成对应的md5、sha
 
-[shell gutter="false"]
+```shell
 for file in `ls`
 do
-  if [ $(stat -c%s $file) -eq $(echo &quot;1024*1024*1024&quot;|bc) ]
+  if [ $(stat -c%s $file) -eq $(echo "1024*1024*1024"|bc) ]
   then
-    md5sum $file &gt; &quot;$file.md5&quot;
-    shasum $file &gt; &quot;$file.sha&quot;
-    cat &quot;$file.md5&quot;
-    cat &quot;$file.sha&quot;
+    md5sum $file > "$file.md5"
+    shasum $file > "$file.sha"
+    cat "$file.md5"
+    cat "$file.sha"
   fi
 done
-[/shell]
+```

@@ -11,8 +11,8 @@ date: 2014-11-20 21:12:20
 mysql中的character指字符编码，collate用于排序，每种character对应多个collate，通过"show collation;"查看支持的character和collate<!--more-->
 [toc]
 
-[shell gutter="false"]
-mysql&gt; show collation;
+```shell
+mysql> show collation;
 +--------------------------+----------+-----+---------+----------+---------+
 | Collation | Charset | Id | Default | Compiled | Sortlen |
 +--------------------------+----------+-----+---------+----------+---------+
@@ -24,7 +24,7 @@ mysql&gt; show collation;
 ......
 +--------------------------+----------+-----+---------+----------+---------+
 219 rows in set (0.00 sec)
-[/shell]
+```
 
 character、collate有四个级别上，分别是全局、数据库、表、字段，后面的级别继承前面的设置
 > *   [If both `CHARACTER SET _<code>X`_</code> and `COLLATE _<code>Y`_</code> are specified, character set _`X`_ and collation _`Y`_ are used.](http://dev.mysql.com/doc/refman/5.0/en/charset-database.html)
@@ -37,8 +37,8 @@ character、collate有四个级别上，分别是全局、数据库、表、字�
 
 #### 查看方式
 
-[shell gutter="false"]
-mysql&gt; show variables like '%character%';
+```shell
+mysql> show variables like '%character%';
 +--------------------------+----------------------------------------------+
 | Variable_name            | Value                                        |
 +--------------------------+----------------------------------------------+
@@ -53,7 +53,7 @@ mysql&gt; show variables like '%character%';
 +--------------------------+----------------------------------------------+
 8 rows in set (0.00 sec)
 
-mysql&gt; show variables like &quot;%collat%&quot;;
+mysql> show variables like "%collat%";
 +----------------------+-----------------+
 | Variable_name        | Value           |
 +----------------------+-----------------+
@@ -62,19 +62,19 @@ mysql&gt; show variables like &quot;%collat%&quot;;
 | collation_server     | utf8_general_ci |
 +----------------------+-----------------+
 3 rows in set (0.00 sec)
-[/shell]
+```
 
 #### 修改方式
 
 # 修改my.cnf
 
-[shell gutter="false"]
+```shell
 # set default charset and collation
 # http://dev.mysql.com/doc/refman/5.6/en/charset-applications.html
 character-set-server=utf8
 collation-server=utf8_general_ci
 
-mysql&gt; show variables like '%character%';
+mysql> show variables like '%character%';
 +--------------------------+----------------------------------------------+
 | Variable_name            | Value                                        |
 +--------------------------+----------------------------------------------+
@@ -88,14 +88,14 @@ mysql&gt; show variables like '%character%';
 | character_sets_dir       | /alidata/server/mysql-5.6.15/share/charsets/ |
 +--------------------------+----------------------------------------------+
 8 rows in set (0.01 sec)
-[/shell]
+```
 
 ### 数据库
 
 #### 查看方式
 
-[shell gutter="false"]
-mysql&gt; select * from information_schema.schemata;
+```shell
+mysql> select * from information_schema.schemata;
 +--------------+--------------------+----------------------------+------------------------+----------+
 | CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH |
 +--------------+--------------------+----------------------------+------------------------+----------+
@@ -110,18 +110,18 @@ mysql&gt; select * from information_schema.schemata;
 | def          | wordpress          | latin1                     | latin1_swedish_ci      | NULL     |
 +--------------+--------------------+----------------------------+------------------------+----------+
 9 rows in set (0.09 sec)
-[/shell]
+```
 
 #### 修改方式
 
-[shell gutter="false"]
-mysql&gt; alter database simpleweb default character set utf8 default collate utf8_general_ci;
+```shell
+mysql> alter database simpleweb default character set utf8 default collate utf8_general_ci;
 Query OK, 1 row affected (0.00 sec)
 
-mysql&gt; create database my_tmp default character set utf8 default collate utf8_general_ci;
+mysql> create database my_tmp default character set utf8 default collate utf8_general_ci;
 Query OK, 1 row affected (0.01 sec)
 
-mysql&gt; select * from information_schema.schemata;
+mysql> select * from information_schema.schemata;
 +--------------+--------------------+----------------------------+------------------------+----------+
 | CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH |
 +--------------+--------------------+----------------------------+------------------------+----------+
@@ -137,50 +137,50 @@ mysql&gt; select * from information_schema.schemata;
 | def          | wordpress          | latin1                     | latin1_swedish_ci      | NULL     |
 +--------------+--------------------+----------------------------+------------------------+----------+
 10 rows in set (0.00 sec)
-[/shell]
+```
 
 ### 表
 
 #### 查看方式
 
-[shell gutter="false"]
-mysql&gt; select ccsa.character_set_name, ccsa.collation_name from information_schema.`tables` t,
-    -&gt;        information_schema.`collation_character_set_applicability` ccsa
-    -&gt; where ccsa.collation_name = t.table_collation
-    -&gt;   and t.table_schema = &quot;simpleweb&quot;
-    -&gt;   and t.table_name = &quot;users&quot;;
+```shell
+mysql> select ccsa.character_set_name, ccsa.collation_name from information_schema.`tables` t,
+    ->        information_schema.`collation_character_set_applicability` ccsa
+    -> where ccsa.collation_name = t.table_collation
+    ->   and t.table_schema = "simpleweb"
+    ->   and t.table_name = "users";
 +--------------------+-------------------+
 | character_set_name | collation_name    |
 +--------------------+-------------------+
 | latin1             | latin1_swedish_ci |
 +--------------------+-------------------+
 1 row in set (0.00 sec)
-[/shell]
+```
 
 #### 修改方式
 
-[shell gutter="false"]
-mysql&gt; alter table users default character set utf8 default collate utf8_general_ci;
+```shell
+mysql> alter table users default character set utf8 default collate utf8_general_ci;
 Query OK, 0 rows affected (0.03 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 
-mysql&gt; select ccsa.character_set_name, ccsa.collation_name from information_schema.`tables` t,  information_schema.`collation_character_set_applicability` ccsa where ccsa.collation_name = t.table_collation   and t.table_schema = &quot;simpleweb&quot;   and t.table_name = &quot;users&quot;;
+mysql> select ccsa.character_set_name, ccsa.collation_name from information_schema.`tables` t,  information_schema.`collation_character_set_applicability` ccsa where ccsa.collation_name = t.table_collation   and t.table_schema = "simpleweb"   and t.table_name = "users";
 +--------------------+-----------------+
 | character_set_name | collation_name  |
 +--------------------+-----------------+
 | utf8               | utf8_general_ci |
 +--------------------+-----------------+
 1 row in set (0.00 sec)
-[/shell]
+```
 
 ### 列
 
 #### 查看方式
 
-[shell gutter="false"]
-mysql&gt; select column_name, character_set_name, collation_name from information_schema.`columns` c
-    -&gt; where table_schema = &quot;simpleweb&quot;
-    -&gt;   and table_name = &quot;users&quot;;
+```shell
+mysql> select column_name, character_set_name, collation_name from information_schema.`columns` c
+    -> where table_schema = "simpleweb"
+    ->   and table_name = "users";
 +-------------+--------------------+-------------------+
 | column_name | character_set_name | collation_name    |
 +-------------+--------------------+-------------------+
@@ -190,16 +190,16 @@ mysql&gt; select column_name, character_set_name, collation_name from informatio
 | salary      | NULL               | NULL              |
 +-------------+--------------------+-------------------+
 4 rows in set (0.00 sec)
-[/shell]
+```
 
 #### 修改方式
 
-[shell gutter="false"]
-mysql&gt;  alter table users modify username varchar(20) character set utf8 collate utf8_general_ci;
+```shell
+mysql>  alter table users modify username varchar(20) character set utf8 collate utf8_general_ci;
 Query OK, 3 rows affected (0.24 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 
-mysql&gt; select column_name, character_set_name, collation_name from information_schema.`columns` c where table_schema = &quot;simpleweb&quot;   and table_name = &quot;users&quot;;
+mysql> select column_name, character_set_name, collation_name from information_schema.`columns` c where table_schema = "simpleweb"   and table_name = "users";
 +-------------+--------------------+-----------------+
 | column_name | character_set_name | collation_name  |
 +-------------+--------------------+-----------------+
@@ -209,7 +209,7 @@ mysql&gt; select column_name, character_set_name, collation_name from informatio
 | salary      | NULL               | NULL            |
 +-------------+--------------------+-----------------+
 4 rows in set (0.00 sec)
-[/shell]
+```
 
 ### 参考资料
 

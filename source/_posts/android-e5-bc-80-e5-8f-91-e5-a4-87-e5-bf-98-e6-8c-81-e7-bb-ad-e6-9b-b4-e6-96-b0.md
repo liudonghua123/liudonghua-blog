@@ -20,7 +20,7 @@ https://github.com/vladikoff/chromeos-apk/blob/master/archon.md
 
 简言之就是就是安装Archon运行环境（Chrome OS已自带），然后安装封装好的APK的Chrome扩展crx（由于Chrome的官方市场尚未提供这类应用，只能在扩展程序-开发者模式载入正在开发的应用方式安装）
 
-封装APK为Chrome扩展可以有以下三种方式（目前[支持的应用列表](https://docs.google.com/spreadsheets/d/1iIbxaftAu_ho5rv9fUlXSLTzwU6MbKOldsWXyrYiyo8/htmlview?usp=sharing&amp;sle=true)）
+封装APK为Chrome扩展可以有以下三种方式（目前[支持的应用列表](https://docs.google.com/spreadsheets/d/1iIbxaftAu_ho5rv9fUlXSLTzwU6MbKOldsWXyrYiyo8/htmlview?usp=sharing&sle=true)）
 1\. 在手机中安装[ARChon Packager
 ](https://play.google.com/store/apps/details?id=me.bpear.archonpackager)
 

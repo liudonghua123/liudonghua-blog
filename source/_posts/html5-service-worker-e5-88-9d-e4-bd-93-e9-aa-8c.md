@@ -19,44 +19,44 @@ Chrome 42稳定版发布了！根据Chrome博客公布的消息主要对包括�
 看一个来自serviceworker.org的简单例子吧！
 /index.html
 
-[html]
-&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-  &lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;script&gt;
-        // scope defaults to &quot;/*&quot;
-        navigator.serviceWorker.register(&quot;/service-worker.js&quot;).then(function(serviceWorker) {
-            console.log(&quot;success!&quot;);
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script>
+        // scope defaults to "/*"
+        navigator.serviceWorker.register("/service-worker.js").then(function(serviceWorker) {
+            console.log("success!");
             // To use the serviceWorker immediately,
             // you might call window.location.reload()
         });
-    &lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-[/html]
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
+```
 
 /service-worker.js
 
-[javascript]
+```javascript
 this.oninstall = function(e) {
     // Create a cache of resources.
     var resources = new Cache();
     var visited = new Cache();
     // Fetch them.
     e.waitUntil(resources.add(
-        &quot;/index.html&quot;,
-        &quot;/fallback.html&quot;,
-        &quot;/css/base.css&quot;,
-        &quot;/js/app.js&quot;,
-        &quot;/img/logo.png&quot;
+        "/index.html",
+        "/fallback.html",
+        "/css/base.css",
+        "/js/app.js",
+        "/img/logo.png"
     ).then(function() {
         // Add caches to the global caches.
         return Promise.all([
-            caches.set(&quot;v1&quot;, resources),
-            caches.set(&quot;visited&quot;, visited)
+            caches.set("v1", resources),
+            caches.set("visited", visited)
         ]);
     }));
 };
@@ -66,7 +66,7 @@ this.onfetch = function(e) {
         // Check to see if request is found in cache
         caches.match(e.request).catch(function() {
             // It's not? Prime the cache and return the response.
-            return caches.get(&quot;visited&quot;).then(function(visited) {
+            return caches.get("visited").then(function(visited) {
                 return fetch(e.request).then(function(response) {
                     visited.put(e.request, response);
                     // Don't bother waiting, respond already.
@@ -75,14 +75,14 @@ this.onfetch = function(e) {
             });
         }).catch(function() {
             // Connection is down? Simply fallback to a pre-cached page.
-            return caches.match(&quot;/fallback.html&quot;);
+            return caches.match("/fallback.html");
         });
     );
 };
-[/javascript]
+```
 
 从[这里](https://jakearchibald.github.io/isserviceworkerready/)可以了解到还是Chrome 40+对Service Worker支持的比较完善！
-[![Is ServiceWorker ready](http://202.203.209.55:8080/wp-content/uploads/2015/04/Is-ServiceWorker-ready.jpg)](http://202.203.209.55:8080/wp-content/uploads/2015/04/Is-ServiceWorker-ready.jpg)
+[![Is ServiceWorker ready](/resources/2015/04/Is-ServiceWorker-ready.jpg)](/resources/2015/04/Is-ServiceWorker-ready.jpg)
 
 参考资料
 [初识ServiceWorker](http://www.foreverpx.cn/2014/09/28/%E5%88%9D%E8%AF%86ServiceWorker/)

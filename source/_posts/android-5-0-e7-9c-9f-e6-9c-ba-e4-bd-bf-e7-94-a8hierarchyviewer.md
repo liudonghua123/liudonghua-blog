@@ -17,10 +17,10 @@ hierarchyviewer对于Android开发是一个非常实用方便的工具，可惜�
 
 修改的方法/工具在网上有很多，Windows上推荐使用Android Image Kitchen，使用方式也很简单，把boot.img拖拽到unpackimg.bat就可解压，然后修改ramdisk中的default.prop，修改"ro.secure"/"ro.debuggable"(参考[WindowManagerService](https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/wm/WindowManagerService.java)中的isSystemSecure)值分别如下
 
-[shell]
+```shell
 ro.secure=0
 ro.debuggable=1
-[/shell]
+```
 
 再次双击运行repackimg.bat就可以生成新的修改过的boot.img（名字是image-new.img），然后adb reboot bootloader重启到bootloader模式，使用fastboot flash boot image-new.img刷入新的boot分区就可以生效，这时hierarchyviewer就可以使用
 

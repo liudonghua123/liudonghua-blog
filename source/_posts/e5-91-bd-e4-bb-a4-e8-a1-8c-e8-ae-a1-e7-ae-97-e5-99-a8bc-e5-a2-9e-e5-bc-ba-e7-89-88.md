@@ -13,34 +13,34 @@ bc是一个非常好用并且功能强大的命令行计算器，有悠久的历
 
 1\. 转换一个大于10进制的数时，英文字母必须大写
 
-[shell gutter="false"]
+```shell
 liudonghua@www:~$ echo 'obase=14;ibase=15;2e' | bc
 (standard_in) 1: syntax error
 liudonghua@www:~$ echo 'obase=14;ibase=15;2E' | bc
 32
-[/shell]
+```
 
 2\. 把一个数转换成大于16进制的数时，则不会使用字母代替
 
-[shell gutter="false"]
+```shell
 liudonghua@www:~$ echo 'obase=14;ibase=15;28' | bc
 2A
 liudonghua@www:~$ echo 'obase=16;ibase=15;28' | bc
 2C
 liudonghua@www:~$ echo 'obase=17;ibase=15;2E' | bc
  02 10
-[/shell]
+```
 
 3\. 例如把2进制数10转换成10进制，用以下第一种方式不行，可以使用第二种或第三种
 
-[shell gutter="false"]
+```shell
 liudonghua@www:~$ echo 'ibase=2;obase=10;10' | bc
 10
 liudonghua@www:~$ echo 'ibase=2;obase=A;10' | bc
 2
 liudonghua@www:~$ echo 'obase=10;ibase=2;10' | bc
 2
-[/shell]
+```
 
 所以目前暂时计划添加这三项特性（目前才开始，只能抽空实现）
 1\. 进制数表示的字母不区分大小写

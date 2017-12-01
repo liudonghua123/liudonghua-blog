@@ -23,7 +23,7 @@ linux/unix下的awk、sed是常用的功能强大的文本处理工具，但mac�
 
 1.  [<span class="pln">echo $PATH</span><span class="pun">|</span><span class="pln">sed </span><span class="pun">-</span><span class="pln">e </span><span class="str">'</span><span class="pln">s</span><span class="pun">/:/</span><span class="pln">\</span>](http://stackoverflow.com/questions/10748453/replace-comma-with-newline-in-sed)
 2.  [<span class="pun">/</span><span class="pln">g</span><span class="str">'</span>](http://stackoverflow.com/questions/10748453/replace-comma-with-newline-in-sed)
-&nbsp;
+ 
 
 如果想在mac下使用gnu的awk、sed可以安装gawk\gnu-sed
 

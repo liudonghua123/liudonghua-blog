@@ -34,14 +34,14 @@ date: 2014-10-16 14:32:37
 mvn install -P 4.4 过程中可能会遇到的错误
 
 [text]
- [ERROR] Failed to execute goal org.codehaus.mojo:properties-maven-plugin:1.0-alpha-2:read-project-properties (default) on project google-apis-19: Properties file not found: D:\android\android-studio\sdk\add-ons\addon-google_apis-google-19\source.properties -&gt; [Help 1]
+ [ERROR] Failed to execute goal org.codehaus.mojo:properties-maven-plugin:1.0-alpha-2:read-project-properties (default) on project google-apis-19: Properties file not found: D:\android\android-studio\sdk\add-ons\addon-google_apis-google-19\source.properties -> [Help 1]
 [/text]
 
 是因为不存在add-ons\addon-google_apis-google-19，即没有安装Google APIs 19
 
 安装[m2e-android](http://rgladwell.github.io/m2e-android/)插件时可能遇到的问题是提示如下错误，其实可以在安装时[Uncheck "Contact all update sites during install to find required software"](http://stackoverflow.com/questions/6470802/what-to-do-about-eclipses-no-repository-found-containing-error-messages) 就可以最终安装上去了
 
-[text collapse="true" toolbar="true" 1="install" 2="error" 3="3=&quot;message&quot;&lt;/code&gt;&quot;" 4="language=&quot;&lt;code&gt;title=&quot;m2e-android&quot;"]
+[text collapse="true" toolbar="true" 1="install" 2="error" 3="3="message"</code>"" 4="language="<code>title="m2e-android""]
 An error occurred while collecting items to be installed
 session context was:(profile=epp.package.jee, phase=org.eclipse.equinox.internal.p2.engine.phases.Collect, operand=, action=).
 No repository found containing: osgi.bundle,org.eclipse.ecf,3.4.0.v20140827-1444
@@ -112,6 +112,6 @@ No repository found containing: org.eclipse.update.feature,org.eclipse.emf.mappi
 No repository found containing: org.eclipse.update.feature,org.eclipse.emf.mapping.ui,2.8.0.v20140901-1055
 [/text]
 
-&nbsp;
+ 
 
-&nbsp;
+ 

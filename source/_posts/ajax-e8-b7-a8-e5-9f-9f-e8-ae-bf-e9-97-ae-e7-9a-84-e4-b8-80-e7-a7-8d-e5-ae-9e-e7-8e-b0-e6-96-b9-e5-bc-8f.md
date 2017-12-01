@@ -14,7 +14,7 @@ date: 2014-11-20 14:11:38
 可参考我写的一个小[Demo](https://github.com/liudonghua123/simpleweb)
 注意以下高亮显示的代码
 
-[java highlight="115,146,163,180,190,191,192,193,194,195,196,197,198"]
+```java
 package com.liudonghua.tutorials.simpleweb.controller;
 
 import java.io.BufferedReader;
@@ -45,9 +45,9 @@ import com.liudonghua.tutorials.simpleweb.model.User;
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private Pattern regexpAllPattern = Pattern.compile(&quot;/users&quot;);
-	private Pattern regexpSinglePattern = Pattern.compile(&quot;/users/([0-9]+)&quot;);
-	private Pattern regexpUserStatisticsPattern = Pattern.compile(&quot;/users/statistics&quot;);
+	private Pattern regexpAllPattern = Pattern.compile("/users");
+	private Pattern regexpSinglePattern = Pattern.compile("/users/([0-9]+)");
+	private Pattern regexpUserStatisticsPattern = Pattern.compile("/users/statistics");
 
 	private UserDao userDao = new UserDaoImpl();
 
@@ -99,11 +99,11 @@ public class UserController extends HttpServlet {
 						inputStream));
 				char[] charBuffer = new char[128];
 				int bytesRead = -1;
-				while ((bytesRead = bufferedReader.read(charBuffer)) &gt; 0) {
+				while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
 					stringBuilder.append(charBuffer, 0, bytesRead);
 				}
 			} else {
-				stringBuilder.append(&quot;&quot;);
+				stringBuilder.append("");
 			}
 		} catch (IOException ex) {
 			throw ex;
@@ -127,21 +127,21 @@ public class UserController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// set HTTP ContentType header of &quot;application/json&quot;
-		response.setContentType(&quot;application/json&quot;);
-		response.addHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);
+		// set HTTP ContentType header of "application/json"
+		response.setContentType("application/json");
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter out = response.getWriter();
 		boolean isUserStatisticsRequest = isUserStatisticsRequest(request);
 		int id = isSingleUserInfoRequest(request);
 		// request user statistics info
 		if (isUserStatisticsRequest) {
-			Map&lt;String,String&gt; statisticsInfo = userDao.getUserStatisticsInfo();
+			Map<String,String> statisticsInfo = userDao.getUserStatisticsInfo();
 			JSONObject jsonObject = JSONObject.fromObject(statisticsInfo);
 			out.print(jsonObject.toString());
 		}
 		// request all user info
 		else if (id == 0) {
-			List&lt;User&gt; users = userDao.getAllUsers();
+			List<User> users = userDao.getAllUsers();
 			JSONArray jsonObject = JSONArray.fromObject(users);
 			out.print(jsonObject.toString());
 		}
@@ -159,8 +159,8 @@ public class UserController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType(&quot;application/json&quot;);
-		response.addHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);
+		response.setContentType("application/json");
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter out = response.getWriter();
 		String json = getBody(request);
 		JSONObject jsonObject = JSONObject.fromObject(json);
@@ -176,8 +176,8 @@ public class UserController extends HttpServlet {
 	 */
 	protected void doPut(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType(&quot;application/json&quot;);
-		response.addHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);
+		response.setContentType("application/json");
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter out = response.getWriter();
 		String json = getBody(request);
 		JSONObject jsonObject = JSONObject.fromObject(json);
@@ -193,13 +193,13 @@ public class UserController extends HttpServlet {
 	 */
 	protected void doDelete(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType(&quot;application/json&quot;);
-		response.addHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);
+		response.setContentType("application/json");
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter out = response.getWriter();
 		int id = isSingleUserInfoRequest(request);
-		if (id &gt; 0) {
+		if (id > 0) {
 			userDao.deleteUser(id);
-			out.print(&quot;{\&quot;msg\&quot;:\&quot;successful\&quot;}&quot;);
+			out.print("{\"msg\":\"successful\"}");
 		}
 	}
 
@@ -207,15 +207,15 @@ public class UserController extends HttpServlet {
 	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// http://stackoverflow.com/questions/1099787/jquery-ajax-post-sending-options-as-request-method-in-firefox
-		response.addHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);
-		response.addHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, PUT, DELETE, OPTIONS&quot;);
-		response.addHeader(&quot;Access-Control-Max-Age&quot;, &quot;86400&quot;);
-		response.addHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;User-Agent,Origin,Cache-Control,Content-Type,x-zd,Date,Server,withCredentials&quot;);
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+		response.addHeader("Access-Control-Max-Age", "86400");
+		response.addHeader("Access-Control-Allow-Headers", "User-Agent,Origin,Cache-Control,Content-Type,x-zd,Date,Server,withCredentials");
 		super.doOptions(request, response);
 	}
 
 }
-[/java]
+```
 
 前端ajax请求中添加如下
 

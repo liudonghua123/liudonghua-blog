@@ -15,15 +15,15 @@ date: 2014-11-01 16:31:30
 我自己的放在Github上的bc命令行计算器工程在travis持续集成的编译中总是出现一些问题，经过分析这是由于不正确使用autotools导致的，这就促使我学习一下autotools工具包的原理及使用方式。<!--more-->
 一般我们在Linux下通过源码安装软件一般都是通过一下形式安装的
 
-[shell gutter="false"]
-./configure &amp;&amp; make &amp;&amp; make install
-[/shell]
+```shell
+./configure && make && make install
+```
 
 这就涉及到autotools(主要涉及三个命令autoconf、automake、libtool)
 
 可通过"sudo apt-get install automake"来安装autotools系列工具
 
-[shell gutter="false" highlight="18"]
+```shell
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ aclocal
 程序 'aclocal' 已包含在下列软件包中：
  * automake
@@ -31,7 +31,7 @@ liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ aclocal
  * automake1.11
  * automake1.4
  * automake1.9
-请尝试：sudo apt-get install &lt;选定的软件包&gt;
+请尝试：sudo apt-get install <选定的软件包>
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ sudo apt-get install automake
 正在读取软件包列表... 完成
 正在分析软件包的依赖关系树
@@ -43,12 +43,12 @@ liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ sudo apt-get install automake
 下列【新】软件包将被安装：
   autoconf automake autotools-dev
 ......
-[/shell]
+```
 
 以下是我[Building a GNU Autotools Project](http://inti.sourceforge.net/tutorial/libinti/autotoolsproject.html)这篇文章的使用autotools实践的一个简单的例子
 用到的文件如下
 
-[shell gutter="false"]
+```shell
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ cat configure.ac
 AC_INIT(src/main.cc)
 
@@ -58,7 +58,7 @@ VERSION=0.1.0
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
 
 INTI_REQUIRED_VERSION=1.0.7
-#PKG_CHECK_MODULES(INTI, inti-1.0 &gt;= $INTI_REQUIRED_VERSION)
+#PKG_CHECK_MODULES(INTI, inti-1.0 >= $INTI_REQUIRED_VERSION)
 AC_SUBST(INTI_CFLAGS)
 AC_SUBST(INTI_LIBS)
 
@@ -86,15 +86,15 @@ int max(int a, int b);
 
 #endif
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ cat src/helloworld.cc
-#include &quot;helloworld.h&quot;
+#include "helloworld.h"
 
 int max(int a, int b)
 {
-    return a &gt; b ? a : b;
+    return a > b ? a : b;
 }
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ cat src/main.cc
-#include &lt;iostream&gt;
-#include &quot;helloworld.h&quot;
+#include <iostream>
+#include "helloworld.h"
 
 using namespace std;
 
@@ -103,15 +103,15 @@ int main()
     int a = 10;
     int b = 5;
     int c = max(a,b);
-    cout &lt;&lt; &quot;max(a,b):&quot; &lt;&lt; c &lt;&lt; endl;
+    cout << "max(a,b):" << c << endl;
 }
 
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$
-[/shell]
+```
 
 高亮部分为每个阶段生产的新文件，详情注释部分
 
-[shell gutter="true" highlight="5,6,11,22,23,68,69,71,72,85,112,113,118"]
+```shell
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ # 初始的必须文件(configure.ac、Makefile.am，configure.ac可通过autoscan生成configure.scan修改而来)
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ # configure.in已过时，使用configure.ac代替
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ tree
@@ -179,11 +179,11 @@ drwxrwxr-x 5 liudonghua liudonghua  4096 11月  1 15:32 ../
 -rw-rw-r-- 1 liudonghua liudonghua 39670 11月  1 15:33 aclocal.m4
 drwxr-xr-x 2 liudonghua liudonghua  4096 11月  1 15:35 autom4te.cache/
 -rw-rw-r-- 1 liudonghua liudonghua   272 11月  1 13:28 configure.ac
-lrwxrwxrwx 1 liudonghua liudonghua    32 11月  1 15:35 depcomp -&gt; /usr/share/automake-1.14/depcomp*
-lrwxrwxrwx 1 liudonghua liudonghua    35 11月  1 15:35 install-sh -&gt; /usr/share/automake-1.14/install-sh*
+lrwxrwxrwx 1 liudonghua liudonghua    32 11月  1 15:35 depcomp -> /usr/share/automake-1.14/depcomp*
+lrwxrwxrwx 1 liudonghua liudonghua    35 11月  1 15:35 install-sh -> /usr/share/automake-1.14/install-sh*
 -rw-rw-r-- 1 liudonghua liudonghua    41 11月  1 14:31 Makefile.am
 -rw-rw-r-- 1 liudonghua liudonghua 23457 11月  1 15:35 Makefile.in
-lrwxrwxrwx 1 liudonghua liudonghua    32 11月  1 15:35 missing -&gt; /usr/share/automake-1.14/missing*
+lrwxrwxrwx 1 liudonghua liudonghua    32 11月  1 15:35 missing -> /usr/share/automake-1.14/missing*
 drwxrwxr-x 2 liudonghua liudonghua  4096 11月  1 15:35 src/
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ # autoconf生成最终的configure脚本
@@ -198,11 +198,11 @@ drwxrwxr-x 5 liudonghua liudonghua  4096 11月  1 15:32 ../
 drwxr-xr-x 2 liudonghua liudonghua  4096 11月  1 15:35 autom4te.cache/
 -rwxrwxr-x 1 liudonghua liudonghua 131248 11月  1 15:36 configure*
 -rw-rw-r-- 1 liudonghua liudonghua   272 11月  1 13:28 configure.ac
-lrwxrwxrwx 1 liudonghua liudonghua    32 11月  1 15:35 depcomp -&gt; /usr/share/automake-1.14/depcomp*
-lrwxrwxrwx 1 liudonghua liudonghua    35 11月  1 15:35 install-sh -&gt; /usr/share/automake-1.14/install-sh*
+lrwxrwxrwx 1 liudonghua liudonghua    32 11月  1 15:35 depcomp -> /usr/share/automake-1.14/depcomp*
+lrwxrwxrwx 1 liudonghua liudonghua    35 11月  1 15:35 install-sh -> /usr/share/automake-1.14/install-sh*
 -rw-rw-r-- 1 liudonghua liudonghua    41 11月  1 14:31 Makefile.am
 -rw-rw-r-- 1 liudonghua liudonghua 23457 11月  1 15:35 Makefile.in
-lrwxrwxrwx 1 liudonghua liudonghua    32 11月  1 15:35 missing -&gt; /usr/share/automake-1.14/missing*
+lrwxrwxrwx 1 liudonghua liudonghua    32 11月  1 15:35 missing -> /usr/share/automake-1.14/missing*
 drwxrwxr-x 2 liudonghua liudonghua  4096 11月  1 15:35 src/
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$ # 生成最终的Makefile以及一些日志文件config.log、config.status
@@ -227,15 +227,15 @@ drwxr-xr-x 2 liudonghua liudonghua   4096 11月  1 15:35 autom4te.cache/
 -rwxrwxr-x 1 liudonghua liudonghua  28973 11月  1 15:37 config.status*
 -rwxrwxr-x 1 liudonghua liudonghua 131248 11月  1 15:36 configure*
 -rw-rw-r-- 1 liudonghua liudonghua    272 11月  1 13:28 configure.ac
-lrwxrwxrwx 1 liudonghua liudonghua     32 11月  1 15:35 depcomp -&gt; /usr/share/automake-1.14/depcomp*
-lrwxrwxrwx 1 liudonghua liudonghua     35 11月  1 15:35 install-sh -&gt; /usr/share/automake-1.14/install-sh*
+lrwxrwxrwx 1 liudonghua liudonghua     32 11月  1 15:35 depcomp -> /usr/share/automake-1.14/depcomp*
+lrwxrwxrwx 1 liudonghua liudonghua     35 11月  1 15:35 install-sh -> /usr/share/automake-1.14/install-sh*
 -rw-rw-r-- 1 liudonghua liudonghua  23727 11月  1 15:37 Makefile
 -rw-rw-r-- 1 liudonghua liudonghua     41 11月  1 14:31 Makefile.am
 -rw-rw-r-- 1 liudonghua liudonghua  23457 11月  1 15:35 Makefile.in
-lrwxrwxrwx 1 liudonghua liudonghua     32 11月  1 15:35 missing -&gt; /usr/share/automake-1.14/missing*
+lrwxrwxrwx 1 liudonghua liudonghua     32 11月  1 15:35 missing -> /usr/share/automake-1.14/missing*
 drwxrwxr-x 3 liudonghua liudonghua   4096 11月  1 15:38 src/
 liudonghua@liudonghua-Ubuntu:~/tests/helloworld$
-[/shell]
+```
 
 总结
 1\. 使用autotools封装自己的C\C++程序，这样相比直接使用make可以更好的编译检测及屏蔽不同平台的一些环境差异，而且还支持打包、安装、卸载等功能
@@ -244,9 +244,9 @@ liudonghua@liudonghua-Ubuntu:~/tests/helloworld$
 
 configure.ac、Makefile.am规则可参考
 [Autoconf and Automake Tutorial](http://amjith.blogspot.com/2009/04/autoconf-and-automake-tutorial.html)
-[A tutorial for porting to autoconf &amp; automake](http://mij.oltrelinux.com/devel/autoconf-automake/)
+[A tutorial for porting to autoconf & automake](http://mij.oltrelinux.com/devel/autoconf-automake/)
 [Building a GNU Autotools Project](http://inti.sourceforge.net/tutorial/libinti/autotoolsproject.html)
 
 注：
-"A tutorial for porting to autoconf &amp; automake"中的例子必须把src/Makefile.am中的-std=c99去掉或改成-[std=gnu11](https://gcc.gnu.org/onlinedocs/gcc/Standards.html)
-"Building a GNU Autotools Project"的configure.am中的"PKG_CHECK_MODULES(INTI, inti-1.0 &gt;= $INTI_REQUIRED_VERSION)"在一些环境下不可用
+"A tutorial for porting to autoconf & automake"中的例子必须把src/Makefile.am中的-std=c99去掉或改成-[std=gnu11](https://gcc.gnu.org/onlinedocs/gcc/Standards.html)
+"Building a GNU Autotools Project"的configure.am中的"PKG_CHECK_MODULES(INTI, inti-1.0 >= $INTI_REQUIRED_VERSION)"在一些环境下不可用

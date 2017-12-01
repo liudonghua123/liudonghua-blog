@@ -27,7 +27,7 @@ com.android.support:leanback-v17:**21.0.+**
 
 这些库所支持的版本详见SDK一下目录内容%ANDROID_SDK_HOME%\extras\android\m2repository\com\android\support
 
-[shell gutter="false" highlight="7,9,17,19,26,28,30,34,42,50"]
+```shell
 ├───appcompat-v7
 │ ├───18.0.0
 │ ├───19.0.0
@@ -78,26 +78,26 @@ com.android.support:leanback-v17:**21.0.+**
  ├───19.1.0
  ├───20.0.0
  └───21.0.0-rc1
-[/shell]
+```
 
 今天在使用com.android.support:support-v4:**21.0.+**时遇到一个问题
 
-[shell gutter="false"]
+```shell
 Execution failed for task ':app:processDebugManifest'.
-&gt; Manifest merger failed : uses-sdk:minSdkVersion 14 cannot be smaller than version L declared in library com.android.support:appcompat-v7:21.0.0-rc1
-[/shell]
+> Manifest merger failed : uses-sdk:minSdkVersion 14 cannot be smaller than version L declared in library com.android.support:appcompat-v7:21.0.0-rc1
+```
 
 此错误的含义是指appcompat-v7:21.0.0-rc1这个库要求minSdkVersion为L，这似乎不合常理，因为support库本身就是为了在低版本下支持后来高版本才出现的一些特性，查看appcompat-v7:21.0.0-rc1这个库中定义的minSdkVersion（在%ANDROID_SDK_HOME%\extras\android\m2repository\com\android\support\appcompat-v7\21.0.0-rc1\appcompat-v7-21.0.0-rc1.aar 这个zip文件中AndroidManifest.xml有android:minSdkVersion="L"
 ），顺便看一下上一个版本appcompat-v7-20.0.0.aar的android:minSdkVersion="7"为预期正常的，再联想到这个版本号是rc版本，还不是正式版，所以可能这是一个小bug，应该在正式版中就会解决了。
 
 <del>但目前所有使用更新过的21.0版本（实际是21.0.0-rc1，见以上高亮显示的版本号）的support库都会存在这个问题，即一旦引用了如com.android.support:support-v4:**21.0.+**都会要求应用的android:minSdkVersion至少为"L"，这显然是有问题的，目前临时的解决方法有以下几种</del>
 
-<del>1\. 在AndroidManifest.xml中manifest标签中添加xmlns:tools="http://schemas.android.com/tools"，然后再添加或修改&lt;uses-sdk tools:node="replace" /&gt;</del>
+<del>1\. 在AndroidManifest.xml中manifest标签中添加xmlns:tools="http://schemas.android.com/tools"，然后再添加或修改<uses-sdk tools:node="replace" /></del>
 
 <del>2\. 暂时不用最新的21.0版本，使用之前的一个版本，如com.android.support:appcompat-v7:**20.0.+**，这种方式会有一个警告如下图所示</del>
-<del> [![support_appcompat_20_warning](http://202.203.209.55:8080/wp-content/uploads/2014/10/support_appcompat_20_warning.png)](http://202.203.209.55:8080/wp-content/uploads/2014/10/support_appcompat_20_warning.png)</del>
+<del> [![support_appcompat_20_warning](/resources/2014/10/support_appcompat_20_warning.png)](/resources/2014/10/support_appcompat_20_warning.png)</del>
 
-<del>3\. 删除如%ANDROID_SDK_HOME%\extras\android\m2repository\com\android\support\appcompat-v7\maven-metadata.xml中的&lt;version&gt;21.0.0-rc1&lt;/version&gt;</del>
+<del>3\. 删除如%ANDROID_SDK_HOME%\extras\android\m2repository\com\android\support\appcompat-v7\maven-metadata.xml中的<version>21.0.0-rc1</version></del>
 
 <span style="color: #cc99ff;">_**目前Android Support Repository已更新至reversion 7解决此问题，21.0.0-rc1已更新为21.0.0**_</span>
 
