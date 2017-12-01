@@ -1,0 +1,170 @@
+---
+title: '多媒体格式详解[待更新]'
+tags:
+  - audio
+  - image
+  - video
+id: 202
+categories:
+  - 学习
+date: 2014-10-17 16:27:29
+---
+
+这里记录一下常用的多媒体相关知识<!--more-->
+[su_accordion]
+[su_spoiler title="A Guide to Common Video Formats: Containers, Compression, and Codecs" style="fancy"  icon="arrow-circle-1"]
+[A Guide to Common Video Formats: Containers, Compression, and Codecs](https://www.fallenempiredigital.com/blog/2013/02/08/a-guide-to-common-video-formats-containers-compression-and-codecs/) | Fallen Empire
+
+MOV, H.264, AVCHD, MP4, AVI, the list goes on and on with so many letters of the alphabet. What video format should I use? What codec do I need? These questions come up all the time online and in conversation. This guide will demystify some of the most common formats and codecs used in the film industry while ignoring the formats that are uncommon, academic curiosities, or telecom based.
+
+### Video File Basics
+
+To understand the difference between a container, a compression scheme, and a codec, first we need to break down the parts of a video file. Think of a video file as a bookshelf filled with books. It may not be the most dead on exact analogy as I’m about to eschew some of the very deeply technical details, but my goal is to lay a foundation.
+
+#### Multimedia Container – The Bookshelf
+
+The multimedia container is like the bookshelf in that it can hold many tracks of audio and video just like a bookshelf can hold many books. Common container formats include MOV, MXF, and AVI.
+
+#### Compression Scheme – The Language of the Book
+
+Inside of each audio and video track, the information is represented in the language of the compression scheme. Common compression schemes include H.264, MPEG4 part 2, ProRes, DNxHD, and so on.
+
+#### Codec – The Author of the Book
+
+A codec (encoder/decoder) is a piece of hardware or software that interprets an audio or video signal and compresses it. Each compression scheme can be implemented in different ways which creates different codecs for the same compression scheme.
+
+Lets take, for example, an MPEG compression scheme MPEG4 part 2\. <abbr title="Moving Picture Experts Group">MPEG</abbr> is an industry group whose goal is to design video and audio compression. One of their design goals is a complicated encoder (the software that compresses video or audio) and a simple, standard, decoder (the software that allows you to view the audio or video). Vendors are free to design very interesting and efficient encoders as long as they produce video or audio that a compliant decoder can play. When you hear of the codecs Xvid and DivX, both are different implementations of the aforementioned MPEG4 part 2.
+
+#### Uses
+
+Video formats, for the purposes of this article can be placed in one or more of the following categories: acquisition, editing, and delivery.
+
+### Common Multimedia Containers
+
+#### Apple Quicktime MOV
+
+The Apple Quicktime MOV container is a proprietary container that allows the user to store multiple tracks of audio, video, and text as well as metadata like timecode. Installing support for this format includes a number of “native” Quicktime audio and video codecs to be installed on a system as well, although the codecs themselves may not be the quickest or highest quality. It is a common format for acquisition, editing, and delivery and is a ubiquitous container format in the motion picture industry.
+
+#### Microsoft AVI
+
+For all intent and purpose, Microsoft AVI is considered a legacy container in the film industry. In its standard form, the container does not support files larger than 4gb, does not properly support timecode, and doesn’t properly support pixel aspect ratios. There are non-standard extensions to the container format, like OpenDML which overcomes the 4gb file limit, but support is dubious in professional software.
+
+#### SMPTE MXF
+
+MXF is a container developed as an industry standard by <abbr title="Society of Motion Picture and Television Engineers">SMPTE</abbr>. While intentions are good, there are still issues with the implementation of the format that make it difficult to take advantage of some of the progressive features offered by the container. MXF, like MOV, is common as an acquisition container (Panasonic P2, some implementations of Sony XDCAM), as an editing container on Avid NLE systems, and as a delivery format for broadcast and digital cinema.
+
+#### Adobe Flash Video
+
+Adobe’s Flash Video actually takes advantage of two different containers: the older FLV and newer F4V. This container is common, but almost strictly used as a delivery container for Flash applications, video players, or other multimedia uses.
+
+#### MPEG MP4
+
+MPEG’s MP4 container is an industry standardized format based on Apple Quicktime MOV with some additional extending features. It is commonly an acquisition and delivery format. Although it can contain different codecs, the most commonly used codecs in the MP4 container like h.264 aren’t totally suitable in an editing environment.
+
+#### MPEG Transport Streams and Program Streams
+
+With extensions like .ps, .ts, .vob, and .m2ts these robust containers are designed for use in broadcast, on DVDs and on Blu-Rays where the container may be damaged due interference or damage. While predominately delivery containers, the AVCHD camera format takes advantage of the Blu-Ray-based .m2ts container as an acquisition container.
+
+### Compression Schemes
+
+#### Uncompressed
+
+Does this need an introduction? Uncompressed video is the basis of all compressed video. There may be different levels of fidelity due to bit depth (8, 10, 12 and so on) or chroma subsampling (4:4:4, 4:2:2, 4:2:0, and so on). Uncompressed video was common in the days of SD video but is now less common as uncompressed HD video requires large and fast hard drives to work with efficiently. Rarely a common delivery format.
+
+#### DV
+
+The grandaddy of digital video compression schemes. Common as a acquisition, editing, and delivery format. Originally designed for tape-based SD footage, a variation known as DVCPRO HD is used in some HD camcorders including a number of Panasonic P2 format camcorders.
+
+#### HDCAM
+
+Based on betacam compression, this tape-based compression scheme is designed by Sony. Common as a acquisition, editing, and delivery format.
+
+#### MPEG2 part 2
+
+Also known as h.262, MPEG2 part 2 is widespread in the film industry. Implemented with different bitrates, chroma subsampling, and resolutions based on cost and recording media, MPEG2 part 2 powers DVDs, the defunct HD DVD, Blu-ray, HDV, XDCAM, XF, and others. Common as an acquisition, editing, and deliver format. As an editing format it is usually carried over directly from acquisition as some delivery implementations are highly compressed and not suitable for editing.
+
+<!-- Quick Adsense WordPress Plugin: http://quicksense.net/ -->
+
+#### MPEG4 part 2
+
+A more modern compression scheme, it’s considered the little brother of the more ubiquitous MPEG4 part 10/h.264\. As a professional format it is implemented as part of HDCAM SR. HDCAM SR is Sony’s high-end tape format used for both acquisition up to 4K and as a common tape delivered to major broadcasters. More common implementations usually stay within the domain of consumer products and consumer codecs like Xvid and DivX.
+
+#### H.264
+
+H.264, also known as MPEG4 part 10 or AVC depending on what standardization group you ask, is another Swiss Army Knife codec like MPEG2 part 2\. Implemented with different bitrates, chroma subsampling, and resolutions based on cost and recording media, you’ll see this compression scheme everywhere from camera formats like Canon dSLR MOV files, AVC-Intra cameras, and AVCHD, all the way to hardware-based decoders in your mobile phone. Common as an acquisition, editing, and deliver format. Like MPEG2 part 2, as an editing format it is usually carried over directly from acquisition as some delivery implementations are highly compressed and not suitable for editing.
+
+#### JPEG
+
+An implementation of JPEG image compression. Videos are compressed frame by frame. A fairly ubiquitous, cross-platform compression scheme, it has been overshadowed by editing codecs like ProRes, DNxHD, and Cineform. A decent choice for intermediate storage, you may find JPEG compression heavy on CPU usage.
+
+#### JPEG2000
+
+Similar to, but the next step beyond, JPEG compression. JPEG2000 also supports lossless compression which lends itself as the choice of compression for digital cinema (as part of <abbr title="Digital Cinema Package">DCP</abbr> standard MXF files) and digital archiving.
+
+#### Apple ProRes
+
+A codec designed specifically for editing. Introduced by Apple for use in Final Cut Pro, it has become a popular compression scheme in many areas of the post production pipeline. It’s designed to balance size, playback quality, and CPU usage. Because of it’s fairly light compression when using ProRes HQ or ProRes4444 it is commonly used when rendering video through multiple generations as it can stand some generation loss. Common as an editing and delivery format, less common as an acquisition format.
+
+#### Apple Animation
+
+A long standing compression scheme, Apple Animation is common for compressing animation and motion graphics and gained popularity as a codec that supported transparency (an alpha channel). It uses run-length compression meaning that it compresses video more efficiently the longer pixels stay the same from frame to frame. It does not compress live action footage very efficiently. Common as an intermediate codec for storing footage before it’s used in an edit and delivered.
+
+#### PNG
+
+PNG is an alternative to Apple Animation. A lossless codec that also supports transparency, it efficiently compresses large areas of the same color within single frames. It may be more efficient than Apple Animation in some cases, but requires higher CPU usage.
+
+#### Avid DNxHD
+
+Similar to Apple ProRes in terms of size and performance, DNxHD, also known as SMPTE VC-3, is Avid’s choice for an editing compression scheme. With codecs for Windows and Mac, as well as being deemed a SMPTE standard, DNxHD may be a more future-proof alternative to Apple ProRes. Common as an editing and delivery format, it is gaining speed as an acquisition format.
+
+#### GoPro Cineform
+
+Yet another editing compression scheme with similar performance to Apple ProRes and Avid DNxHD. It’s cross-platform and includes features and support tools specific for 3D film workflows.
+
+### Codecs
+
+Again, codecs are simply the hardware or software that does the encoding to a particular compression scheme. Codecs have less of a bearing on workflow but different codecs from different vendors may offer better quality, increased speed, or better control over advanced features. For example, if you value speed over quality then you may want to use an h.264 codec that takes advantage of your nVidia GPU’s CUDA cores.
+
+Some compression schemes, like GoPro Cineform, may only have one codec: the one purchased from GoPro.
+
+### What about RED REDCODE and Arri ARRIRAW or other camera formats?
+
+These formats are entirely proprietary. Data is stored as raw image data and there may or may not be proprietary compression applied. Generally, formats like these are strictly for acquisition and will require a more specialized workflow.
+
+### What about CinemaDNG?
+
+CinemaDNG isn’t a compression scheme, it’s an image format that stores information in a similar fashion to other RAW camera formats. It can be stored and played back as an image sequence or stored as a video in an MXF container.
+
+### So what is HDCAM SR, P2, AVCHD, AVC-Intra, XDCAM, and so on if they aren’t compression schemes?
+
+They are marketing labels for different ecosystems usually comprising of a recording medium (card, tape, hard disk), a codec tuned for a specific compression scheme, bitrate and quality, and file folder structure. Some of these formats, like Panasonic P2, actually use a number of compression schemes.
+
+### What about TIFF, DPX, and OpenEXR?
+
+TIFF, DPX, and OpenEXR are interesting in that they are not containers or compression schemes but single image formats. Groups of consecutive image files that can be read back as video and are usually reserved for high-end workflows due to their hard disk requirements.
+
+### What about audio?
+
+Audio is almost of no consequence in terms of compression schemes. Audio can be recorded at different sample rates and bit depths that dictate overall quality but due to its low storage and CPU needs in comparison to video, it’s usually stored uncompressed in professional workflows.
+
+### Did I forget something?
+
+Jump in the comments and share your knowledge.
+
+**Sources and Additional Reading**
+[Sony HD Formats Guide (PDF)](http://pro.sony.com/bbsccms/assets/files/micro/xdcam/solutions/Sony_HD_Formats_Guide.pdf "Sony HD Formats Guide (PDF)")
+[Wikipedia – Comparison of video codecs](http://en.wikipedia.org/wiki/Comparison_of_video_codecs "Wikipedia - Comparison of video codecs")
+[Wikipedia – Comparison of container formats](http://en.wikipedia.org/wiki/Comparison_of_container_formats "Wikipedia - Comparison of container formats")
+[Wikipedia – HDCAM](http://en.wikipedia.org/wiki/HDCAM "Wikipedia - HDCAM")
+
+[/su_spoiler]
+
+[su_spoiler title="Video coding format" style="fancy" icon="arrow-circle-1"]
+[Video coding format - Wikipedia, the free encyclopedia](http://en.wikipedia.org/wiki/Video_coding_format)
+[/su_spoiler]
+
+[su_spoiler title="Image file formats" style="fancy" icon="arrow-circle-1"]
+[Image file formatsFrom Wikipedia, the free encyclopedia](http://en.wikipedia.org/wiki/Image_file_formats)
+[/su_spoiler]
+
+[/su_accordion]
