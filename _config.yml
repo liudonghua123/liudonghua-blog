@@ -78,7 +78,10 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repo: https://github.com/liudonghua123/liudonghua-blog.git
+  branch: gh-pages
+  message: update liudonghua's blog site
 
 flowchart:
   # raphael:   # optional, the source url of raphael.js
