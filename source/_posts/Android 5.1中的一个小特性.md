@@ -12,6 +12,8 @@ date: 2015-03-13 11:23:14
 
 在新的Android 5.1中虽然没有什么特别大的特性，但还是有一些小特性。可详见[What's new in Android 5.1? Some big and small changes in the updated Lollipop release](http://www.androidcentral.com/whats-new-android-51-some-big-and-small-changes-updated-lollipop-release)。
 
+<!--more-->
+
 这里给大家介绍一个很小很小（小到很多人可能都不会注意到，哈哈~~~）的改进。
 如下图所示
 [![android-5.1-deskclock-anims](/resources/2015/03/android-5.1-deskclock-anims.gif)](/resources/2015/03/android-5.1-deskclock-anims.gif)

@@ -14,7 +14,10 @@ categories:
 date: 2014-11-06 20:37:38
 ---
 
-现在Android 5.0的代码已经推送到AOSP上了，Nexus 5的ROM因为Android 5.0中出现bug也要等到11月12号才发布，为了迫切的定制自己的ROM，所以就开始下载源码了。<!--more-->
+现在Android 5.0的代码已经推送到AOSP上了，Nexus 5的ROM因为Android 5.0中出现bug也要等到11月12号才发布，为了迫切的定制自己的ROM，所以就开始下载源码了。
+
+<!--more-->
+
 直连肯定是不行的，通过goagent或freegate代理下载了好几天都由于国内网络问题经常会出现SSL连接错误（如"[gnutls_handshake() failed](http://stackoverflow.com/questions/13524242/error-gnutls-handshake-failed-git-repository)"，试了几十次"repo sync -j4"都不行），真是泪如泉涌啊。愤怒了，果断用AWS的EC2下载（可参考之前[文章](http://202.203.209.55:8080/?p=6)），速度10+MB/s，20多分钟就下好了，一气呵成，中间没有任何错误，但免费的EC2只有30G磁盘空间，下载完解压到后面就提示空间不够了，看一下.repo文件大概是16G，没办法，只能"分卷压缩-下载-暂停压缩-删除已下载-继续压缩-继续下载-..."，直到完成。
 
 [toc]

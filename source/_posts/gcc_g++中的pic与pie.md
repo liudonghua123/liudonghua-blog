@@ -20,6 +20,7 @@ error: only position independent executables (PIE) are supported.
 ```
 
 <!--more-->
+
 在[这里](http://blog.csdn.net/hxdanya/article/details/39371759)提到如下内容
 > PIE这个安全机制从4.1引入，但是Android L之前的系统版本并不会去检验可执行文件是否基于PIE编译出的。因此不会报错。但是Android L已经开启验证，如果调用的可执行文件不是基于PIE方式编译的，则无法运行。
 PIE是啥东西呀，我只知道以前编译共享库（动态库）时需要使用PIC的呀，所以特意查了一下文档，记录一下以备以后不时之需

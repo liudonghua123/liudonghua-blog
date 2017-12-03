@@ -12,6 +12,7 @@ date: 2014-10-26 15:44:39
 在Windows上有个很好的截图软件——winsnap，这个软件截的图默认边缘有立体的阴影效果，看上去很舒服；并且把这个程序Pin到任务栏上，右键应用程序可以看到一个非常快捷的JumpList菜单，可以全屏、应用程序、窗口、对象、区域截图，如下图所示。
 [![winsnap_jumplist](/resources/2014/10/winsnap_jumplist-300x291.png)](/resources/2014/10/winsnap_jumplist.png)
 <!--more-->
+
 但昨天装了新版本的官方最新版本的winsnap，右键发现没有了JumpList功能，我比较常用的区域截图没有jumplist快捷启动方式真的很不方便，所以去网上找了一个之前的带有此功能的版本，然后就想办法添加JumpList到新版本中，首先得找到运行这几种模式的命令行参数，通过使用一下命令可以找出运行参数
 
 ```shell

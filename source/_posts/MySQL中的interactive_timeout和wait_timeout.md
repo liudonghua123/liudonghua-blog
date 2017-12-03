@@ -13,6 +13,8 @@ date: 2014-11-30 11:15:09
 
 在MySQL中执行数据库操作主要有两种方式，interactive（交互式）和non-interactive（非交互式），当然执行命令会有超时时间（可能由于网络原因，数据没传递过来造成客户端超时；或由于服务端处理此操作非常耗时超过了服务端设置的超时时间造成的服务端超时），但是这里说的超时时间是指数据库连接在指定的时间内都没有被使用，过后使用时的超时。
 
+<!--more-->
+
 分为交互式超时——interactive_timeout，即在交互式命令行界面执行sql时数据库连接长时间不用导致超时；非交互式超时——wait_timeout，即如web应用的数据库连接（池）就属于这类，如果长时间都没有使用这条连接，就会报"the last packet successfully received from the server was xxx milliseconds ago"
 [![mysql_sysvar_interactive_timeout](/resources/2014/11/mysql_sysvar_interactive_timeout.png)](/resources/2014/11/mysql_sysvar_interactive_timeout.png "http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_interactive_timeout")
 [![mysql_sysvar_wait_timeout](/resources/2014/11/mysql_sysvar_wait_timeout.png)](/resources/2014/11/mysql_sysvar_wait_timeout.png "http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_wait_timeout")

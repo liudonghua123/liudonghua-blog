@@ -11,6 +11,8 @@ date: 2014-12-05 17:20:49
 
 在Android 5.0之前，root后经过[一些操作](http://blog.apkudo.com/2012/07/26/enabling-hierarchyviewer-on-rooted-android-devices/)就可以在真机上使用hierarchyviewer查看应用界面布局结构，非常实用的一项功能，但我用之前的那些步骤在新系统上操作时，到这里卡住了
 
+<!--more-->
+
 ```shell
 E:\hierarchyviewer_enable>java -jar D:\android\decompile\baksmali.jar -x -a 21 -c /system/framework/core-libart.jar:/system/framework/conscrypt.jar:/system/framework/okhttp.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/apache-xml.jar  ./system/framework/services.odex
 Exception in thread "main" org.jf.util.ExceptionWithContext: .\system\framework\services.odex is not an apk, dex file or odex file.

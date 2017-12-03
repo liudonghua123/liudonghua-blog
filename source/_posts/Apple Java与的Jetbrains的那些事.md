@@ -10,7 +10,9 @@ categories:
 date: 2014-10-10 09:31:29
 ---
 
-最近升级了yosemite系统导致原来安装的jetbrains系列开发工具（如Intellj、PhpStorm、RubyMine、PyCharm、WebStorm）无法使用，直接闪退，没有任何错误信息，但查看本机安装的JDK已经有JDK7和JDK8了，JAVA_HOME环境变量等都是配置正确的，Eclipse也是可以使用的，后来运行这个才发现问题<!--more-->
+最近升级了yosemite系统导致原来安装的jetbrains系列开发工具（如Intellj、PhpStorm、RubyMine、PyCharm、WebStorm）无法使用，直接闪退，没有任何错误信息，但查看本机安装的JDK已经有JDK7和JDK8了，JAVA_HOME环境变量等都是配置正确的，Eclipse也是可以使用的，后来运行这个才发现问题
+
+<!--more-->
 
 ```bash
 /Applications/PhpStorm.app/Contents/MacOS/phpstorm

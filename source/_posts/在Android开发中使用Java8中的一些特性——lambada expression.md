@@ -12,7 +12,9 @@ categories:
 date: 2015-05-05 12:59:55
 ---
 
-最近在学习Java8的一些新特性，感觉有很多非常实用的东西，如lambada expression，function interface、stream、property、binding等等，如果可以把这些特性（还有Java7的一些特性如try-resources-catch、Files/Path API）带入到Android开发中，那开发效率就会提高不少！<!--more-->
+最近在学习Java8的一些新特性，感觉有很多非常实用的东西，如lambada expression，function interface、stream、property、binding等等，如果可以把这些特性（还有Java7的一些特性如try-resources-catch、Files/Path API）带入到Android开发中，那开发效率就会提高不少！
+
+<!--more-->
 
 所以上网查了一下在Android开发中是否可以用Java8的一些特性，Android虽然主要使用Java语言开发，但其运行时的库和Java SE里的不一样，只是两者的API设计几乎一模一样，从Android 4.4开始Android才开始支持Java7，但Android自己的Java类库并没有完全实现Java SE 7。
 所以如果想让使用了Java8的一些特性的代码在Java6、7下运行，一般是使用Java8编译，然后修改字节码转换成Java6、7的格式或使用低版本实现高版本的特性。

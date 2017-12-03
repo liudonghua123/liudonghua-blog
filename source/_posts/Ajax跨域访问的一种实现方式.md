@@ -8,7 +8,10 @@ categories:
 date: 2014-11-20 14:11:38
 ---
 
-有时自己的服务器通过ajax请求其他服务器资源时通常会遇到跨域请求（[CROS](http://www.w3.org/TR/cors/)）问题，这有很多解决方式，如使用IE的[XDomainRequest](http://msdn.microsoft.com/en-us/library/ie/dd573303(v=vs.85).aspx)替代XMLHttpRequest（不跨平台），使用JSON+callback(即JSONP，只能支持json格式数据)，还有一些其他的。。。<!--more-->
+有时自己的服务器通过ajax请求其他服务器资源时通常会遇到跨域请求（[CROS](http://www.w3.org/TR/cors/)）问题，这有很多解决方式，如使用IE的[XDomainRequest](http://msdn.microsoft.com/en-us/library/ie/dd573303(v=vs.85).aspx)替代XMLHttpRequest（不跨平台），使用JSON+callback(即JSONP，只能支持json格式数据)，还有一些其他的。。。
+
+<!--more-->
+
 并且注意什么是跨域，如liudonghua.com/some_path访问www.liudonghua.com/other_path或liudonghua.com:port_num/yet_another_path都是属于跨域请求，打开浏览器上的JS Console，如果看到如"XMLHttpRequest cannot load http://liudonghua.com:8080/simpleweb/users. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://liudonghua.com' is therefore not allowed access."错误，那就说明你遇到跨域请求问题了！
 这里要实现的是一种在自己原始资源服务器上添加"Access-Control-Allow-Origin"等请求头，然后在客户端的ajax请求中设置"options.crossDomain = true;"(这一步是非常必要的，我当时忘了做这一步，结果客户端只发送preflight的options请求，接下来的GET/POST/PUT/DELETE请求没发送)。
 可参考我写的一个小[Demo](https://github.com/liudonghua123/simpleweb)

@@ -9,7 +9,9 @@ categories:
 date: 2014-11-29 15:00:05
 ---
 
-使用Linux、类Unix的等系统的方便之处不仅在于各种方便实用的小命令，而且搜索、安装（自动解决依赖关系）、更新、卸载软件的快捷——这就是软件包管理器。<!--more-->
+使用Linux、类Unix的等系统的方便之处不仅在于各种方便实用的小命令，而且搜索、安装（自动解决依赖关系）、更新、卸载软件的快捷——这就是软件包管理器。
+
+<!--more-->
 
 如Ubuntu/Debian使用apt-get来管理deb格式的安装包，Red Hat/Fedora/CentOS使用yum来管理[rpm](http://en.wikipedia.org/wiki/RPM_Package_Manager)格式的安装包，SUSE使用[Zypper](http://doc.opensuse.org/documentation/html/openSUSE_114/opensuse-reference/cha.sw_cl.html)来管理rpm格式的安装包；Mac则使用brew自动下载源码、编译、安装，并且也提供搜索、更新、卸载等功能。
 

@@ -11,6 +11,8 @@ date: 2014-12-24 10:28:54
 
 最近学习[neo4j](http://neo4j.com/)，确实是一个不错的图形数据库，而且[gist](http://gist.neo4j.org/)是一个非常不错的在线演示系统，由于是开源的，所以就想搭建一个本地的gist环境，然后使用本地的neo4j作为后台数据库。
 
+<!--more-->
+
 但按照gist的[README文档](https://github.com/neo4j-contrib/graphgist)，在Windows环境下操作，执行到"bower install"就遇到一个无比烦恼的问题，提示如下错误
 
 ```shell

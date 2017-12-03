@@ -9,7 +9,10 @@ categories:
 date: 2014-10-24 12:37:37
 ---
 
-随着Android 5.0 SDK正式版的发布，Android里的support library也有了较大更新，在[官方文档](https://developer.android.com/tools/support-library/features.html)中v4、v7等库的依赖标识如下（其中版本号为21.0的为更新或新添加）：<!--more-->
+随着Android 5.0 SDK正式版的发布，Android里的support library也有了较大更新，在[官方文档](https://developer.android.com/tools/support-library/features.html)中v4、v7等库的依赖标识如下（其中版本号为21.0的为更新或新添加）：
+
+<!--more-->
+
 [v4 Support Library](https://developer.android.com/tools/support-library/features.html#v4)
 com.android.support:support-v4:**21.0.+
 **[v7 Support Library](https://developer.android.com/tools/support-library/features.html#v7)**

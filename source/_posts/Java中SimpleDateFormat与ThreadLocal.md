@@ -11,6 +11,8 @@ date: 2014-11-09 14:14:08
 
 在Java中我们通常可能为了性能考虑，通过static设置一个全局的DateFormat，如下所示。
 
+<!--more-->
+
 ```java
 public class Utils {
 

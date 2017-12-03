@@ -11,7 +11,10 @@ categories:
 date: 2014-10-17 20:41:16
 ---
 
-在Eclipse中创建Web工程时如果选择的的Dynamic web module version >= 3.0 则通过向导创建Servlet、Filter、Listener就会默认使用注解方式，这里的Dynamic web module version其实就对应着Servlet Spec version<!--more-->
+在Eclipse中创建Web工程时如果选择的的Dynamic web module version >= 3.0 则通过向导创建Servlet、Filter、Listener就会默认使用注解方式，这里的Dynamic web module version其实就对应着Servlet Spec version
+
+<!--more-->
+
 [![create_dynamic_web_project](/resources/2014/10/create_dynamic_web_project.png)](/resources/2014/10/create_dynamic_web_project.png)
 
 Tomcat 7可以支持Servlet 3.0，Tomcat 8可以支持到Servlet 3.1

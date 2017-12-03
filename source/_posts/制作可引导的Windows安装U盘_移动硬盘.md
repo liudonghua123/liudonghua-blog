@@ -17,7 +17,10 @@ date: 2014-10-19 16:32:45
 通常可引导的Windows安装U盘/移动硬盘 要求
 1\. 所在U盘活硬盘的MBR（主引导记录）是Windows NT 5.x/6.x MBR；
 2\. 所在分区的PBR（分区引导记录）是对于Windows XP是NTLDR，对于Vista、Win7、Win8+是BOOTMGR；
-3\. 所在分区要是活动的主分区；<!--more-->
+3\. 所在分区要是活动的主分区；
+
+<!--more-->
+
 只要满足以上三点基本都可以引导安装系统，最好是在一个空的分区上格式化后操作（一般在Windows上格式化U盘后，MBR、PBR、活动的分区都已经自动设置了，不过还是可以用[BOOTICE](http://bbs.ipauly.com/viewforum.php?f=2)检测一下）
 后面就是将ISO挂载后拷贝所有文件至U盘根目录下即可（以防万一最好在用BOOTICE检测一下）
 [![bootice_mbr](/resources/2014/10/bootice_mbr.png)](/resources/2014/10/bootice_mbr.png)

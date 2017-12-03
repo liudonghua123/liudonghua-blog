@@ -11,6 +11,8 @@ date: 2014-12-05 14:31:10
 
 之前我写过一篇文章"[非Android源码中编译tcpdump](http://202.203.209.55:8080/?p=372)"，今天我终于使用AWS EC2作为代理服务器，完整的更新下载了Android源码（更新后，我的.repo居然有42G，checkout之后的纯代码有大概15G，Android源码也是越来越大了！一不小心免费的AWS的流量就超了7G多，$1.5就没了），所以就想在Android源码中编译tcpdump，体会原汁原味。以下记录我编译的一些过程。
 
+<!--more-->
+
 1\. 首先整个源码编译一遍，我使用make -j8，大概两小时完成
 2\. cd到external/tcpdump，修改Android.mk，让编译出的tcpdump可以在Android 5.0上运行
 ```shell

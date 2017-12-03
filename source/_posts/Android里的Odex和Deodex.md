@@ -10,7 +10,9 @@ categories:
 date: 2014-10-23 20:50:25
 ---
 
-最近看到一篇文章介绍[Odex/Deodex](http://www.addictivetips.com/mobile/what-is-odex-and-deodex-in-android-complete-guide/)，讲的很清楚明白，所以就翻译了一下加深自己的理解。<!--more-->
+最近看到一篇文章介绍[Odex/Deodex](http://www.addictivetips.com/mobile/what-is-odex-and-deodex-in-android-complete-guide/)，讲的很清楚明白，所以就翻译了一下加深自己的理解。
+
+<!--more-->
 
 [toc]
 

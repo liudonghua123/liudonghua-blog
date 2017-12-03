@@ -11,7 +11,9 @@ date: 2014-10-08 09:51:28
 ---
 
 1\. 直接在网页中下载Google Play Store中的APK，只需要知道APK的package name（即访问访问play的url的参数id的值，如https://play.google.com/store/apps/details?id=me.bpear.archonpackager的package name即me.bpear.archonpackager）
-http://apps.evozi.com/apk-downloader/<!--more-->
+http://apps.evozi.com/apk-downloader/
+
+<!--more-->
 
 2\. 在Chrome OS/Chrome中运行android程序
 详见

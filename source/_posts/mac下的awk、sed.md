@@ -9,7 +9,10 @@ categories:
 date: 2014-10-09 09:39:47
 ---
 
-linux/unix下的awk、sed是常用的功能强大的文本处理工具，但mac中的这些工具与普通的linux不同。<!--more-->
+linux/unix下的awk、sed是常用的功能强大的文本处理工具，但mac中的这些工具与普通的linux不同。
+
+<!--more-->
+
 例如想以":"分割$PATH中路径，如果使用普通linux可以使用如下命令
 
 1.  <span class="pln">echo $PATH </span><span class="pun">|</span><span class="pln"> sed </span><span class="pun">-</span><span class="pln">e </span><span class="str">'s/:/\n/g'</span>

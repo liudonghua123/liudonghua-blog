@@ -8,7 +8,9 @@ tags:
 ---
 
 桌面端最常用的有：[jQuery](https://jquery.com/ "jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.")、[jQuery UI
-](http://jqueryui.com/ "jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library. Whether you")移动端最常用的有：[jQuery Mobile](http://jquerymobile.com/ "jQuery Mobile is a HTML5-based user interface system designed to make responsive web sites and apps that are accessible on all smartphone, tablet and desktop devices.")<!--more-->
+](http://jqueryui.com/ "jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library. Whether you")移动端最常用的有：[jQuery Mobile](http://jquerymobile.com/ "jQuery Mobile is a HTML5-based user interface system designed to make responsive web sites and apps that are accessible on all smartphone, tablet and desktop devices.")
+
+<!--more-->
 
 其中jQuery UI和jQuery Mobile都依赖于jQuery
 jQuery分为1.x和2.x两个版本，区别是2.x不再支持IE 6\7\8

@@ -12,7 +12,10 @@ date: 2014-10-22 15:48:07
 <audio controls autoplay>
     <source src="/resources/2014/10/醉清风.mp3">
 </video>
-昨天发现Android5.0的彩蛋原来是类似于Flappy Bird的游戏，不过相比更难，如下图，突发奇想想看一下Android 5.0的彩蛋的源码。<!--more-->
+昨天发现Android5.0的彩蛋原来是类似于Flappy Bird的游戏，不过相比更难，如下图，突发奇想想看一下Android 5.0的彩蛋的源码。
+
+<!--more-->
+
 正确开启彩蛋的方法是：快速点击"设置-关于手机-Android版本"4/5下，然后会有一个小圆圈，点几下变成大棒棒糖之后，长按即会出现。
 [![android_5.0_eggs](/resources/2014/10/android_5.0_eggs.png)](/resources/2014/10/android_5.0_eggs.png)
 

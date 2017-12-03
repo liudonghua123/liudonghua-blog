@@ -11,6 +11,9 @@ date: 2014-11-14 21:55:52
 ---
 
 我最近看到一个使用动画演示排序算法的Android应用[sorts](https://play.google.com/store/apps/details?id=com.sorts&hl=en)，做的挺不错的，对学习算法还是有很大帮助，但美中不足的是缺少冒泡算法，所以想找一下是否有源码，然后再自己添加进去，最终还是没找到，所以就只有反编译看一下能不能添加。
+
+<!--more-->
+
 首先想到的是强大的APKTool，这个工具可以反编译res资源、AndroidManifest.xml，Java编译后生成的class转换成的dex可以通过内建的baksmali转换成smali文件，但smali文件只适用于小的修改，所以直接使用dex2jar把dex先转换成class文件，再有jd-gui转换成java源文件。虽然可以转换，但转换之后的Java代码有些和源代码相差太大，不好理解，如以下是部分难看懂的代码（要想看懂也是可以的，不过需要很多其他知识，如可以参考一下[difference-between-packed-switch-and-sparse-switch-dalvik-opcode](http://stackoverflow.com/questions/19855800/difference-between-packed-switch-and-sparse-switch-dalvik-opcode)，[dealing-with-labels-in-decompiled-code](http://stackoverflow.com/questions/6347930/dealing-with-labels-in-decompiled-code)等）
 
 ```java

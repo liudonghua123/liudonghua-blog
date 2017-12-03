@@ -11,7 +11,9 @@ categories:
 date: 2015-04-08 18:15:09
 ---
 
-最近在写个小东西，用到了spring boot、spring data neo4j以及neo4j等一些组件，为使用最新版本的neo4j（2.2.0），在升级过程中遇到一些问题，在这里写点文字总结一下，方便过段时间忘了，可以回过头来看看！<!--more-->
+最近在写个小东西，用到了spring boot、spring data neo4j以及neo4j等一些组件，为使用最新版本的neo4j（2.2.0），在升级过程中遇到一些问题，在这里写点文字总结一下，方便过段时间忘了，可以回过头来看看！
+
+<!--more-->
 
 得力于spring boot很好的依赖继承性，我们在项目里可以仅添加一些主要、核心的库就可以了，比如如果我用spring+hibernate+mysql+...做一个web应用，之前可能会在pom.xml里定义一大推spring、hibernate、mysql、servlet、logback、...等等的依赖，但使用spring boot来做，只需要以下几个依赖，是不是世界一下子变清净了~（注意发挥此神奇功效的）
  

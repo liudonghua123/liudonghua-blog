@@ -9,7 +9,9 @@ date: 2014-10-02 21:56:14
 ---
 
 之前在eclipse中使用[run-jetty-run](https://code.google.com/p/run-jetty-run/ "run-jetty-run")还是挺不错的，相比tomcat要轻量级一些，但最近更新eclipse了想要重装这个插件（[update site](http://run-jetty-run.googlecode.com/svn/trunk/updatesite)），但不管设不设代理总是无法安装，最后看了一下update site网页里的内容似乎是包括了插件的内容，于是就想着自己制作一个离线安装包吧！
-需要用到的文件及下载网址如下<!--more-->
+需要用到的文件及下载网址如下
+
+<!--more-->
 
 [site.xml
 ](https://run-jetty-run.googlecode.com/svn/trunk/updatesite/site.xml)[content.jar

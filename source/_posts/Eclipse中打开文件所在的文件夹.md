@@ -8,7 +8,10 @@ categories:
 date: 2014-11-20 13:45:39
 ---
 
-在使用eclipse时，会经常在外面文件浏览器中打开当前所在的文件，虽然可以通过安装插件的方式，但其实有一种更好的方式，即使用External Tool Configuration，添加一项即可。<!--more-->
+在使用eclipse时，会经常在外面文件浏览器中打开当前所在的文件，虽然可以通过安装插件的方式，但其实有一种更好的方式，即使用External Tool Configuration，添加一项即可。
+
+<!--more-->
+
 [toc]
 
 ### Windows

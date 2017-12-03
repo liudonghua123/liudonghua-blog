@@ -8,7 +8,9 @@ categories:
 date: 2015-04-29 20:28:38
 ---
 
-今天一个朋友需要处理MovieLens的数据集，他想获取评分、用户性别、年龄、职业、电影分类这样的信息，但原始数据集中是分成三个文本文件（使用::分割的CSV文件）存储的，分别是movies.dat（MovieID::Title::Genres）、users.dat（UserID::Gender::Age::Occupation::Zip-code）、ratings.dat（UserID::MovieID::Rating::Timestamp）。<!--more-->
+今天一个朋友需要处理MovieLens的数据集，他想获取评分、用户性别、年龄、职业、电影分类这样的信息，但原始数据集中是分成三个文本文件（使用::分割的CSV文件）存储的，分别是movies.dat（MovieID::Title::Genres）、users.dat（UserID::Gender::Age::Occupation::Zip-code）、ratings.dat（UserID::MovieID::Rating::Timestamp）。
+
+<!--more-->
 
 这个需求其实很简单的，本来想用熟悉的Java快速完成，但想到好久没用Python了，很多东西都忘了，所以就用Python帮他实现了一下，就当作回顾Python的知识
 以下就是这部分代码，没有做什么优化（对这块了解的不是很深入），如果有什么建议大家可以告诉我！

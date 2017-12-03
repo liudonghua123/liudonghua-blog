@@ -11,7 +11,9 @@ categories:
 date: 2014-10-20 21:13:44
 ---
 
-今天在另外一台电脑上想连接我的EC2服务器，由于没有pem文件（私钥private key），重新生成了一个，只是最终还是不能连接上，详见[Amazon EC2 Key Pairs](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html)，原因是由于没有服务器上的公钥的对应私钥，所以也就没办法连接上EC2服务器上传另一个公钥，但是还是有其他办法，见上述文档的[Connecting to Your Linux Instance if You Lose Your Private Key](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#replacing-lost-key-pair)。<!--more-->
+今天在另外一台电脑上想连接我的EC2服务器，由于没有pem文件（私钥private key），重新生成了一个，只是最终还是不能连接上，详见[Amazon EC2 Key Pairs](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html)，原因是由于没有服务器上的公钥的对应私钥，所以也就没办法连接上EC2服务器上传另一个公钥，但是还是有其他办法，见上述文档的[Connecting to Your Linux Instance if You Lose Your Private Key](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#replacing-lost-key-pair)。
+
+<!--more-->
 
 所以就看了一下RSA的公私钥加解密这块的内容，以下是在ubuntu下测试的，详见注释即可理解
 

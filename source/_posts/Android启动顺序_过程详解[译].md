@@ -14,6 +14,8 @@ date: 2014-11-05 14:27:20
 
 在[这里](http://www.kpbird.com/2012/11/in-depth-android-boot-sequence-process.html)看到一篇关于Android启动过程的文章，讲的还是不错，为了加深理解和分享这方面的知识，所以就翻译了一下。
 
+<!--more-->
+
 当我按了Android手机的电源键发生了什么？
 Android启动顺序是什么样的？
 什么是Linux内核？

@@ -9,7 +9,9 @@ categories:
 date: 2014-10-16 14:32:37
 ---
 
-这方面资料其实已经很多了，主要是安装maven支持的插件有时候会遇到一些问题，这里记录一些环境搭建中用到的文档资料以及曾经遇到过的问题以及解决方法<!--more-->
+这方面资料其实已经很多了，主要是安装maven支持的插件有时候会遇到一些问题，这里记录一些环境搭建中用到的文档资料以及曾经遇到过的问题以及解决方法
+
+<!--more-->
 
 1\. 简单的Android Eclipse环境搭建
 可以下载Android官方提供的[Eclipse ADT](http://developer.android.com/sdk/index.html)，这个就是几乎帮你配置好的，包括Eclipse+ADT plugin+SDK

@@ -13,7 +13,9 @@ categories:
 date: 2015-04-22 21:55:16
 ---
 
-之前做过一些Chrome Extension方面的开发，最近无意间看到Chrome已经不再支持NPAPI插件了（[Saying Goodbye to Our Old Friend NPAPI](http://blog.chromium.org/2013/09/saying-goodbye-to-our-old-friend-npapi.html)），查看其文档，现在做Chrome的扩展开发主要就是Chrome App、Chrome Extension、Native Client三种了。<!--more-->
+之前做过一些Chrome Extension方面的开发，最近无意间看到Chrome已经不再支持NPAPI插件了（[Saying Goodbye to Our Old Friend NPAPI](http://blog.chromium.org/2013/09/saying-goodbye-to-our-old-friend-npapi.html)），查看其文档，现在做Chrome的扩展开发主要就是Chrome App、Chrome Extension、Native Client三种了。
+
+<!--more-->
 
 Chrome Extension相对还算熟悉，新出现的Chrome App其实可以这样简单理解，是一种扩展的Chrome Extension，启动时不再在Chrome的工具栏（[Browser Actions](https://developer.chrome.com/extensions/browserAction)）、地址栏（[Page Actions](https://developer.chrome.com/extensions/pageAction)）、页面右键菜单项中添加功能，而是直接打开一个新的窗口，然后在里面运行由HTML、CSS、JavaScript的应用程序。还有一点是Manifest的版本现在是2，App是从[Manifest版本](https://developer.chrome.com/extensions/manifestVersion)2才开始支持的，所以App里的<span class="pl-s"><span class="pl-pds">"</span>manifest_version<span class="pl-pds">"必须是</span></span> <span class="pl-c1">2，Extension的<span class="pl-pds">"</span>manifest_version<span class="pl-pds">"可以是1或2，不过官方建议使用2。</span></span>
 

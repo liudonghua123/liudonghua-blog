@@ -8,7 +8,9 @@ categories:
 date: 2014-10-08 16:41:53
 ---
 
-在wordpress中写的文章中粘贴代码最好还是语法高亮实现一下，实现方式是先安装[插件](https://wordpress.org/plugins/tags/code-highlighter)，然后写文章的时候特别处理一下代码部分即可，例如我安装的插件是“SyntaxHighlighter Evolved”，可以使用以下两种方式处理代码部分，注意如果使用第一种[shortcode](http://en.support.wordpress.com/code/posting-source-code/)方式需要在文本模式而非可视化模式下编辑。<!--more-->
+在wordpress中写的文章中粘贴代码最好还是语法高亮实现一下，实现方式是先安装[插件](https://wordpress.org/plugins/tags/code-highlighter)，然后写文章的时候特别处理一下代码部分即可，例如我安装的插件是“SyntaxHighlighter Evolved”，可以使用以下两种方式处理代码部分，注意如果使用第一种[shortcode](http://en.support.wordpress.com/code/posting-source-code/)方式需要在文本模式而非可视化模式下编辑。
+
+<!--more-->
 
 为了更好的显示代码最好粘贴代码之前格式化一下，如代码缩进等等，一些常用的online code format工具有[codebeautify](http://codebeautify.org/)、[jsbeautifier](http://jsbeautifier.org/) 等。
 

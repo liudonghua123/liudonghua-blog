@@ -9,7 +9,10 @@ categories:
 date: 2015-04-22 09:39:58
 ---
 
-Chrome 42稳定版发布了！根据Chrome博客公布的消息主要对包括新应用、扩展和包括Push API在内的Web Platform APIs进行重要改善，最大的亮点无疑是本地推送通知，只要得到用户许可，即使Chrome浏览器已经关闭，消息也可以推送给用户。<!--more-->
+Chrome 42稳定版发布了！根据Chrome博客公布的消息主要对包括新应用、扩展和包括Push API在内的Web Platform APIs进行重要改善，最大的亮点无疑是本地推送通知，只要得到用户许可，即使Chrome浏览器已经关闭，消息也可以推送给用户。
+
+<!--more-->
+
 这个功能是不是很酷！！！
 这里面就用到了Service worker这个HTML5的新东西，看上去是不是和Web worker有些类似，来看看别人是怎么说的
 > Service Worker是基于Web Worker的事件驱动的，他们执行的机制都是新开一个线程去处理一些额外的，以前不能直接处理的任务。对于Web Worker，我们可以使用它来进行复杂的计算，因为它并不阻塞浏览器主线程的渲染。而Service Worker，我们可以用它来进行本地缓存，相当于一个本地的proxy

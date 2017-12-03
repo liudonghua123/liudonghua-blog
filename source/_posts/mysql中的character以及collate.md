@@ -8,7 +8,10 @@ categories:
 date: 2014-11-20 21:12:20
 ---
 
-mysql中的character指字符编码，collate用于排序，每种character对应多个collate，通过"show collation;"查看支持的character和collate<!--more-->
+mysql中的character指字符编码，collate用于排序，每种character对应多个collate，通过"show collation;"查看支持的character和collate
+
+<!--more-->
+
 [toc]
 
 ```shell

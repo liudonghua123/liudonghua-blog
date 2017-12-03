@@ -12,7 +12,9 @@ categories:
 date: 2015-05-10 10:39:12
 ---
 
-对于习惯Linux Bash Shell的用户，在Windows下操作，使用cmd会感觉那个东西好笨拙、难用。好在现在有一些工具可以在Windows下实现类似Bash Shell类似的体验。<!--more-->
+对于习惯Linux Bash Shell的用户，在Windows下操作，使用cmd会感觉那个东西好笨拙、难用。好在现在有一些工具可以在Windows下实现类似Bash Shell类似的体验。
+
+<!--more-->
 
 众所周知的一些工具如[MinGW](http://www.mingw.org/)（[MSYS2](http://sourceforge.net/projects/msys2/)）、[Cygwin](http://www.cygwin.com/)可以满足以上功能，但我不是很推荐，因为安装略微繁琐（需要联网、国内访问慢），而且那个shell窗口的界面和cmd一样，非常难看，缺少个性化配置。
 

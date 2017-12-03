@@ -10,7 +10,10 @@ categories:
 date: 2014-10-27 16:44:35
 ---
 
-之前一篇[文章](http://202.203.209.55:8080/?p=367)提到的[以前下载的tcpdump](http://www.strazzere.com/android/tcpdump)在Android 5.0上运行出错，并且给出了解决办法，即编译时添加"-fPIE -pie"参数，简单的做法就是在Android源码中的external/tcpdump/Android.mk中添加这个参数，但如果没有下载Android源码，使用NDK可以编译出来吗？<!--more-->
+之前一篇[文章](http://202.203.209.55:8080/?p=367)提到的[以前下载的tcpdump](http://www.strazzere.com/android/tcpdump)在Android 5.0上运行出错，并且给出了解决办法，即编译时添加"-fPIE -pie"参数，简单的做法就是在Android源码中的external/tcpdump/Android.mk中添加这个参数，但如果没有下载Android源码，使用NDK可以编译出来吗？
+
+<!--more-->
+
 我测试了一下，因为Android源码里的tcpdump的Android.mk涉及到很多其他库的头文件、静态库、动态库等，如下所示的是tcpdump中Android.mk中的部分内容
 
 ```shell

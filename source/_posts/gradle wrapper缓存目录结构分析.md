@@ -10,7 +10,10 @@ categories:
 date: 2014-10-28 21:17:29
 ---
 
-使用gradle wrapper虽然带来了方便，但首次使用会去下载相应版本的gradle，我最近经常遇到下载速度慢，下载完文件又损坏，非常痛苦，所以就稍微研究一下gradle wrapper缓存的结构。<!--more-->
+使用gradle wrapper虽然带来了方便，但首次使用会去下载相应版本的gradle，我最近经常遇到下载速度慢，下载完文件又损坏，非常痛苦，所以就稍微研究一下gradle wrapper缓存的结构。
+
+<!--more-->
+
 其缓存位置是在~/.gradle/wrapper/dists 下，以下是我的目录层次结构
 
 ```shell

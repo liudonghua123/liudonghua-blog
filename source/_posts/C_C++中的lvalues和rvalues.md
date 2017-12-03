@@ -10,7 +10,10 @@ categories:
 date: 2014-11-03 21:50:51
 ---
 
-在C/C++中，lvalues(左值)和rvalues(右值)可能是一个一直被忽视的概念<!--more-->
+在C/C++中，lvalues(左值)和rvalues(右值)可能是一个一直被忽视的概念
+
+<!--more-->
+
 先以一个简单的例子为例进行说明，如一个简单的复数类重载"+"操作符，可能会使用的重载原型是
 
 1.  <span class="typ">Complex<span style="color: #666600;">&</span></span><span class="pln"> </span><span class="typ">Complex</span><span class="pun">::</span><span class="kwd">operator</span><span class="pln"> </span><span class="pun">+(</span><span class="kwd">const</span><span class="pln"> </span><span class="typ">Complex&</span><span class="pln"> c</span><span class="pun">);</span>

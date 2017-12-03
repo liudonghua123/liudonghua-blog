@@ -11,6 +11,8 @@ date: 2014-12-04 15:17:28
 
 Lua是一门短小精炼，可扩展性很强的脚本语言，相比Python、Ruby等其他脚本语言，虽然本身核心库提供的功能有限，但运行效率据说是最好的，在一些游戏引擎中被使用，以被人了解，很多人提到lua就会联想到游戏引擎，其实lua还有很多非常广泛的用途，主要用在一些嵌入式、对性能要求很高、资源很有限（KB级内存）的领域。
 
+<!--more-->
+
 Linux、Mac等类Unix下编译安装lua都非常方便，wget源码之后，configure、make、make install即可搞定，但Windows下就不是很方便，虽然可以在Cgywin、MinGW等环境中使用Windows版的gcc、g++编译，不但麻烦，而且使用luarocks安装第三方需要编译的库时由于使用VS的cl、link等编译、链接会导致无法正确链接之前用其他编译器、链接器生成的dll或lib。所以最好的方式还是使用Windows原生的编译器编译，其过程步骤如下（我使用的是VS2013，其他版本大致类似）
 
 1\. 新建一个Win32控制台项目，如lua52（默认也会创建一个lua的解决方案，解决方案下可包括多个项目），Application Settings中选择DLL及选中Empty project

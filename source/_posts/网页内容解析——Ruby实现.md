@@ -11,6 +11,8 @@ date: 2014-12-02 15:52:42
 
 本文继上篇文章"网页内容解析——Python实现"提供Ruby版本的实现方式
 
+<!--more-->
+
 Ruby中也有类似于jQuery解析HTML的方式的库——[nokogiri](http://www.nokogiri.org/)，还是上一篇的那个例子，实现代码也非常少，如下
 
 ```ruby
