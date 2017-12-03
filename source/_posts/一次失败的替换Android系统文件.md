@@ -23,7 +23,7 @@ Exception in thread "main" org.jf.util.ExceptionWithContext: .\system\framework\
 
 大概是因为Android 5.0变化了很多，使用的ART代替了Dalvik，并且/system/framework下的services.jar/services.odex位置也变了，原来services.odex在/system/framework下，现在位于/system/framework/arm，或者可能是smali/baksmali不支持新的odex格式，还有待继续研究。
 
-后来我就想在Android源码里编译，然后替换手机里的services.jar/odex，使用和我手机匹配的combo（lunch之后选择"13\. aosp_hammerhead-userdebug"），初始编译成功，接着我修改WindowManagerService.java之后再增量编译。
+后来我就想在Android源码里编译，然后替换手机里的services.jar/odex，使用和我手机匹配的combo（lunch之后选择"13.aosp_hammerhead-userdebug"），初始编译成功，接着我修改WindowManagerService.java之后再增量编译。
 
 ```shell
 liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$ git diff

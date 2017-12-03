@@ -36,5 +36,5 @@ Location: nautilus
 Arguments: ${resource_loc}
 
 参考资料
-1\. [in-eclipse-reveal-current-file-in-filesystem](http://stackoverflow.com/questions/1161240/in-eclipse-reveal-current-file-in-filesystem)
-2\. [Open the windows explorer with a file selected in eclipse...](http://www.eclipsezone.com/eclipse/forums/t77655.html)
+1.[in-eclipse-reveal-current-file-in-filesystem](http://stackoverflow.com/questions/1161240/in-eclipse-reveal-current-file-in-filesystem)
+2.[Open the windows explorer with a file selected in eclipse...](http://www.eclipsezone.com/eclipse/forums/t77655.html)

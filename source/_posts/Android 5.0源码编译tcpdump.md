@@ -13,8 +13,8 @@ date: 2014-12-05 14:31:10
 
 <!--more-->
 
-1\. 首先整个源码编译一遍，我使用make -j8，大概两小时完成
-2\. cd到external/tcpdump，修改Android.mk，让编译出的tcpdump可以在Android 5.0上运行
+1.首先整个源码编译一遍，我使用make -j8，大概两小时完成
+2.cd到external/tcpdump，修改Android.mk，让编译出的tcpdump可以在Android 5.0上运行
 ```shell
 liudonghua@liudonghua-Ubuntu:~/android$ cd external/tcpdump/
 liudonghua@liudonghua-Ubuntu:~/android/external/tcpdump$ git diff
@@ -34,7 +34,7 @@ index 348d8b0..8dc7a4e 100644
         $(LOCAL_PATH)/missing\
 liudonghua@liudonghua-Ubuntu:~/android/external/tcpdump$
 ```
-3\. 执行mm，后面的编译过程如下
+3.执行mm，后面的编译过程如下
 
 ```shell
 liudonghua@liudonghua-Ubuntu:~/android/external/tcpdump$ mm

@@ -95,21 +95,21 @@ Execution failed for task ':app:processDebugManifest'.
 
 <del>但目前所有使用更新过的21.0版本（实际是21.0.0-rc1，见以上高亮显示的版本号）的support库都会存在这个问题，即一旦引用了如com.android.support:support-v4:**21.0.+**都会要求应用的android:minSdkVersion至少为"L"，这显然是有问题的，目前临时的解决方法有以下几种</del>
 
-<del>1\. 在AndroidManifest.xml中manifest标签中添加xmlns:tools="http://schemas.android.com/tools"，然后再添加或修改<uses-sdk tools:node="replace" /></del>
+<del>1.在AndroidManifest.xml中manifest标签中添加xmlns:tools="http://schemas.android.com/tools"，然后再添加或修改<uses-sdk tools:node="replace" /></del>
 
-<del>2\. 暂时不用最新的21.0版本，使用之前的一个版本，如com.android.support:appcompat-v7:**20.0.+**，这种方式会有一个警告如下图所示</del>
+<del>2.暂时不用最新的21.0版本，使用之前的一个版本，如com.android.support:appcompat-v7:**20.0.+**，这种方式会有一个警告如下图所示</del>
 <del> [![support_appcompat_20_warning](/resources/2014/10/support_appcompat_20_warning.png)](/resources/2014/10/support_appcompat_20_warning.png)</del>
 
-<del>3\. 删除如%ANDROID_SDK_HOME%\extras\android\m2repository\com\android\support\appcompat-v7\maven-metadata.xml中的<version>21.0.0-rc1</version></del>
+<del>3.删除如%ANDROID_SDK_HOME%\extras\android\m2repository\com\android\support\appcompat-v7\maven-metadata.xml中的<version>21.0.0-rc1</version></del>
 
 <span style="color: #cc99ff;">_**目前Android Support Repository已更新至reversion 7解决此问题，21.0.0-rc1已更新为21.0.0**_</span>
 
 这里备注一下版本号中"+"的含义
-1\. com.android.support:support-v4:+ 不带版本号直接使用+表示最新版本，目前匹配21.0.0
-2\. com.android.support:support-v4:19.+ 表示19.x.y...这类版本，目前匹配19.1.0
-3\. **com.android.support:support-v4:19+ 与19.+含义一样，目前匹配19.1.0 (不常用，一般只用VersionNumber.+形式)**
-4\. com.android.support:support-v4:19.0.+ 表示19.0.y...这类版本，目前匹配19.0.1
-5\. com.android.support:support-v4:19.0 表示直接匹配19.0.1
+1.com.android.support:support-v4:+ 不带版本号直接使用+表示最新版本，目前匹配21.0.0
+2.com.android.support:support-v4:19.+ 表示19.x.y...这类版本，目前匹配19.1.0
+3.**com.android.support:support-v4:19+ 与19.+含义一样，目前匹配19.1.0 (不常用，一般只用VersionNumber.+形式)**
+4.com.android.support:support-v4:19.0.+ 表示19.0.y...这类版本，目前匹配19.0.1
+5.com.android.support:support-v4:19.0 表示直接匹配19.0.1
 不建议使用1方式，使用2、3方式的好处就是如果后面有bug修复版本可以自动升级使用最新的修复版本
 
 还可以参考一下文档

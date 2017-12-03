@@ -224,7 +224,7 @@ ssh-keygen -y [-f input_keyfile]
 Specifies the number of bits in the key to create. For RSA keys, the minimum
 size is 768 bits and the default is 2048 bits. Generally, 2048 bits is con-
 sidered sufficient. DSA keys must be exactly 1024 bits as specified by FIPS
-186-2\. For ECDSA keys, the -b flag determines the key length by selecting
+186-2.For ECDSA keys, the -b flag determines the key length by selecting
 from one of three elliptic curve sizes: 256, 384 or 521 bits. Attempting to
 use bit lengths other than these three values for ECDSA keys will fail.
 -C comment
@@ -498,7 +498,7 @@ The signature can be analysed with:
 </tr>
 </tbody>
 </table>
-This is the parsed version of an ASN1 DigestInfo structure. It can be seen that the digest used was md5\. The actual part of the certificate that was signed can be extracted with:
+This is the parsed version of an ASN1 DigestInfo structure. It can be seen that the digest used was md5.The actual part of the certificate that was signed can be extracted with:
 <table class="src" cellspacing="5" cellpadding="5">
 <tbody>
 <tr>
@@ -546,11 +546,11 @@ which it can be seen agrees with the recovered value above.
 see [converting-keys-between-openssl-and-openssh](http://security.stackexchange.com/questions/32768/converting-keys-between-openssl-and-openssh)
 **Generate an RSA pair**
 All the following methods give an RSA key pair in the same format
-1\. With openssl (man genrsa)
+1.With openssl (man genrsa)
 openssl genrsa -out dummy-genrsa.pem 2048
 In OpenSSL v1.0.1 genrsa is superseded by genpkey so this is the new way to do it (man genpkey):
 openssl genpkey -algorithm RSA -out dummy-genpkey.pem -pkeyopt rsa_keygen_bits:2048
-2\. With ssh-keygen
+2.With ssh-keygen
 ssh-keygen -t rsa -b 2048 -f dummy-ssh-keygen.pem -N '' -C "Test Key"
 
 **Converting DER to PEM**
@@ -561,9 +561,9 @@ Conversion:
 openssl rsa -inform DER -outform PEM -in genpkey-dummy.cer -out dummy-der2pem.pem
 
 **Extract the public key from the PEM formatted RSA pair**
-1\. in PEM format:
+1.in PEM format:
 openssl rsa -in dummy-xxx.pem -pubout
-2\. in OpenSSH v2 format see:
+2.in OpenSSH v2 format see:
 ssh-keygen -y -f dummy-xxx.pem
 
 [/su_spoiler]

@@ -13,19 +13,19 @@ date: 2014-10-16 14:32:37
 
 <!--more-->
 
-1\. 简单的Android Eclipse环境搭建
+1.简单的Android Eclipse环境搭建
 可以下载Android官方提供的[Eclipse ADT](http://developer.android.com/sdk/index.html)，这个就是几乎帮你配置好的，包括Eclipse+ADT plugin+SDK
 只是这里面自带的Eclipse版本不是最新的，SDK里面只包括最新版的Android支持，如我下载的支持4.4，如果想使用最新版的Eclipse搭建，则需要自己再下载[SDK](http://developer.android.com/sdk/installing/index.html?pkg=tools)、[ADT plugin](http://developer.android.com/sdk/installing/installing-adt.html)安装配置
 
-2\. 支持Maven的环境搭建
+2.支持Maven的环境搭建
 <del>在上面的基础上还需要安装[m2e-android](http://rgladwell.github.io/m2e-android/)插件，这个插件我不管在Market place还是通过[update site](http://rgladwell.github.com/m2e-android/updates/)安装始终有问题，不能安装上去，从网上又找不到离线安装包，由于这个开源的，所以就自己编译安装吧！</del>
-<del> 1\. 下载[m2e-android](https://github.com/rgladwell/m2e-android)代码</del>
+<del> 1.下载[m2e-android](https://github.com/rgladwell/m2e-android)代码</del>
 <del> git clone https://github.com/rgladwell/m2e-android.git</del>
-<del> 2\. 下载、安装[maven-android-sdk-deployer](https://github.com/mosabua/maven-android-sdk-deployer)，这个对于Android maven开发是非常重要的</del>
+<del> 2.下载、安装[maven-android-sdk-deployer](https://github.com/mosabua/maven-android-sdk-deployer)，这个对于Android maven开发是非常重要的</del>
 <del> git clone https://github.com/mosabua/maven-android-sdk-deployer.git</del>
 <del> cd maven-android-sdk-deployer</del>
 <del> mvn install -P 4.4     #注，这里需要配合你已安装的SDK Android支持版本</del>
-<del> 3\. 编译安装[m2e-android](https://github.com/rgladwell/m2e-android)</del>
+<del> 3.编译安装[m2e-android](https://github.com/rgladwell/m2e-android)</del>
 <del> mvn --file org.sonatype.aether/pom.xml install</del>
 <del> mvn install</del>
 <del>之后就编译出本地安装包</del>

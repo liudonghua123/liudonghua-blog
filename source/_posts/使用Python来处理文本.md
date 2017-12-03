@@ -228,4 +228,4 @@ main
 ```
 
 参考资料
-1\. [To Ruby From Python](https://www.ruby-lang.org/en/documentation/ruby-from-other-languages/to-ruby-from-python/)
+1.[To Ruby From Python](https://www.ruby-lang.org/en/documentation/ruby-from-other-languages/to-ruby-from-python/)

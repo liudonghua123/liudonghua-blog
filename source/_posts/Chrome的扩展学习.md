@@ -41,7 +41,7 @@ Chrome Extension相对还算熟悉，新出现的Chrome App其实可以这样简
 其实在[Saying Goodbye to Our Old Friend NPAPI](http://blog.chromium.org/2013/09/saying-goodbye-to-our-old-friend-npapi.html)中他提到代替NPAPI的方式（见下面引用），只是[Native Messaging API](http://developer.chrome.com/extensions/messaging.html#native-messaging)是属于Extension的，[Legacy Browser Support](https://support.google.com/chrome/a/answer/3019558?hl=en)用的很少，简单阐述就是让Chrome不能处理的旧的网页调用其他浏览器（如IE）去处理。
 > There are several alternatives to NPAPI. In cases where standard web technologies are not yet sufficient, developers and administrators can use [NaCl](https://developers.google.com/native-client/), [Apps](http://developer.chrome.com/apps/), [Native Messaging API](http://developer.chrome.com/extensions/messaging.html#native-messaging), and [Legacy Browser Support](https://support.google.com/chrome/a/answer/3019558?hl=en) to transition from NPAPI. Moving forward, our goal is to evolve the standards-based web platform to cover the use cases once served by NPAPI.
 参考资料
-1\. [Chrome App](https://developer.chrome.com/apps/about_apps)
-2\. [Chrome Extension](https://developer.chrome.com/extensions)
-3\. [Native Client](https://developer.chrome.com/native-client)
-4\. [Choosing an App Type](https://developer.chrome.com/webstore/choosing)
+1.[Chrome App](https://developer.chrome.com/apps/about_apps)
+2.[Chrome Extension](https://developer.chrome.com/extensions)
+3.[Native Client](https://developer.chrome.com/native-client)
+4.[Choosing an App Type](https://developer.chrome.com/webstore/choosing)

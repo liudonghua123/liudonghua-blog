@@ -17,7 +17,7 @@ Maven下载依赖项源码和javadoc**
 <!--more-->
 
 Maven中定义的依赖库默认是不下载源码和javadoc的，如果需要下载源码或者javadoc，可以使用以下几种方式
-1\. 可以在命令行上参数方式
+1.可以在命令行上参数方式
 同时下载源码和javadoc
 
 ```shell
@@ -36,7 +36,7 @@ mvn dependency:sources
 mvn dependency:resolve -Dclassifier=javadoc
 ```
 
-2\. 在项目pom.xml文件中添加如下配置
+2.在项目pom.xml文件中添加如下配置
 
 ```shell
 <build>
@@ -53,7 +53,7 @@ mvn dependency:resolve -Dclassifier=javadoc
 </build>
 ```
 
-3\. 在更高层次全局设置(~/.m2/settings.xml).
+3.在更高层次全局设置(~/.m2/settings.xml).
 
 ```shell
 <profiles>
@@ -71,7 +71,7 @@ mvn dependency:resolve -Dclassifier=javadoc
 </activeProfiles>
 ```
 
-4\. 在Eclipse的maven插件设置中设置，如下图所示
+4.在Eclipse的maven插件设置中设置，如下图所示
 [![eclipse_maven_settings](/resources/2014/10/eclipse_maven_settings-293x300.png)](/resources/2014/10/eclipse_maven_settings.png)
 
 ###### **Maven创建web工程**

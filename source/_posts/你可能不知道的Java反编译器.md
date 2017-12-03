@@ -29,10 +29,10 @@ for (;;) {
 
 为了生成更容易理解、更接近源代码的代码，寻找新的Java反编译器就非常必要了，这里简单总结一下一些常用的Java反编译器（有点少，很多都老旧过时的，并且这个领域额也不热门）
 <del>1. JAva Decompiler (JAD – No longer maintained)</del>
-<del> 2\. DJ Java Decompiler (UI for JAD)</del>
-3\. JD Java Decompiler（JD-GUI的核心）
-4\. [JD-GUI](http://jd.benow.ca/)
-5\. [Procyon](https://bitbucket.org/mstrobel/procyon)
+<del> 2.DJ Java Decompiler (UI for JAD)</del>
+3.JD Java Decompiler（JD-GUI的核心）
+4.[JD-GUI](http://jd.benow.ca/)
+5.[Procyon](https://bitbucket.org/mstrobel/procyon)
 JAD的只支持近版本，而且非常老旧，只能抛弃
 JD用的比较多，效果也还好
 Procyon是我认为目前最好的，并且这个项目还在不断开发维护，值得推荐。
@@ -40,8 +40,8 @@ Procyon是我认为目前最好的，并且这个项目还在不断开发维护�
 并且我用基于Procyon的[SecureTeam](http://www.secureteam.net/Java-Decompiler.aspx)反编译出sorts的Java源代码，做了一些修改，直接又可以当作源码编译。
 
 Procyon反编译后的Java我做的修改有
-1\. 删除xxx$xxx内部类（这是冗余的，xxx已经包括这些内部类了）
-2\. 修改一些类名，如View$OnClickListener改为View.OnClickListener
+1.删除xxx$xxx内部类（这是冗余的，xxx已经包括这些内部类了）
+2.修改一些类名，如View$OnClickListener改为View.OnClickListener
 
 我想这是一些这个反编译器存在的不足，不过相比JD反编译出的质量高了很多，后面有时间可以给Procyon提交一些代码让它能够处理以上两个不足的地方，然后再顺便解决源码里R资源直接是数字的问题，让他替换成R.id.xxx或R.layout.xxx等更有意义的代码
 

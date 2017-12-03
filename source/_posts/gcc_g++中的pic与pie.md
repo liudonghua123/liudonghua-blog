@@ -54,7 +54,7 @@ PIC——Position-Independent-Code
     the GOT size for the linked executable exceeds a machine-specific maximum size, you get
     an error message from the linker indicating that -fpic does not work; in that case,
     recompile with -fPIC instead.  (These maximums are 8k on the SPARC and 32k on the m68k
-    and RS/6000\.  The 386 has no such limit.)
+    and RS/6000. The 386 has no such limit.)
 
     Position-independent code requires special support, and therefore works only on certain
     machines.  For the 386, GCC supports PIC for System V but not for the Sun 386i.  Code

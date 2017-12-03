@@ -29,5 +29,5 @@ end
 嗯，非常不错，已经帮我处理了编解码问题！！！
 
 以下提供一些nokogiri的学习链接
-1\. [Parsing HTML with Nokogiri](http://ruby.bastardsbook.com/chapters/html-parsing/)
-2\. [RubyQuery - a simple way to parse HTML using jQuery style css query](http://ignition.hk/blog/2011/02/12/rubyquery/)
+1.[Parsing HTML with Nokogiri](http://ruby.bastardsbook.com/chapters/html-parsing/)
+2.[RubyQuery - a simple way to parse HTML using jQuery style css query](http://ignition.hk/blog/2011/02/12/rubyquery/)

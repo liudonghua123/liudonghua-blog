@@ -241,9 +241,9 @@ liudonghua@liudonghua-Ubuntu:~/tests/helloworld$
 ```
 
 总结
-1\. 使用autotools封装自己的C\C++程序，这样相比直接使用make可以更好的编译检测及屏蔽不同平台的一些环境差异，而且还支持打包、安装、卸载等功能
-2\. 使用autotools关键在于写configure.ac（一个）和Makefile.am（可能有多个）
-3\. autoconf与automake没有执行先后顺序。autoconf需要输入configure.ac，输出configure；automake需要输入configure.ac和Makefile.am，输出Makfile.in
+1.使用autotools封装自己的C\C++程序，这样相比直接使用make可以更好的编译检测及屏蔽不同平台的一些环境差异，而且还支持打包、安装、卸载等功能
+2.使用autotools关键在于写configure.ac（一个）和Makefile.am（可能有多个）
+3.autoconf与automake没有执行先后顺序。autoconf需要输入configure.ac，输出configure；automake需要输入configure.ac和Makefile.am，输出Makfile.in
 
 configure.ac、Makefile.am规则可参考
 [Autoconf and Automake Tutorial](http://amjith.blogspot.com/2009/04/autoconf-and-automake-tutorial.html)
