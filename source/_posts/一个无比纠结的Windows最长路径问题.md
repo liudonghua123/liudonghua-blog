@@ -38,5 +38,5 @@ and retry the checkout with 'git checkout -f HEAD'
 4. [Howto deal with “CMD does not support UNC paths as current directories“](http://mypkb.wordpress.com/2007/02/01/how-to-deal-with-cmd-does-not-support-unc-paths-as-current-directories/)
 5. [HANDLING “PATH TOO LONG” ON WINDOWS](http://blog.bfitz.us/?p=65)
 6. [gist](http://gist.neo4j.org/)
-7. [graphgist](http://graphgist.neo4j.com/#!/gists)
-8. [jQuery-mutate](https://github.com/valtido/jQuery-mutate)
+7. [graphgist](http://graphgist.neo4j.com/#!/gists)
+8. [jQuery-mutate](https://github.com/valtido/jQuery-mutate)

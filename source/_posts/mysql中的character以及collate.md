@@ -216,11 +216,11 @@ mysql> select column_name, character_set_name, collation_name from information_s
 
 ### 参考资料
 
-1.[how-do-i-see-what-character-set-a-database-table-column-is-in-mysql](http://stackoverflow.com/questions/1049728/how-do-i-see-what-character-set-a-database-table-column-is-in-mysql)
-2.[charset-server](http://dev.mysql.com/doc/refman/5.7/en/charset-server.html)
-3.[charset-database](http://dev.mysql.com/doc/refman/5.7/en/charset-database.html)
-4.[charset-table](http://dev.mysql.com/doc/refman/5.7/en/charset-table.html)
-5.[charset-column](http://dev.mysql.com/doc/refman/5.7/en/charset-column.html)
-6. [alter-database](http://dev.mysql.com/doc/refman/5.7/en/alter-database.html)
-6.[alter-table](http://dev.mysql.com/doc/refman/5.7/en/alter-table.html)
-7. [show-variables](http://dev.mysql.com/doc/refman/5.7/en/show-variables.html)
+1. [how-do-i-see-what-character-set-a-database-table-column-is-in-mysql](http://stackoverflow.com/questions/1049728/how-do-i-see-what-character-set-a-database-table-column-is-in-mysql)
+2. [charset-server](http://dev.mysql.com/doc/refman/5.7/en/charset-server.html)
+3. [charset-database](http://dev.mysql.com/doc/refman/5.7/en/charset-database.html)
+4. [charset-table](http://dev.mysql.com/doc/refman/5.7/en/charset-table.html)
+5. [charset-column](http://dev.mysql.com/doc/refman/5.7/en/charset-column.html)
+6. [alter-database](http://dev.mysql.com/doc/refman/5.7/en/alter-database.html)
+6. [alter-table](http://dev.mysql.com/doc/refman/5.7/en/alter-table.html)
+7. [show-variables](http://dev.mysql.com/doc/refman/5.7/en/show-variables.html)

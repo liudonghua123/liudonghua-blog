@@ -42,6 +42,6 @@ cinst spf13.vim
 [![linux-package-management-cheatsheet](/resources/2014/11/linux-package-management-cheatsheet.png)](/resources/2014/11/linux-package-management-cheatsheet.png)
 
 参考资料：
-1. [chocolatey](https://chocolatey.org/)
-2. [linux-package-management-cheatsheet](http://danilodellaquila.com/blog/linux-package-management-cheatsheet)
-3. [how-to-use-vundle-to-manage-vim-plugins-on-a-linux-vps](https://www.digitalocean.com/community/tutorials/how-to-use-vundle-to-manage-vim-plugins-on-a-linux-vps)
+1. [chocolatey](https://chocolatey.org/)
+2. [linux-package-management-cheatsheet](http://danilodellaquila.com/blog/linux-package-management-cheatsheet)
+3. [how-to-use-vundle-to-manage-vim-plugins-on-a-linux-vps](https://www.digitalocean.com/community/tutorials/how-to-use-vundle-to-manage-vim-plugins-on-a-linux-vps)

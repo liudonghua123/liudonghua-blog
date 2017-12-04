@@ -22,17 +22,17 @@ date: 2014-11-09 19:25:37
 以下是javac编译时的选项
 [![javac_help](/resources/2014/11/javac_help.png)](/resources/2014/11/javac_help.png)
 下面以一个简单的小例子编译后查看class文件结构信息
-1.默认选项，即不加任何选项
+1. 默认选项，即不加任何选项
 [![javac_sample_default](/resources/2014/11/javac_sample_default.png)](/resources/2014/11/javac_sample_default.png)
-2.使用-g选项，即包括所有调试信息
+2. 使用-g选项，即包括所有调试信息
 [![javac_sample_g](/resources/2014/11/javac_sample_g.png)](/resources/2014/11/javac_sample_g.png)
-3.使用-g:none选项，即不包括任何调试信息
+3. 使用-g:none选项，即不包括任何调试信息
 [![javac_sample_gnone](/resources/2014/11/javac_sample_gnone.png)](/resources/2014/11/javac_sample_gnone.png)
-4.使用-g:lines选项，即只包括lines调试信息
+4. 使用-g:lines选项，即只包括lines调试信息
 [![javac_sample_glines](/resources/2014/11/javac_sample_glines.png)](/resources/2014/11/javac_sample_glines.png)
-5.使用-g:vars选项，即只包括vars调试信息
+5. 使用-g:vars选项，即只包括vars调试信息
 [![javac_sample_gvars](/resources/2014/11/javac_sample_gvars.png)](/resources/2014/11/javac_sample_gvars.png)
-6.使用-g:source选项，即只包括source调试信息
+6. 使用-g:source选项，即只包括source调试信息
 [![javac_sample_gsource](/resources/2014/11/javac_sample_gsource.png)](/resources/2014/11/javac_sample_gsource.png)
 
 这些调试信息在Eclipse中可在这里设置

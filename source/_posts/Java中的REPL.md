@@ -14,7 +14,7 @@ Ruby、Python、PHP、JavaScript等语言都有一种interactive shell的概念�
 
 对于Java领域，目前还没有类似于Ruby、Python等成熟的REPL，只有一些接近的
 
-1. [beanshell](http://www.beanshell.org/)
+1. [beanshell](http://www.beanshell.org/)
 支持命令行（java -cp ".;bsh-2.0b4.jar" bsh.Interpreter）以及图形化界面（java -jar bsh-2.0b4.jar 或java -cp ".;bsh-2.0b4.jar" bsh.Console），其源码在[googlecode](https://code.google.com/a/apache-extras.org/p/beanshell/)上或[github](https://github.com/pejobo/beanshell2)上
 [BeanShell, Simple Java Scripting](http://www.beanshell.org/manual/bshmanual.html)
 [BeanShellSlides
@@ -37,7 +37,7 @@ bsh % print(arr);
 bsh %
 ```
 
-2. [javarepl](http://www.javarepl.com/console.html)
+2. [javarepl](http://www.javarepl.com/console.html)
 仅支持命令行，可以从其[Github](https://github.com/albertlatacz/java-repl)上下载
 如下是一个简单的运行实例
 

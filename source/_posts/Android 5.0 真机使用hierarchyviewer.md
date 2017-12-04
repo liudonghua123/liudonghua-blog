@@ -29,7 +29,7 @@ ro.debuggable=1
 Linux（以Ubuntu为例），可以使用abootimg这个工具，参考[Android boot.img manipulation](http://k.japko.eu/boot-img-manipulation.html)这篇文章，不过在make时会提示"blkid/blkid.h"头文件找不到，安装libblkid-dev即可
 
 参考资料
-1. [Android Image Kitchen -- Unpack/Repack Kernel+Recovery Images, and Edit the ramdisk.](http://forum.xda-developers.com/showthread.php?t=2073775)
-2. [Android boot.img manipulation](http://k.japko.eu/boot-img-manipulation.html)
-3. [Make your android device True Root!](http://forum.xda-developers.com/showthread.php?t=1794203)
-4. [libblkid](http://manpages.ubuntu.com/manpages/trusty/man3/libblkid.3.html)
+1. [Android Image Kitchen -- Unpack/Repack Kernel+Recovery Images, and Edit the ramdisk.](http://forum.xda-developers.com/showthread.php?t=2073775)
+2. [Android boot.img manipulation](http://k.japko.eu/boot-img-manipulation.html)
+3. [Make your android device True Root!](http://forum.xda-developers.com/showthread.php?t=1794203)
+4. [libblkid](http://manpages.ubuntu.com/manpages/trusty/man3/libblkid.3.html)

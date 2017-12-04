@@ -18,8 +18,8 @@ date: 2014-12-02 15:16:28
 这篇文章就简单介绍一些实用Python来实现（原本想要JS，但涉及跨域访问的问题，后面想尝试用浏览器扩张方式实现）从一个（一组）特定的网页中提取特定的信息
 
 解析网页的过程一般分为
-1.根据网址获取HTML
-2.解析HTML获取特定信息
+1. 根据网址获取HTML
+2. 解析HTML获取特定信息
 
 第一步根据网址获取HTML这就不多说了，查阅Python文档，使用urllib2来实现，大致代码如下
 
@@ -131,9 +131,9 @@ sudo pip install pyquery
 ```
 
 参考资料
-1. [HOWTO Fetch Internet Resources Using urllib2](https://docs.python.org/2/howto/urllib2.html)
-2.[pyquery](https://pypi.python.org/pypi/pyquery/1.2.1)
-3.[parsing-html-python](http://stackoverflow.com/questions/11709079/parsing-html-python)
-4.[installing-pyquery-via-pip](http://stackoverflow.com/questions/21489720/installing-pyquery-via-pip)
-5.[python-version-2-7-required-which-was-not-found-in-the-registry](https://avaminzhang.wordpress.com/2011/11/24/python-version-2-7-required-which-was-not-found-in-the-registry/)
-6.[what-is-the-difference-between-sax-and-dom](http://stackoverflow.com/questions/6828703/what-is-the-difference-between-sax-and-dom)
+1. [HOWTO Fetch Internet Resources Using urllib2](https://docs.python.org/2/howto/urllib2.html)
+2. [pyquery](https://pypi.python.org/pypi/pyquery/1.2.1)
+3. [parsing-html-python](http://stackoverflow.com/questions/11709079/parsing-html-python)
+4. [installing-pyquery-via-pip](http://stackoverflow.com/questions/21489720/installing-pyquery-via-pip)
+5. [python-version-2-7-required-which-was-not-found-in-the-registry](https://avaminzhang.wordpress.com/2011/11/24/python-version-2-7-required-which-was-not-found-in-the-registry/)
+6. [what-is-the-difference-between-sax-and-dom](http://stackoverflow.com/questions/6828703/what-is-the-difference-between-sax-and-dom)

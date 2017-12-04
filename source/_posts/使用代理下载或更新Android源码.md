@@ -33,6 +33,6 @@ export https_proxy=http://your_aws_public_up:your_port
 其实squid功能很强大，acl设置可以限定ip/ip段/时间/...，还可以加上用户验证（用户名+密码）等。详见以下一些网址内容！
 
 参考资料
-1.[Squid - Proxy Server](https://help.ubuntu.com/14.04/serverguide/squid.html)
-2.[Creating an HTTP Proxy Using Squid on Ubuntu 12.04](https://www.linode.com/docs/networking/squid/squid-http-proxy-ubuntu-12-04)
-3.[Squid](http://wiki.ubuntu.com.cn/Squid)
+1. [Squid - Proxy Server](https://help.ubuntu.com/14.04/serverguide/squid.html)
+2. [Creating an HTTP Proxy Using Squid on Ubuntu 12.04](https://www.linode.com/docs/networking/squid/squid-http-proxy-ubuntu-12-04)
+3. [Squid](http://wiki.ubuntu.com.cn/Squid)

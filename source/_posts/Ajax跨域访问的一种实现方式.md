@@ -230,9 +230,9 @@ $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
 [/js]
 
 参考资料
-1. [no-access-control-allow-origin-header-is-present-on-the-requested-resource](http://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource)
-2. [no-access-control-allow-origin-header-is-present-on-the-requested-resource-or](http://stackoverflow.com/questions/20433655/no-access-control-allow-origin-header-is-present-on-the-requested-resource-or)
-3. [jquery-ajax-post-sending-options-as-request-method-in-firefox](http://stackoverflow.com/questions/1099787/jquery-ajax-post-sending-options-as-request-method-in-firefox)
-4. [jquery-cors-content-type-options](http://stackoverflow.com/questions/12320467/jquery-cors-content-type-options)
-5.[jquery-i-get-options-request-instead-of-get](http://stackoverflow.com/questions/1743845/jquery-i-get-options-request-instead-of-get)
-6. [disable-preflight-option-request-when-sending-a-cross-domain-request-with-custom](http://stackoverflow.com/questions/16303591/disable-preflight-option-request-when-sending-a-cross-domain-request-with-custom)
+1. [no-access-control-allow-origin-header-is-present-on-the-requested-resource](http://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource)
+2. [no-access-control-allow-origin-header-is-present-on-the-requested-resource-or](http://stackoverflow.com/questions/20433655/no-access-control-allow-origin-header-is-present-on-the-requested-resource-or)
+3. [jquery-ajax-post-sending-options-as-request-method-in-firefox](http://stackoverflow.com/questions/1099787/jquery-ajax-post-sending-options-as-request-method-in-firefox)
+4. [jquery-cors-content-type-options](http://stackoverflow.com/questions/12320467/jquery-cors-content-type-options)
+5. [jquery-i-get-options-request-instead-of-get](http://stackoverflow.com/questions/1743845/jquery-i-get-options-request-instead-of-get)
+6. [disable-preflight-option-request-when-sending-a-cross-domain-request-with-custom](http://stackoverflow.com/questions/16303591/disable-preflight-option-request-when-sending-a-cross-domain-request-with-custom)

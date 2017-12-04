@@ -15,10 +15,10 @@ date: 2015-03-10 20:28:35
 <!--more-->
 
 支持的特性：
-1.可以动态切换应用主题，默认有白色和黑色主题
-2.可以动态添加签名使用的key，默认有media、platform、shared、testkey这四种
-3.可以动态设置应用语言，目前支持中文和英文
-4.支持拖拽的方式选择输入文件或移动输出文件
+1. 可以动态切换应用主题，默认有白色和黑色主题
+2. 可以动态添加签名使用的key，默认有media、platform、shared、testkey这四种
+3. 可以动态设置应用语言，目前支持中文和英文
+4. 支持拖拽的方式选择输入文件或移动输出文件
 以上如果需要修改或添加可以参考resources目录中theme、certs、locales子目录里的内容，非常简单，添加修改后重启即可生效！
 
 欢迎大家改进，代码在[这里](https://github.com/liudonghua123/signapk_fx "https://github.com/liudonghua123/signapk_fx")！

@@ -95,16 +95,16 @@ apply_patch_check("EMMC:/dev/block/platform/msm_sdcc.1/by-name/boot:9064448:9829
 最后再使用OTA升级，终于成功了~~~
 
 附 手动安装OTA的方法
-1.下载对应自己系统的升级包
-2.重启手机到recovery模式
-3.选择"_apply update from adb_ "
-4.PC端使用"adb sideload **_your_ota_package_**.zip"
-5.升级错误日志见/cache/recovery/last_log(.<num>)，其中时间顺序最近依次是last_log、last_log.1、last_log.2、......
+1. 下载对应自己系统的升级包
+2. 重启手机到recovery模式
+3. 选择"_apply update from adb_ "
+4. PC端使用"adb sideload **_your_ota_package_**.zip"
+5. 升级错误日志见/cache/recovery/last_log(.<num>)，其中时间顺序最近依次是last_log、last_log.1、last_log.2、......
 
 这次root时就不用CF-Auto-Root了，还是规规矩矩在CMW Recovery下刷[UPDATE-SuperSU](http://download.chainfire.eu/696/SuperSU/UPDATE-SuperSU-v2.46.zip?retrieve_file=1)吧！这样至少install-recovery.sh会备份并且知道它安装的过程，修改了哪些文件！
 
 <!--more-->参考资料
-1.[How to Extract system.img File or Get System Dump of Android Devices on Windows](http://www.droidviews.com/extract-system-img-files-or-system-dump-of-android-devices-on-windows/)
-2.[CF-Auto-Root](http://autoroot.chainfire.eu/)
-3. [How to manually install the Lollipop OTA on your Nexus device, download links included [updated with 5.1 links]](http://www.talkandroid.com/guides/beginner/how-to-install-the-lollipop-ota-on-your-nexus-device-download-links-included/)
-4. [ext4_unpacker+ext2explore](/resources/2015/03/ext4_unpacker-ext2explore.zip)
+1. [How to Extract system.img File or Get System Dump of Android Devices on Windows](http://www.droidviews.com/extract-system-img-files-or-system-dump-of-android-devices-on-windows/)
+2. [CF-Auto-Root](http://autoroot.chainfire.eu/)
+3. [How to manually install the Lollipop OTA on your Nexus device, download links included [updated with 5.1 links]](http://www.talkandroid.com/guides/beginner/how-to-install-the-lollipop-ota-on-your-nexus-device-download-links-included/)
+4. [ext4_unpacker+ext2explore](/resources/2015/03/ext4_unpacker-ext2explore.zip)

@@ -15,9 +15,9 @@ date: 2014-10-19 16:32:45
     <source src="/resources/2014/10/愿得一人心.mp3">
 </video>
 通常可引导的Windows安装U盘/移动硬盘 要求
-1.所在U盘活硬盘的MBR（主引导记录）是Windows NT 5.x/6.x MBR；
-2.所在分区的PBR（分区引导记录）是对于Windows XP是NTLDR，对于Vista、Win7、Win8+是BOOTMGR；
-3.所在分区要是活动的主分区；
+1. 所在U盘活硬盘的MBR（主引导记录）是Windows NT 5.x/6.x MBR；
+2. 所在分区的PBR（分区引导记录）是对于Windows XP是NTLDR，对于Vista、Win7、Win8+是BOOTMGR；
+3. 所在分区要是活动的主分区；
 
 <!--more-->
 

@@ -50,8 +50,8 @@ Bootloader的运行有两个阶段，第一阶段：检测外部RAM和加载帮�
 Android bootloader代码位于
 <Android Source>\bootable\bootloader\legacy\usbloader
 legacy loader含有两个主要的文件
-1.init.s 初始化stacks、对BSS段清零，调用main.c中的_main()
-2.main.c 初始化硬件（时钟、主板、键盘、控制台），创建Linux tags
+1. init.s 初始化stacks、对BSS段清零，调用main.c中的_main()
+2. main.c 初始化硬件（时钟、主板、键盘、控制台），创建Linux tags
 
 参考以下链接了解更多Android bootloader内容
 [https://motorola-global-portal.custhelp.com/app/answers/detail/a_id/86208/~/bootloader-frequently-asked-questions](https://motorola-global-portal.custhelp.com/app/answers/detail/a_id/86208/~/bootloader-frequently-asked-questions)
@@ -94,11 +94,11 @@ Options : Options是Service的参数，影响service如何以及怎样运行
 在Java里，我们知道对于每个不同的程序Java虚拟器启动不同的实例来运行，为了让Android应用启动的尽可能快，如果每个程序都使用一个JVM则会消耗很多内存和时间，所以为了克服这个问题，Android系统有一个能在Dalvik虚拟机中共享运行代码，低内存消耗，快速启动的Zygote，Zygote预加载、初始化一些Android SDK或Core Framework的，只读的系统核心库。在虚拟机的每个实例中都有一份核心库和堆对象
 
 Zygote加载过程
-1.加载[Zygote](http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/2.2_r1.1/com/android/internal/os/ZygoteInit.java)类
+1. 加载[Zygote](http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/2.2_r1.1/com/android/internal/os/ZygoteInit.java)类
 <Android Source>/frameworks/base/core/java/com/android/internal/os/ZygoteInit.java
-2.registerZygoteSocket() - 为zygote命令连接注册一个server socket
-3.preloadClasses() - "preloaded-classes" 是一个含有需要预加载的类的文本文件，可以在这里找到 <Android Source>/frameworks/base
-4.preloadResources() - preloadResources即原生主题和布局，包括android.R，这些都将通过这个方法加载
+2. registerZygoteSocket() - 为zygote命令连接注册一个server socket
+3. preloadClasses() - "preloaded-classes" 是一个含有需要预加载的类的文本文件，可以在这里找到 <Android Source>/frameworks/base
+4. preloadResources() - preloadResources即原生主题和布局，包括android.R，这些都将通过这个方法加载
 
 这时你可以看到启动动画
 
@@ -108,30 +108,30 @@ Zygote加载过程
 
 Core Services:
 
-1.Starting Power Manager
-2.Creating Activity Manager
-3.Starting Telephony Registry
-4.Starting Package Manager
-5.Set Activity Manager Service as System Process
-6.Starting Context Manager
-7.Starting System Context Providers
-8.Starting Battery Service
-9.Starting Alarm Manager
+1. Starting Power Manager
+2. Creating Activity Manager
+3. Starting Telephony Registry
+4. Starting Package Manager
+5. Set Activity Manager Service as System Process
+6. Starting Context Manager
+7. Starting System Context Providers
+8. Starting Battery Service
+9. Starting Alarm Manager
 10.Starting Sensor Service
 11.Starting Window Manager
 12.Starting Bluetooth Service
 13.Starting Mount Service
 
 Other services
-1.Starting Status Bar Service
-2.Starting Hardware Service
-3.Starting NetStat Service
-4.Starting Connectivity Service
-5.Starting Notification Manager
-6.Starting DeviceStorageMonitor Service
-7.Starting Location Manager
-8.Starting Search Service
-9.Starting Clipboard Service
+1. Starting Status Bar Service
+2. Starting Hardware Service
+3. Starting NetStat Service
+4. Starting Connectivity Service
+5. Starting Notification Manager
+6. Starting DeviceStorageMonitor Service
+7. Starting Location Manager
+8. Starting Search Service
+9. Starting Clipboard Service
 10.Starting Checkin Service
 11.Starting Wallpaper Service
 12.Starting Audio Service

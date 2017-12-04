@@ -15,7 +15,7 @@ wordpress中虽然有很多修改字体的插件，但都不能很好的支持�
 
 <!--more-->
 
-1. 修改前台博客里面的字体
+1. 修改前台博客里面的字体
 直接修改主题的style.css文件，替换里面的font-family为
 
 [css]
@@ -28,7 +28,7 @@ font-family: Avenir, 'Lucida Grande', Calibri, Helvetica, Arial, 'Microsoft YaHe
 font-family: Avenir, 'Lucida Grande', Calibri, Helvetica, Arial, 'Microsoft YaHei', '微软雅黑', 'Hiragino Sans GB', '冬青黑体', SimHei, STHeiti, sans-serif;
 [/css]
 
-2. 修改TinyMCE中文本编辑框中的字体
+2. 修改TinyMCE中文本编辑框中的字体
 这需要根据自己使用的主题，如我使用的eighties主题，没找到后台管理页面的修改地方，只能直接修改相应的css文件，我修改的是wp-content/themes/eighties/css/editor.css
 同样修改里面的font-family
 这样写文章时显示的字体也漂亮很多了，如下图所示

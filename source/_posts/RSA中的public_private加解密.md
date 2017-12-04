@@ -131,16 +131,16 @@ liudonghua@www:~/rsa_tutorial$
 [su_accordion]
 [su_spoiler title="how-can-i-set-up-password-less-ssh-login" style="fancy"]
 
-1.ssh-keygen
+1. ssh-keygen
 Press Enter key till you get the prompt
 
-2.ssh-copy-id -i root@ip_address
+2. ssh-copy-id -i root@ip_address
 (It will once ask for the password of the host system)
 or
 cat ~/.ssh/id_rsa.pub | ssh username@hostname 'cat >> .ssh/authorized_keys'
 (This requires the folder .ssh to be in the home directory on the targeted hostname, with the authorized_keys file in it)
 
-3.ssh root@ip_address
+3. ssh root@ip_address
 Now you should be able to login without any password.
 [/su_spoiler]
 [/su_accordion]
@@ -546,11 +546,11 @@ which it can be seen agrees with the recovered value above.
 see [converting-keys-between-openssl-and-openssh](http://security.stackexchange.com/questions/32768/converting-keys-between-openssl-and-openssh)
 **Generate an RSA pair**
 All the following methods give an RSA key pair in the same format
-1.With openssl (man genrsa)
+1. With openssl (man genrsa)
 openssl genrsa -out dummy-genrsa.pem 2048
 In OpenSSL v1.0.1 genrsa is superseded by genpkey so this is the new way to do it (man genpkey):
 openssl genpkey -algorithm RSA -out dummy-genpkey.pem -pkeyopt rsa_keygen_bits:2048
-2.With ssh-keygen
+2. With ssh-keygen
 ssh-keygen -t rsa -b 2048 -f dummy-ssh-keygen.pem -N '' -C "Test Key"
 
 **Converting DER to PEM**
@@ -561,9 +561,9 @@ Conversion:
 openssl rsa -inform DER -outform PEM -in genpkey-dummy.cer -out dummy-der2pem.pem
 
 **Extract the public key from the PEM formatted RSA pair**
-1.in PEM format:
+1. in PEM format:
 openssl rsa -in dummy-xxx.pem -pubout
-2.in OpenSSH v2 format see:
+2. in OpenSSH v2 format see:
 ssh-keygen -y -f dummy-xxx.pem
 
 [/su_spoiler]

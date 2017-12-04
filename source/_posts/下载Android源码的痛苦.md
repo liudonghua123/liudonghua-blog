@@ -75,9 +75,9 @@ ruby -run -e httpd . -p 9090 &
 ```
 
 后台运行的程序，如果终端关闭，属于这个终端的程序也会停止，所以就需要使用nohup、bash自带的disown或screen
-1.nohup在linux下不能针对已经运行的程序通过"nohup -p pid"让程序脱离终端，只能在启动程序时就调用，如"nohup python -m SimpleHTTPServer &"
-2.[disown](http://www.kossboss.com/linux---move-running-to-process-nohup)的用法是，先让程序后台运行(前台运行时Ctrl+Z)，然后jobs查看id，最后disown -h %id
-3.screen就更简单screen -S name，建立一个可再次连接的会话，然后再这个会话中操作，连接断了重连事直接screen -x name也可以连上
+1. nohup在linux下不能针对已经运行的程序通过"nohup -p pid"让程序脱离终端，只能在启动程序时就调用，如"nohup python -m SimpleHTTPServer &"
+2. [disown](http://www.kossboss.com/linux---move-running-to-process-nohup)的用法是，先让程序后台运行(前台运行时Ctrl+Z)，然后jobs查看id，最后disown -h %id
+3. screen就更简单screen -S name，建立一个可再次连接的会话，然后再这个会话中操作，连接断了重连事直接screen -x name也可以连上
 
 ##### 暂停和继续程序的运行
 

@@ -31,19 +31,19 @@ wmic process where caption="winsnap.exe" get caption,commandline /value
 
 接下来就需要找办法添加/修改JumpList
 其中一些很好的软件有
-1. [JumplistExtender](https://code.google.com/p/jumplist-extender/)(开源的，有空可以学学JumpList)，可以在任意程序上添加任意JumpList
+1. [JumplistExtender](https://code.google.com/p/jumplist-extender/)(开源的，有空可以学学JumpList)，可以在任意程序上添加任意JumpList
 [![jumplist-extender](/resources/2014/10/jumplist-extender-300x226.jpg)](/resources/2014/10/jumplist-extender.jpg)
-2. [JumpListEditor](http://jumplisteditor.blogspot.com/)，与JumplistExtender功能差不多
+2. [JumpListEditor](http://jumplisteditor.blogspot.com/)，与JumplistExtender功能差不多
 [![JumpListEditor](/resources/2014/10/JumpListEditor-300x119.png)](/resources/2014/10/JumpListEditor.png)
-3.[jumplist-launcher](http://en.www.ali.dj/jumplist-launcher/)，可以在此程序上方便的添加任意JumpList
+3. [jumplist-launcher](http://en.www.ali.dj/jumplist-launcher/)，可以在此程序上方便的添加任意JumpList
 [![jumplistlauncher](/resources/2014/10/jumplistlauncher-228x300.png)](/resources/2014/10/jumplistlauncher.png)
-4.[Jump List Manager](http://www.addictivetips.com/windows-tips/manage-windows-7-jump-list-items-in-taskbar-with-jump-list-manager/)，与jumplist-launcher功能差不多
+4. [Jump List Manager](http://www.addictivetips.com/windows-tips/manage-windows-7-jump-list-items-in-taskbar-with-jump-list-manager/)，与jumplist-launcher功能差不多
 [![jump-list-manager](/resources/2014/10/jump-list-manager-300x234.jpg)](/resources/2014/10/jump-list-manager.jpg)
 
 **不过目前暂时没找到一款可以修改已存在JumpList的程序，使用以上1、2中的软件添加新的JumpList会覆盖已有的，自己简略的看过一点点这方面的资料，感觉这水还是有点小深，后面如果有时间，想在[JumplistExtender](https://code.google.com/p/jumplist-extender/)上完善一下添加可以修改已有的JumpList得功能，那就完美了！**
 
 如果想深入学习JumpList可参考
-1.[jump-lists](http://windows.microsoft.com/en-us/windows7/products/features/jump-lists)
-2.[jump_lists_view](http://www.nirsoft.net/utils/jump_lists_view.html)
+1. [jump-lists](http://windows.microsoft.com/en-us/windows7/products/features/jump-lists)
+2. [jump_lists_view](http://www.nirsoft.net/utils/jump_lists_view.html)
 
  

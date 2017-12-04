@@ -53,8 +53,8 @@ Directory of D:\android
 ```
 
 但这两者确实存在着一些区别，详见[directory-junction-vs-directory-symbolic-link](http://superuser.com/questions/343074/directory-junction-vs-directory-symbolic-link)
-1./D需要管理员权限，/J普通权限即可
-2.如果访问远程电脑上的Directory Symbolic Link，其解析实在远程电脑上，而如果是Directory Junction Link，则其解析是本地，例如在Alice电脑上
+1. /D需要管理员权限，/J普通权限即可
+2. 如果访问远程电脑上的Directory Symbolic Link，其解析实在远程电脑上，而如果是Directory Junction Link，则其解析是本地，例如在Alice电脑上
 C:/juncationlink -> C:/onesharedirectory
 C:/symboliclink  -> C:/onesharedirectory
 这时如果在Bob电脑上访问这两个目录

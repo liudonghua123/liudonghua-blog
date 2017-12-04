@@ -105,11 +105,11 @@ Execution failed for task ':app:processDebugManifest'.
 <span style="color: #cc99ff;">_**目前Android Support Repository已更新至reversion 7解决此问题，21.0.0-rc1已更新为21.0.0**_</span>
 
 这里备注一下版本号中"+"的含义
-1.com.android.support:support-v4:+ 不带版本号直接使用+表示最新版本，目前匹配21.0.0
-2.com.android.support:support-v4:19.+ 表示19.x.y...这类版本，目前匹配19.1.0
-3.**com.android.support:support-v4:19+ 与19.+含义一样，目前匹配19.1.0 (不常用，一般只用VersionNumber.+形式)**
-4.com.android.support:support-v4:19.0.+ 表示19.0.y...这类版本，目前匹配19.0.1
-5.com.android.support:support-v4:19.0 表示直接匹配19.0.1
+1. com.android.support:support-v4:+ 不带版本号直接使用+表示最新版本，目前匹配21.0.0
+2. com.android.support:support-v4:19.+ 表示19.x.y...这类版本，目前匹配19.1.0
+3. **com.android.support:support-v4:19+ 与19.+含义一样，目前匹配19.1.0 (不常用，一般只用VersionNumber.+形式)**
+4. com.android.support:support-v4:19.0.+ 表示19.0.y...这类版本，目前匹配19.0.1
+5. com.android.support:support-v4:19.0 表示直接匹配19.0.1
 不建议使用1方式，使用2、3方式的好处就是如果后面有bug修复版本可以自动升级使用最新的修复版本
 
 还可以参考一下文档

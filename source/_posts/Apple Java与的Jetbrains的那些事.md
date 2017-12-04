@@ -36,8 +36,8 @@ JavaVM FATAL: Failed to load the jvm library.
 ```bash
 /usr/libexec/java_home -V
 Matching Java Virtual Machines (2):
-1.8.0_20, x86_64: "Java SE 8" /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home
-1.7.0_45, x86_64: "Java SE 7" /Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home
+1. 8.0_20, x86_64: "Java SE 8" /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home
+1. 7.0_45, x86_64: "Java SE 7" /Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home
 ```
 
 安装apple的JDK后/usr/libexec/java_home是一个软链接，指向/System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java_home
@@ -45,10 +45,10 @@ Matching Java Virtual Machines (2):
 ```bash
 /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java_home -V
 Matching Java Virtual Machines (4):
-1.8.0_20, x86_64: "Java SE 8" /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home
-1.7.0_45, x86_64: "Java SE 7" /Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home
-1.6.0_65-b14-466.1, x86_64: "Java SE 6" /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
-1.6.0_65-b14-466.1, i386: "Java SE 6" /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+1. 8.0_20, x86_64: "Java SE 8" /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home
+1. 7.0_45, x86_64: "Java SE 7" /Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home
+1. 6.0_65-b14-466.1, x86_64: "Java SE 6" /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+1. 6.0_65-b14-466.1, i386: "Java SE 6" /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
 ```
 
 由此可知Mac下Apple JDK安装在/System/Library/Java/JavaVirtualMachines/下，Oracle JDK安装在/Library/Java/JavaVirtualMachines/

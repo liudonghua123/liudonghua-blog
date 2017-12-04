@@ -107,6 +107,6 @@ mysql> select @user_variable;
 ```
 
 参考资料
-1.[MySQL : interactive_timeout v/s wait_timeout](http://www.serveridol.com/2012/04/13/mysql-interactive_timeout-vs-wait_timeout/)
-2.[show-variables](http://dev.mysql.com/doc/refman/5.7/en/show-variables.html)
-3.[set-statement](http://dev.mysql.com/doc/refman/5.7/en/set-statement.html)
+1. [MySQL : interactive_timeout v/s wait_timeout](http://www.serveridol.com/2012/04/13/mysql-interactive_timeout-vs-wait_timeout/)
+2. [show-variables](http://dev.mysql.com/doc/refman/5.7/en/show-variables.html)
+3. [set-statement](http://dev.mysql.com/doc/refman/5.7/en/set-statement.html)
