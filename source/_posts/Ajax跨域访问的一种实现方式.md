@@ -222,12 +222,12 @@ public class UserController extends HttpServlet {
 
 前端ajax请求中添加如下
 
-[js highlight="3"]
+```js
 $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
   // ...
   options.crossDomain = true;
 });
-[/js]
+```
 
 参考资料
 1. [no-access-control-allow-origin-header-is-present-on-the-requested-resource](http://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource)
