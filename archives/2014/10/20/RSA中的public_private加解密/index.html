@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="openssl,rsa,rsautl,ssh-keygen," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="今天在另外一台电脑上想连接我的EC2服务器，由于没有pem文件（私钥private key），重新生成了一个，只是最终还是不能连接上，详见Amazon EC2 Key Pairs，原因是由于没有服务器上的公钥的对应私钥，所以也就没办法连接上EC2服务器上传另一个公钥，但是还是有其他办法，见上述文档的Connecting">
+<meta name="keywords" content="openssl,rsa,rsautl,ssh-keygen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSA中的public&#x2F;private加解密">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2014/10/20/RSA中的public_private加解密/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="今天在另外一台电脑上想连接我的EC2服务器，由于没有pem文件（私钥private key），重新生成了一个，只是最终还是不能连接上，详见Amazon EC2 Key Pairs，原因是由于没有服务器上的公钥的对应私钥，所以也就没办法连接上EC2服务器上传另一个公钥，但是还是有其他办法，见上述文档的Connecting to Your Linux Instance if You Lose Your">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RSA中的public&#x2F;private加解密">
+<meta name="twitter:description" content="今天在另外一台电脑上想连接我的EC2服务器，由于没有pem文件（私钥private key），重新生成了一个，只是最终还是不能连接上，详见Amazon EC2 Key Pairs，原因是由于没有服务器上的公钥的对应私钥，所以也就没办法连接上EC2服务器上传另一个公钥，但是还是有其他办法，见上述文档的Connecting to Your Linux Instance if You Lose Your">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2014/10/20/RSA中的public_private加解密/"/>
+
+
+
+
+
+  <title>RSA中的public/private加解密 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2014/10/20/RSA中的public_private加解密/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RSA中的public/private加解密</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-10-20T13:13:44+00:00">
+                2014-10-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天在另外一台电脑上想连接我的EC2服务器，由于没有pem文件（私钥private key），重新生成了一个，只是最终还是不能连接上，详见<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 Key Pairs</a>，原因是由于没有服务器上的公钥的对应私钥，所以也就没办法连接上EC2服务器上传另一个公钥，但是还是有其他办法，见上述文档的<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#replacing-lost-key-pair" target="_blank" rel="noopener">Connecting to Your Linux Instance if You Lose Your Private Key</a>。</p>
+<a id="more"></a>
+<p>所以就看了一下RSA的公私钥加解密这块的内容，以下是在ubuntu下测试的，详见注释即可理解</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ # generate plain test file</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ cat &gt; test.txt &lt;&lt; DELIMITER</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> This is a ras public/private encrypt/decrypt sample!!!</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> DELIMITER</span></span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ # produce a 1024 length private key named openssl_1024.pri</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ openssl genrsa -out openssl_1024.pri 1024</span><br><span class="line">Generating RSA private key, 1024 bit long modulus</span><br><span class="line">............++++++</span><br><span class="line">....................++++++</span><br><span class="line">e is 65537 (0x10001)</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ # produce the corresponding public key named openssl_1024.pub</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ openssl rsa -in openssl_1024.pri -pubout -out openssl_1024.pub</span><br><span class="line">writing RSA key</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ cat openssl_1024.pri</span><br><span class="line">-----BEGIN RSA PRIVATE KEY-----</span><br><span class="line">MIICWwIBAAKBgQC276RD6IMWofi7wupJN4UWvOJ72xQFz/47o9g8QqfMvowa8X/2</span><br><span class="line">QBf0MUuAGkh2TueSPm8hAe/sbCLQajReUaFgNI7zH3Arb72utxu+SezgBXQK+l9S</span><br><span class="line">okwKM/JXKegj32SwmoyzG4aakRq16JIYqeTyKsbhGZsNNvQSa/QVytSOxwIDAQAB</span><br><span class="line">AoGAYLHgwOhYyhDJWe3YSuUm2vLyQAd32O6s8jdTp96PtYCOq/s06SPNxYx83PSH</span><br><span class="line">ksl4S+vmb6sHd49dA47vqV86jasmsXgXMfNC5+yHbSxamDKe8VM2f5Db7f/R7yVk</span><br><span class="line">4NsS8qlmtVLql1y+2hrqM+A1uX3eOJL18AqXkK5CjJetGxECQQDpsWVcDTsB5rcN</span><br><span class="line">zzUYbYDbNY4hzL4+nhF+KXaDuCRPgxIutiFQWTCqOEN1ZudFp2iLTFKcQczO9MZe</span><br><span class="line">gpT348H5AkEAyGXu6FMaF0ukCCm1aOzHJFafxTggagJcJygP5iI8cSHzlP+KzEs+</span><br><span class="line">0pUYnD2UvafvVA7BDwSsCff8fBfr8vMGvwJAEpXFFdkHhFMw46xC8LpksQpFT3LU</span><br><span class="line">/m3bvkjV4AvY92nZHFXnuFgfgqoO01tnsSZrLgjX2Q1ymFLnI8UGy+AVIQJAL7ID</span><br><span class="line">EIxm01CPc9npcVWZeA6d7CSVomV5ZWBlmFJhrFN2U+oWMNVf2GLf/p+xfQoxLgJs</span><br><span class="line">9JQaFi1NjINtBt/MpQJAbS7eNnB3gEL/K4XrtVs/1wS58bxoRy7SpBgzhtC0NpsM</span><br><span class="line">dA5OobN9yI4XsfIBRSU5Bez3VX8scaRpIJ3KYEPxag==</span><br><span class="line">-----END RSA PRIVATE KEY-----</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ cat openssl_1024.pub</span><br><span class="line">-----BEGIN PUBLIC KEY-----</span><br><span class="line">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC276RD6IMWofi7wupJN4UWvOJ7</span><br><span class="line">2xQFz/47o9g8QqfMvowa8X/2QBf0MUuAGkh2TueSPm8hAe/sbCLQajReUaFgNI7z</span><br><span class="line">H3Arb72utxu+SezgBXQK+l9SokwKM/JXKegj32SwmoyzG4aakRq16JIYqeTyKsbh</span><br><span class="line">GZsNNvQSa/QVytSOxwIDAQAB</span><br><span class="line">-----END PUBLIC KEY-----</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ # use rsautl to encrypt/decrypt, see http://www.tutorialspoint.com/unix_commands/rsautl.htm</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ openssl rsautl -encrypt -pubin -inkey openssl_1024.pub -in test.txt -out encrypted_test.txt</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ openssl rsautl -decrypt -inkey openssl_1024.pri -in encrypted_test.txt -out decrypted_test.txt</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ cat decrypted_test.txt</span><br><span class="line">This is a ras public/private encrypt/decrypt sample!!!</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ # use ssh-keygen to generate public/private key together interactively</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ # see https://help.github.com/articles/generating-ssh-keys/</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ ssh-keygen -t rsa -b 1024</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file in which to save the key (/home/liudonghua/.ssh/id_rsa): ssh_keygen_1024</span><br><span class="line">Enter passphrase (empty for no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br><span class="line">Your identification has been saved in ssh_keygen_1024.</span><br><span class="line">Your public key has been saved in ssh_keygen_1024.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">9b:ed:1f:0b:e4:c5:66:e3:49:49:e4:19:0a:45:1e:8a liudonghua@www.liudonghua.com</span><br><span class="line">The key's randomart image is:</span><br><span class="line">+--[ RSA 1024]----+</span><br><span class="line">|        .o+ o    |</span><br><span class="line">|       . + = o   |</span><br><span class="line">|      E . o +    |</span><br><span class="line">|           o .   |</span><br><span class="line">|        S . O    |</span><br><span class="line">|         * * o   |</span><br><span class="line">|        o + +    |</span><br><span class="line">|         . . o   |</span><br><span class="line">|          ..o    |</span><br><span class="line">+-----------------+</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ ll ssh_keygen_1024*</span><br><span class="line">-rw------- 1 liudonghua liudonghua 1679 Oct 20 20:32 ssh_keygen_1024</span><br><span class="line">-rw-r--r-- 1 liudonghua liudonghua  411 Oct 20 20:32 ssh_keygen_1024.pub</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ openssl rsautl -encrypt -pubin -inkey ssh_keygen_1024.pub -in test.txt -out encrypted_ssh_keygen_test.txt</span><br><span class="line">unable to load Public Key</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ cat ssh_keygen_1024.pub</span><br><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDcOO3UWGXnxIj3iKe/anB2NgxNJG89OaoL4hBxrY6T+kO2Rm8GNqfHP8d8N6O/WssI3t1oxNiB/EtBgz9qxmgLdu6CABd93hZrPHYZjLNOZlswzydLoYygHuiVbSWGoxcS07nTEi2F4YvA964LfqSS3ZxXQUJJx4N6FP3KJf6r+Q== liudonghua@www.liudonghua.com</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ cat ssh_keygen_1024</span><br><span class="line">-----BEGIN RSA PRIVATE KEY-----</span><br><span class="line">MIICXAIBAAKBgQDcOO3UWGXnxIj3iKe/anB2NgxNJG89OaoL4hBxrY6T+kO2Rm8G</span><br><span class="line">NqfHP8d8N6O/WssI3t1oxNiB/EtBgz9qxmgLdu6CABd93hZrPHYZjLNOZlswzydL</span><br><span class="line">oYygHuiVbSWGoxcS07nTEi2F4YvA964LfqSS3ZxXQUJJx4N6FP3KJf6r+QIDAQAB</span><br><span class="line">AoGAUCHq8HSGCDKsgB3apD0v1OPP0BYs4ANmi9Jjl2nG0rOjBeVVKtaicE8V4G5C</span><br><span class="line">iDOaY4zs1d2ixpGuNJV0cv7lBnIM4OPwJoaaskhTyeomkfLRyHAkmj4brrrEPrgy</span><br><span class="line">XMWmbWydFhsSR2liirU3SasV5KL2VmqN+eHzboD9MYoMBq0CQQD0ysA2n5pkxjEW</span><br><span class="line">EElY6uXiS2p8oD/iYaycyroKSUfpwFMnZPFAOuqQxhCPFu+O/FsTTtq1cDJK37X5</span><br><span class="line">shzvOkgvAkEA5k4xh9gc8QdkBEJihbq7Dcu+W5OnzlkXqMYlXiWQ7Crc4ginuFRg</span><br><span class="line">eCNqkY4zQnCwL5wxNVhfWTMjoj/1faUcVwJAflea51Zu2G5WbV3QjX0HU0m7V0Fa</span><br><span class="line">V5wz++TCKobx/9pM0LtPrOf7oucnKsMat4DV/NwpE5Ypzu0xvgNI3cwF7wJAR4ez</span><br><span class="line">xJBv9MCp5NTFiumDXXaRihnjPajYO1hHlOUwDNoHPsEXbp3uVIITgF/dNd6QKkll</span><br><span class="line">0z6+ZpMGl0csNTkKAwJBAIV9sS+ggZ3P5WW+uytrSjifsYibzeGLOSP9v+QpA36w</span><br><span class="line">S6+UqzksZ5L+Xt594HaGA8oqC6vAv1AGGIHwQ1+U7Rw=</span><br><span class="line">-----END RSA PRIVATE KEY-----</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$  # compared to the openssl_1024.pub, the structure is different</span><br><span class="line">liudonghua@www:~/rsa_tutorial$  # so we can't use key generated by ssh_keygen directly</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br></pre></td></tr></table></figure>
+<p>附上<br>通过rsa public/private key免用户名密码登录远程linux终端<br>[su_accordion]<br>[su_spoiler title=”how-can-i-set-up-password-less-ssh-login” style=”fancy”]</p>
+<ol>
+<li><p>ssh-keygen<br>Press Enter key till you get the prompt</p>
+</li>
+<li><p>ssh-copy-id -i root@ip_address<br>(It will once ask for the password of the host system)<br>or<br>cat ~/.ssh/id_rsa.pub | ssh username@hostname ‘cat &gt;&gt; .ssh/authorized_keys’<br>(This requires the folder .ssh to be in the home directory on the targeted hostname, with the authorized_keys file in it)</p>
+</li>
+<li><p>ssh root@ip_address<br>Now you should be able to login without any password.<br>[/su_spoiler]<br>[/su_accordion]</p>
+</li>
+</ol>
+<p>检测public/private key是否匹配<br>[su_accordion]<br>[su_spoiler title=”check public/private key matches” style=”fancy”]</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">liudonghua@www:~/rsa_tutorial$ # test public/private key pair matches</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ ssh-keygen -y -f ssh_keygen_1024 &gt; public_key_of_ssh_keygen_1024.pub</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ diff public_key_of_ssh_keygen_1024.pub ssh_keygen_1024.pub</span><br><span class="line">1c1</span><br><span class="line">&lt; ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDcOO3UWGXnxIj3iKe/anB2NgxNJG89OaoL4hBxrY6T+kO2Rm8GNqfHP8d8N6O/WssI3t1oxNiB/EtBgz9qxmgLdu6CABd93hZrPHYZjLNOZlswzydLoYygHuiVbSWGoxcS07nTEi2F4YvA964LfqSS3ZxXQUJJx4N6FP3KJf6r+Q==</span><br><span class="line">---</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDcOO3UWGXnxIj3iKe/anB2NgxNJG89OaoL4hBxrY6T+kO2Rm8GNqfHP8d8N6O/WssI3t1oxNiB/EtBgz9qxmgLdu6CABd93hZrPHYZjLNOZlswzydLoYygHuiVbSWGoxcS07nTEi2F4YvA964LfqSS3ZxXQUJJx4N6FP3KJf6r+Q== liudonghua@www.liudonghua.com</span></span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ ssh-keygen -y -f openssl_1024.pri &gt; public_key_of_openssl_1024.pub</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ diff public_key_of_openssl_1024.pub openssl_1024.pub</span><br><span class="line">1c1,6</span><br><span class="line">&lt; ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQC276RD6IMWofi7wupJN4UWvOJ72xQFz/47o9g8QqfMvowa8X/2QBf0MUuAGkh2TueSPm8hAe/sbCLQajReUaFgNI7zH3Arb72utxu+SezgBXQK+l9SokwKM/JXKegj32SwmoyzG4aakRq16JIYqeTyKsbhGZsNNvQSa/QVytSOxw==</span><br><span class="line">---</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> -----BEGIN PUBLIC KEY-----</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC276RD6IMWofi7wupJN4UWvOJ7</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> 2xQFz/47o9g8QqfMvowa8X/2QBf0MUuAGkh2TueSPm8hAe/sbCLQajReUaFgNI7z</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> H3Arb72utxu+SezgBXQK+l9SokwKM/JXKegj32SwmoyzG4aakRq16JIYqeTyKsbh</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> GZsNNvQSa/QVytSOxwIDAQAB</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> -----END PUBLIC KEY-----</span></span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$  # convert openssh public key to pem format</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ ssh-keygen -f public_key_of_openssl_1024.pub -e -m pem</span><br><span class="line">-----BEGIN RSA PUBLIC KEY-----</span><br><span class="line">MIGJAoGBALbvpEPogxah+LvC6kk3hRa84nvbFAXP/juj2DxCp8y+jBrxf/ZAF/Qx</span><br><span class="line">S4AaSHZO55I+byEB7+xsItBqNF5RoWA0jvMfcCtvva63G75J7OAFdAr6X1KiTAoz</span><br><span class="line">8lcp6CPfZLCajLMbhpqRGrXokhip5PIqxuEZmw029BJr9BXK1I7HAgMBAAE=</span><br><span class="line">-----END RSA PUBLIC KEY-----</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br><span class="line">liudonghua@www:~/rsa_tutorial$ cat openssl_1024.pub</span><br><span class="line">-----BEGIN PUBLIC KEY-----</span><br><span class="line">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC276RD6IMWofi7wupJN4UWvOJ7</span><br><span class="line">2xQFz/47o9g8QqfMvowa8X/2QBf0MUuAGkh2TueSPm8hAe/sbCLQajReUaFgNI7z</span><br><span class="line">H3Arb72utxu+SezgBXQK+l9SokwKM/JXKegj32SwmoyzG4aakRq16JIYqeTyKsbh</span><br><span class="line">GZsNNvQSa/QVytSOxwIDAQAB</span><br><span class="line">-----END PUBLIC KEY-----</span><br><span class="line">liudonghua@www:~/rsa_tutorial$</span><br></pre></td></tr></table></figure>
+<p>[/su_spoiler]<br>[/su_accordion]</p>
+<p>ssh-keygen常用参数使用<br>[su_accordion]<br>[su_spoiler title=”ssh-keygen usage” style=”fancy”]</p>
+<p>OpenSSH key pem和SSH2 key格式互转</p>
+<p>ssh-keygen -e -f ~/.ssh/id_rsa.pub &gt; ~/.ssh/id_rsa_pub.pem<br>ssh-keygen -i -f ~/.ssh/id_rsa_pub.pem -m RFC4716 &gt; ~/.ssh/id_rsa.pub</p>
+<h1 id="Import-other-format-public-private-key-to-openssh-format-key"><a href="#Import-other-format-public-private-key-to-openssh-format-key" class="headerlink" title="Import other format (public/private) key to openssh format key"></a>Import other format (public/private) key to openssh format key</h1><h1 id="read-an-unencrypted-private-or-public-key-file-in-the-format-specified-by-the-m-option-and-print-an-OpenSSH-compatible-private-or-public-key-to-stdout"><a href="#read-an-unencrypted-private-or-public-key-file-in-the-format-specified-by-the-m-option-and-print-an-OpenSSH-compatible-private-or-public-key-to-stdout" class="headerlink" title="read an unencrypted private (or public) key file in the format specified by the -m option and print an OpenSSH compatible private (or public) key to stdout"></a>read an unencrypted private (or public) key file in the format specified by the -m option and print an OpenSSH compatible private (or public) key to stdout</h1><p>ssh-keygen -i [-m key_format] [-f input_keyfile]</p>
+<h1 id="Export-openssh-key-public-private-to-other-format"><a href="#Export-openssh-key-public-private-to-other-format" class="headerlink" title="Export openssh key (public/private) to other format"></a>Export openssh key (public/private) to other format</h1><h1 id="read-a-private-or-public-OpenSSH-key-file-and-print-to-stdout-the-key-in-one-of-the-formats-specified-by-the-m-option-The-default-export-format-is-“RFC4716’’"><a href="#read-a-private-or-public-OpenSSH-key-file-and-print-to-stdout-the-key-in-one-of-the-formats-specified-by-the-m-option-The-default-export-format-is-“RFC4716’’" class="headerlink" title="read a private or public OpenSSH key file and print to stdout the key in one of the formats specified by the -m option. The default export format is “RFC4716’’."></a>read a private or public OpenSSH key file and print to stdout the key in one of the formats specified by the -m option. The default export format is “RFC4716’’.</h1><p>ssh-keygen -e [-m key_format] [-f input_keyfile]</p>
+<p>-m key_format<br>Specify a key format for the -i (import) or -e (export) conversion options.<br>“RFC4716’’ (RFC 4716/SSH2 public or private key)<br>“PKCS8’’ (PEM PKCS8 public key)<br>“PEM’’ (PEM public key).<br>The default conversion format is “RFC4716’’.</p>
+<h1 id="get-openssh-format-public-key-from-openssh-format-private-key"><a href="#get-openssh-format-public-key-from-openssh-format-private-key" class="headerlink" title="get openssh format public key from openssh format private key"></a>get openssh format public key from openssh format private key</h1><p>ssh-keygen -y [-f input_keyfile]</p>
+<p>-b bits<br>Specifies the number of bits in the key to create. For RSA keys, the minimum<br>size is 768 bits and the default is 2048 bits. Generally, 2048 bits is con-<br>sidered sufficient. DSA keys must be exactly 1024 bits as specified by FIPS<br>186-2.For ECDSA keys, the -b flag determines the key length by selecting<br>from one of three elliptic curve sizes: 256, 384 or 521 bits. Attempting to<br>use bit lengths other than these three values for ECDSA keys will fail.<br>-C comment<br>Provides a new comment.<br>-c Requests changing the comment in the private and public key files. This<br>operation is only supported for RSA1 keys. The program will prompt for the<br>file containing the private keys, for the passphrase if the key has one, and<br>for the new comment.<br>-e This option will read a private or public OpenSSH key file and print to std-<br>out the key in one of the formats specified by the -m option. The default<br>export format is “RFC4716’’. This option allows exporting OpenSSH keys for<br>use by other programs, including several commercial SSH implementations.<br>-f filename<br>Specifies the filename of the key file.<br>-i This option will read an unencrypted private (or public) key file in the for-<br>mat specified by the -m option and print an OpenSSH compatible private (or<br>public) key to stdout.<br>-m key_format<br>Specify a key format for the -i (import) or -e (export) conversion options.<br>The supported key formats are: “RFC4716’’ (RFC 4716/SSH2 public or private<br>key), “PKCS8’’ (PEM PKCS8 public key) or “PEM’’ (PEM public key). The<br>default conversion format is “RFC4716’’.<br>-N new_passphrase<br>Provides the new passphrase.<br>-v Verbose mode. Causes ssh-keygen to print debugging messages about its<br>progress. This is helpful for debugging moduli generation. Multiple -v<br>options increase the verbosity. The maximum is 3.<br>-y This option will read a private OpenSSH format file and print an OpenSSH public key to stdout.</p>
+<p>[/su_spoiler]<br>[/su_accordion]</p>
+<p>openssl rsautl常用参数使用<br>[su_accordion]<br>[su_spoiler title=”rsautl - RSA utility “ style=”fancy”]</p>
+<ul>
+<li>Unix, Linux Command</li>
+</ul>
+<table class="main" border="0" cellspacing="0" cellpadding="2"><br><tbody><br><tr><br><td valign="top"><br><table class="middle" cellspacing="0" cellpadding="5"><br><tbody><br><tr><br><td><br><br># NAME<br><br>rsautl - RSA utility<br><br># SYNOPSIS<br><br><!-- ignored unsupported tag .tm --> <strong>openssl</strong> <strong>rsautl</strong> [<strong>-in file</strong>] [<strong>-out file</strong>] [<strong>-inkey file</strong>] [<strong>-pubin</strong>] [<strong>-certin</strong>] [<strong>-sign</strong>] [<strong>-verify</strong>] [<strong>-encrypt</strong>] [<strong>-decrypt</strong>] [<strong>-pkcs</strong>] [<strong>-ssl</strong>] [<strong>-raw</strong>] [<strong>-hexdump</strong>] [<strong>-asn1parse</strong>]<br><br># DESCRIPTION<br><br><!-- ignored unsupported tag .tm -->The <strong>rsautl</strong> command can be used to sign, verify, encrypt and decrypt data using theRSA algorithm.<br><br># COMMAND OPTIONS<br><br><!-- ignored unsupported tag .tm --><br><table class="src" border="1" cellspacing="0" cellpadding="5"><br><tbody><br><tr><br><th width="25%">Tag</th><br><th>Description</th><br></tr><br><tr valign="top"><br><td width="4%"><strong>-in filename</strong></td><br><td><!-- ignored unsupported tag .tm -->This specifies the input filename to read data from or standard input if this option is not specified.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-out filename</strong></td><br><td><!-- ignored unsupported tag .tm -->specifies the output filename to write to or standard output by default.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-inkey file</strong></td><br><td><!-- ignored unsupported tag .tm -->the input key file, by default it should be an RSA private key.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-pubin</strong></td><br><td><!-- ignored unsupported tag .tm -->the input file is an RSA public key.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-certin</strong></td><br><td><!-- ignored unsupported tag .tm -->the input is a certificate containing an RSA public key.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-sign</strong></td><br><td><!-- ignored unsupported tag .tm -->sign the input data and output the signed result. This requires and RSA private key.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-verify</strong></td><br><td><!-- ignored unsupported tag .tm -->verify the input data and output the recovered data.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-encrypt</strong></td><br><td><!-- ignored unsupported tag .tm -->encrypt the input data using an RSA public key.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-decrypt</strong></td><br><td><!-- ignored unsupported tag .tm --> decrypt the input data using an RSA private key.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-pkcs, -oaep, -ssl, -raw</strong></td><br><td><!-- ignored unsupported tag .tm -->the padding to use: PKCS#1 v1.5 (the default), PKCS#1 OAEP, special padding used in SSL v2 backwards compatible handshakes, or no padding, respectively. For signatures, only <strong>-pkcs</strong> and <strong>-raw</strong> can be used.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-hexdump</strong></td><br><td><!-- ignored unsupported tag .tm -->hex dump the output data.</td><br></tr><br><tr valign="top"><br><td width="4%"><strong>-asn1parse</strong></td><br><td><!-- ignored unsupported tag .tm -->asn1parse the output data, this is useful when combined with the <strong>-verify</strong> option.</td><br></tr><br></tbody><br></table>
+
+<h1 id="NOTES"><a href="#NOTES" class="headerlink" title="NOTES"></a>NOTES</h1><!-- ignored unsupported tag .tm --> <strong>rsautl</strong> because it uses theRSA algorithm directly can only be used to sign or verify small pieces of data.<br><br># EXAMPLES<br><br><!-- ignored unsupported tag .tm -->Sign some data using a private key:<br><table class="src" cellspacing="5" cellpadding="5"><br><tbody><br><tr><br><td><br><pre><!-- ignored unsupported tag .ne -->
+<p> openssl rsautl -sign -in file -inkey key.pem -out sig<br></p></pre><br></td><br></tr><br></tbody><br></table><br>Recover the signed data<p></p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br> openssl rsautl -verify -in sig -inkey key.pem<br></pre><br></p></td><br></tr><br></tbody><br></table><br>Examine the raw signed data:<p></p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br> openssl rsautl -verify -in file -inkey key.pem -raw -hexdump<br></pre><br></p></td><br></tr><br></tbody><br></table><p></p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br> 0000 - 00 01 ff ff ff ff ff ff-ff ff ff ff ff ff ff ff   …………….<br> 0010 - ff ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff   …………….<br> 0020 - ff ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff   …………….<br> 0030 - ff ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff   …………….<br> 0040 - ff ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff   …………….<br> 0050 - ff ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff   …………….<br> 0060 - ff ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff   …………….<br> 0070 - ff ff ff ff 00 68 65 6c-6c 6f 20 77 6f 72 6c 64   …..hello world<br></pre><br><br><br><br><br>The PKCS#1 block formatting is evident from this. If this was done using encrypt and decrypt the block would have been of type 2 (the second byte) and random padding data visible instead of the 0xff bytes.</p>
+<p>It is possible to analyse the signature of certificates using this utility in conjunction with <strong>asn1parse</strong>. Consider the self signed example in certs/pca-cert.pem . Running <strong>asn1parse</strong> as follows yields:</p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br> openssl asn1parse -in pca-cert.pem<br></pre><br><br><br><br></p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br>    0:d=0  hl=4 l= 742 cons: SEQUENCE<br>    4:d=1  hl=4 l= 591 cons:  SEQUENCE<br>    8:d=2  hl=2 l=   3 cons:   cont [ 0 ]<br>   10:d=3  hl=2 l=   1 prim:    INTEGER           :02<br>   13:d=2  hl=2 l=   1 prim:   INTEGER           :00<br>   16:d=2  hl=2 l=  13 cons:   SEQUENCE<br>   18:d=3  hl=2 l=   9 prim:    OBJECT            :md5WithRSAEncryption<br>   29:d=3  hl=2 l=   0 prim:    NULL<br>   31:d=2  hl=2 l=  92 cons:   SEQUENCE<br>   33:d=3  hl=2 l=  11 cons:    SET<br>   35:d=4  hl=2 l=   9 cons:     SEQUENCE<br>   37:d=5  hl=2 l=   3 prim:      OBJECT            :countryName<br>   42:d=5  hl=2 l=   2 prim:      PRINTABLESTRING   :AU<br>  ….<br>  599:d=1  hl=2 l=  13 cons:  SEQUENCE<br>  601:d=2  hl=2 l=   9 prim:   OBJECT            :md5WithRSAEncryption<br>  612:d=2  hl=2 l=   0 prim:   NULL<br>  614:d=1  hl=3 l= 129 prim:  BIT STRING<br></pre><br><br><br><br><br>The final BIT STRING contains the actual signature. It can be extracted with:</p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br> openssl asn1parse -in pca-cert.pem -out sig -noout -strparse 614<br></pre><br><br><br><br><br>The certificate public key can be extracted with:</p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br> openssl x509 -in test/testx509.pem -pubkey -noout &gt;pubkey.pem<br></pre><br><br><br><br><br>The signature can be analysed with:</p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br> openssl rsautl -in sig -verify -asn1parse -inkey pubkey.pem -pubin<br></pre><br><br><br><br></p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br>    0:d=0  hl=2 l=  32 cons: SEQUENCE<br>    2:d=1  hl=2 l=  12 cons:  SEQUENCE<br>    4:d=2  hl=2 l=   8 prim:   OBJECT            :md5<br>   14:d=2  hl=2 l=   0 prim:   NULL<br>   16:d=1  hl=2 l=  16 prim:  OCTET STRING<br>      0000 - f3 46 9e aa 1a 4a 73 c9-37 ea 93 00 48 25 08 b5   .F…Js.7…H%..<br></pre><br><br><br><br><br>This is the parsed version of an ASN1 DigestInfo structure. It can be seen that the digest used was md5.The actual part of the certificate that was signed can be extracted with:</p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br> openssl asn1parse -in pca-cert.pem -out tbs -noout -strparse 4<br></pre><br><br><br><br><br>and its digest computed with:</p>
+<p><table class="src" cellspacing="5" cellpadding="5"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td></td></p>
+<p><pre><!-- ignored unsupported tag .ne --><br> openssl md5 -c tbs<br> MD5(tbs)= f3:46:9e:aa:1a:4a:73:c9:37:ea:93:00:48:25:08:b5<br></pre><br><br><br><br><br>which it can be seen agrees with the recovered value above.</p>
+<h1 id="SEE-ALSO"><a href="#SEE-ALSO" class="headerlink" title="SEE ALSO"></a>SEE ALSO</h1><p><tt><tt><tt><tt><tt><tt><tt><tt><tt><tt><tt><tt><em>dgst</em>(1), <em>rsa</em>(1), <em>genrsa</em>(1)<br></tt></tt></tt></tt></tt></tt></tt></tt></tt></tt></tt></tt><br><br><br><br><br><br><br><br>[/su_spoiler]<br>[/su_accordion]</p>
+<p>其他<br>[su_accordion]<br>[su_spoiler title=”PEM and OpenSSH v2 public key structure” style=”fancy”]</p>
+<p>see <a href="http://security.stackexchange.com/questions/32768/converting-keys-between-openssl-and-openssh" target="_blank" rel="noopener">converting-keys-between-openssl-and-openssh</a><br><strong>Generate an RSA pair</strong><br>All the following methods give an RSA key pair in the same format</p>
+<ol>
+<li>With openssl (man genrsa)<br>openssl genrsa -out dummy-genrsa.pem 2048<br>In OpenSSL v1.0.1 genrsa is superseded by genpkey so this is the new way to do it (man genpkey):<br>openssl genpkey -algorithm RSA -out dummy-genpkey.pem -pkeyopt rsa_keygen_bits:2048</li>
+<li>With ssh-keygen<br>ssh-keygen -t rsa -b 2048 -f dummy-ssh-keygen.pem -N ‘’ -C “Test Key”</li>
+</ol>
+<p><strong>Converting DER to PEM</strong><br>If you have an RSA key pair in DER format, you may want to convert it to PEM to allow the format conversion below:<br>Generation:<br>openssl genpkey -algorithm RSA -out genpkey-dummy.cer -outform DER -pkeyopt rsa_keygen_bits:2048<br>Conversion:<br>openssl rsa -inform DER -outform PEM -in genpkey-dummy.cer -out dummy-der2pem.pem</p>
+<p><strong>Extract the public key from the PEM formatted RSA pair</strong></p>
+<ol>
+<li>in PEM format:<br>openssl rsa -in dummy-xxx.pem -pubout</li>
+<li>in OpenSSH v2 format see:<br>ssh-keygen -y -f dummy-xxx.pem</li>
+</ol>
+<p>[/su_spoiler]<br>[/su_accordion]</p>
+<p>其他一些有用链接<br>[su_accordion]<br>[su<em>spoiler title=”Other useful links” style=”fancy”]<br>[Public – Private key encryption using OpenSSL](<a href="http://www.devco.net/archives/2006/02/13/public" target="_blank" rel="noopener">http://www.devco.net/archives/2006/02/13/public</a></em>-_private_key_encryption_using_openssl.php)<br><a href="http://sysmic.org/dotclear/index.php?post/2010/03/24/Convert-keys-betweens-GnuPG%2C-OpenSsh-and-OpenSSL" target="_blank" rel="noopener">Convert keys between GnuPG, OpenSsh and OpenSSL</a><br><a href="https://gist.github.com/thwarted/1024558" target="_blank" rel="noopener">sshpub-to-rsa</a><br>[/su_spoiler]<br>[/su_accordion]</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/openssl/" rel="tag"># openssl</a>
+          
+            <a href="/tags/rsa/" rel="tag"># rsa</a>
+          
+            <a href="/tags/rsautl/" rel="tag"># rsautl</a>
+          
+            <a href="/tags/ssh-keygen/" rel="tag"># ssh-keygen</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2014/10/19/制作可引导的Windows安装U盘_移动硬盘/" rel="next" title="制作可引导的Windows安装U盘/移动硬盘">
+                <i class="fa fa-chevron-left"></i> 制作可引导的Windows安装U盘/移动硬盘
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2014/10/22/Android AVD 折腾记/" rel="prev" title="Android AVD 折腾记">
+                Android AVD 折腾记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Import-other-format-public-private-key-to-openssh-format-key"><span class="nav-number">1.</span> <span class="nav-text">Import other format (public/private) key to openssh format key</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#read-an-unencrypted-private-or-public-key-file-in-the-format-specified-by-the-m-option-and-print-an-OpenSSH-compatible-private-or-public-key-to-stdout"><span class="nav-number">2.</span> <span class="nav-text">read an unencrypted private (or public) key file in the format specified by the -m option and print an OpenSSH compatible private (or public) key to stdout</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Export-openssh-key-public-private-to-other-format"><span class="nav-number">3.</span> <span class="nav-text">Export openssh key (public/private) to other format</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#read-a-private-or-public-OpenSSH-key-file-and-print-to-stdout-the-key-in-one-of-the-formats-specified-by-the-m-option-The-default-export-format-is-“RFC4716’’"><span class="nav-number">4.</span> <span class="nav-text">read a private or public OpenSSH key file and print to stdout the key in one of the formats specified by the -m option. The default export format is “RFC4716’’.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#get-openssh-format-public-key-from-openssh-format-private-key"><span class="nav-number">5.</span> <span class="nav-text">get openssh format public key from openssh format private key</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NOTES"><span class="nav-number">6.</span> <span class="nav-text">NOTES</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SEE-ALSO"><span class="nav-number">7.</span> <span class="nav-text">SEE ALSO</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

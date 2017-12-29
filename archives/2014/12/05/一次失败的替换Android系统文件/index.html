@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="android,hierarchyviewer," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="在Android 5.0之前，root后经过一些操作就可以在真机上使用hierarchyviewer查看应用界面布局结构，非常实用的一项功能，但我用之前的那些步骤在新系统上操作时，到这里卡住了">
+<meta name="keywords" content="android,hierarchyviewer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次失败的替换Android系统文件">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2014/12/05/一次失败的替换Android系统文件/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="在Android 5.0之前，root后经过一些操作就可以在真机上使用hierarchyviewer查看应用界面布局结构，非常实用的一项功能，但我用之前的那些步骤在新系统上操作时，到这里卡住了">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一次失败的替换Android系统文件">
+<meta name="twitter:description" content="在Android 5.0之前，root后经过一些操作就可以在真机上使用hierarchyviewer查看应用界面布局结构，非常实用的一项功能，但我用之前的那些步骤在新系统上操作时，到这里卡住了">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2014/12/05/一次失败的替换Android系统文件/"/>
+
+
+
+
+
+  <title>一次失败的替换Android系统文件 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2014/12/05/一次失败的替换Android系统文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">一次失败的替换Android系统文件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-12-05T09:20:49+00:00">
+                2014-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在Android 5.0之前，root后经过<a href="http://blog.apkudo.com/2012/07/26/enabling-hierarchyviewer-on-rooted-android-devices/" target="_blank" rel="noopener">一些操作</a>就可以在真机上使用hierarchyviewer查看应用界面布局结构，非常实用的一项功能，但我用之前的那些步骤在新系统上操作时，到这里卡住了</p>
+<a id="more"></a>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">E:\hierarchyviewer_enable&gt;java -jar D:\android\decompile\baksmali.jar -x -a 21 -c /system/framework/core-libart.jar:/system/framework/conscrypt.jar:/system/framework/okhttp.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/apache-xml.jar  ./system/framework/services.odex</span><br><span class="line">Exception in thread "main" org.jf.util.ExceptionWithContext: .\system\framework\services.odex is not an apk, dex file or odex file.</span><br><span class="line">        at org.jf.dexlib2.DexFileFactory.loadDexFile(DexFileFactory.java:111)</span><br><span class="line">        at org.jf.dexlib2.DexFileFactory.loadDexFile(DexFileFactory.java:54)</span><br><span class="line">        at org.jf.baksmali.main.main(main.java:252)</span><br></pre></td></tr></table></figure>
+<p>大概是因为Android 5.0变化了很多，使用的ART代替了Dalvik，并且/system/framework下的services.jar/services.odex位置也变了，原来services.odex在/system/framework下，现在位于/system/framework/arm，或者可能是smali/baksmali不支持新的odex格式，还有待继续研究。</p>
+<p>后来我就想在Android源码里编译，然后替换手机里的services.jar/odex，使用和我手机匹配的combo（lunch之后选择”13.aosp_hammerhead-userdebug”），初始编译成功，接着我修改WindowManagerService.java之后再增量编译。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$ git diff</span><br><span class="line">diff --git a/services/core/java/com/android/server/wm/WindowManagerService.java b/services/core/java/com/android/server/wm/WindowManagerService.java</span><br><span class="line">index 1c03ced..6aad481 100644</span><br><span class="line">--- a/services/core/java/com/android/server/wm/WindowManagerService.java</span><br><span class="line">+++ b/services/core/java/com/android/server/wm/WindowManagerService.java</span><br><span class="line">@@ -6648,8 +6648,9 @@ public class WindowManagerService extends IWindowManager.Stub</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     private boolean isSystemSecure() &#123;</span><br><span class="line">-        return "1".equals(SystemProperties.get(SYSTEM_SECURE, "1")) &amp;&amp;</span><br><span class="line">-                "0".equals(SystemProperties.get(SYSTEM_DEBUGGABLE, "0"));</span><br><span class="line">+        //return "1".equals(SystemProperties.get(SYSTEM_SECURE, "1")) &amp;&amp;</span><br><span class="line">+        //        "0".equals(SystemProperties.get(SYSTEM_DEBUGGABLE, "0"));</span><br><span class="line">+        return false;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     /**</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$</span><br></pre></td></tr></table></figure>
+<p>使用mma编译</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line">liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$ mm WITH_DEXPREOPT=true</span><br><span class="line">...................</span><br><span class="line">target Dex: framework</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/framework_intermediates/classes.dex</span><br><span class="line">target Jar: framework (out/target/common/obj/JAVA_LIBRARIES/framework_intermediates/javalib.jar)</span><br><span class="line">Install: out/target/product/hammerhead/system/framework/framework.jar</span><br><span class="line">make: *** No rule to make target `out/host/linux-x86/bin/dex2oatd', needed by `out/target/product/hammerhead/dex_bootjars/system/framework/arm/boot.art'.  Stop.</span><br><span class="line">make: Leaving directory `/home/liudonghua/android'</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">### make failed to build some targets (53 seconds) ####</span></span></span><br><span class="line"></span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$ ll ~/android/out/host/linux-x86/bin/dex2oatd</span><br><span class="line">-rwxrwxr-x 1 liudonghua liudonghua 3883976 Dec  5 14:40 /home/liudonghua/android/out/host/linux-x86/bin/dex2oatd*</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$ ll ~/android/out/target/product/hammerhead/dex_bootjars/system/framework/arm/boot.art</span><br><span class="line">-rw-r--r-- 1 liudonghua liudonghua 10338304 Dec  5 14:40 /home/liudonghua/android/out/target/product/hammerhead/dex_bootjars/system/framework/arm/boot.art</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$ mma WITH_DEXPREOPT=true</span><br><span class="line">...................</span><br><span class="line">target Java: services.accessibility (out/target/common/obj/JAVA_LIBRARIES/services.accessibility_intermediates/classes)</span><br><span class="line">Note: frameworks/base/services/accessibility/java/com/android/server/accessibility/AccessibilityInputFilter.java uses or overrides a deprecated API.</span><br><span class="line">Note: Recompile with -Xlint:deprecation for details.</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.accessibility_intermediates/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.accessibility_intermediates/emma_out/lib/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.accessibility_intermediates/classes.jar</span><br><span class="line">target Static Jar: services.accessibility (out/target/common/obj/JAVA_LIBRARIES/services.accessibility_intermediates/javalib.jar)</span><br><span class="line">target Java: services.appwidget (out/target/common/obj/JAVA_LIBRARIES/services.appwidget_intermediates/classes)</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.appwidget_intermediates/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.appwidget_intermediates/emma_out/lib/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.appwidget_intermediates/classes.jar</span><br><span class="line">target Static Jar: services.appwidget (out/target/common/obj/JAVA_LIBRARIES/services.appwidget_intermediates/javalib.jar)</span><br><span class="line">target Java: services.backup (out/target/common/obj/JAVA_LIBRARIES/services.backup_intermediates/classes)</span><br><span class="line">Note: frameworks/base/services/backup/java/com/android/server/backup/BackupManagerService.java uses or overrides a deprecated API.</span><br><span class="line">Note: Recompile with -Xlint:deprecation for details.</span><br><span class="line">Note: frameworks/base/services/backup/java/com/android/server/backup/BackupManagerService.java uses unchecked or unsafe operations.</span><br><span class="line">Note: Recompile with -Xlint:unchecked for details.</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.backup_intermediates/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.backup_intermediates/emma_out/lib/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.backup_intermediates/classes.jar</span><br><span class="line">target Static Jar: services.backup (out/target/common/obj/JAVA_LIBRARIES/services.backup_intermediates/javalib.jar)</span><br><span class="line">target Java: services.print (out/target/common/obj/JAVA_LIBRARIES/services.print_intermediates/classes)</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.print_intermediates/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.print_intermediates/emma_out/lib/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.print_intermediates/classes.jar</span><br><span class="line">target Static Jar: services.print (out/target/common/obj/JAVA_LIBRARIES/services.print_intermediates/javalib.jar)</span><br><span class="line">target Java: services.restrictions (out/target/common/obj/JAVA_LIBRARIES/services.restrictions_intermediates/classes)</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.restrictions_intermediates/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.restrictions_intermediates/emma_out/lib/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.restrictions_intermediates/classes.jar</span><br><span class="line">target Static Jar: services.restrictions (out/target/common/obj/JAVA_LIBRARIES/services.restrictions_intermediates/javalib.jar)</span><br><span class="line">target Java: services.usage (out/target/common/obj/JAVA_LIBRARIES/services.usage_intermediates/classes)</span><br><span class="line">Note: frameworks/base/services/usage/java/com/android/server/usage/UsageStatsDatabase.java uses unchecked or unsafe operations.</span><br><span class="line">Note: Recompile with -Xlint:unchecked for details.</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.usage_intermediates/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.usage_intermediates/emma_out/lib/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.usage_intermediates/classes.jar</span><br><span class="line">target Static Jar: services.usage (out/target/common/obj/JAVA_LIBRARIES/services.usage_intermediates/javalib.jar)</span><br><span class="line">target Java: services.usb (out/target/common/obj/JAVA_LIBRARIES/services.usb_intermediates/classes)</span><br><span class="line">Note: Some input files use or override a deprecated API.</span><br><span class="line">Note: Recompile with -Xlint:deprecation for details.</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.usb_intermediates/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.usb_intermediates/emma_out/lib/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.usb_intermediates/classes.jar</span><br><span class="line">target Static Jar: services.usb (out/target/common/obj/JAVA_LIBRARIES/services.usb_intermediates/javalib.jar)</span><br><span class="line">target Java: services.voiceinteraction (out/target/common/obj/JAVA_LIBRARIES/services.voiceinteraction_intermediates/classes)</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.voiceinteraction_intermediates/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.voiceinteraction_intermediates/emma_out/lib/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services.voiceinteraction_intermediates/classes.jar</span><br><span class="line">target Static Jar: services.voiceinteraction (out/target/common/obj/JAVA_LIBRARIES/services.voiceinteraction_intermediates/javalib.jar)</span><br><span class="line">target Java: services (out/target/common/obj/JAVA_LIBRARIES/services_intermediates/classes)</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services_intermediates/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services_intermediates/emma_out/lib/classes-jarjar.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services_intermediates/classes.jar</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services_intermediates/noproguard.classes.jar</span><br><span class="line">target Dex: services</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/services_intermediates/classes.dex</span><br><span class="line">target Jar: services (out/target/common/obj/JAVA_LIBRARIES/services_intermediates/javalib.jar)</span><br><span class="line">Install: out/target/product/hammerhead/system/framework/services.jar</span><br><span class="line">Dexpreopt Jar: services (out/target/product/hammerhead/obj/JAVA_LIBRARIES/services_intermediates/arm/javalib.odex)</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1786] out/host/linux-x86/bin/dex2oatd --runtime-arg -Xms64m --runtime-arg -Xmx512m --boot-image=out/target/product/hammerhead/dex_bootjars/system/framework/boot.art --dex-file=out/target/common/obj/JAVA_LIBRARIES/services_intermediates/javalib.jar --dex-location=/system/framework/services.jar --oat-file=out/target/product/hammerhead/obj/JAVA_LIBRARIES/services_intermediates/arm/javalib.odex --android-root=out/target/product/hammerhead/system --instruction-set=arm --instruction-set-variant=krait --instruction-set-features=default --include-patch-information --runtime-arg -Xnorelocate --no-include-debug-symbols</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406] compiler [Exclusive time] [Total time]</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]   0.121s dex2oat Setup</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]   0.002s/1.493s dex2oat Compile</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]     0.092s Resolve MethodsAndFields</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]     0.349s Verify Dex File</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]     0.002s InitializeNoClinit</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]     1.046s Compile Dex File</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]   0s/0.095s dex2oat Oat</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]     0s/0.028s dex2oat OatWriter</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]       0s Loading image checksum</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]       0s InitOatHeader</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]       0s InitOatDexFiles</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]       0s InitDexFiles</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]       0.004s InitOatClasses</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]       0.012s InitOatMaps</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]       0s InitOatCode</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]       0.011s InitOatCodeDexFiles</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]     0.066s dex2oat Write ELF</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]   0.166s dex2oat Flush ELF</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406] compiler: end, 1.877s</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1406]</span><br><span class="line">dex2oatd I 28753 28753 art/dex2oat/dex2oat.cc:1595] dex2oat took 1.887s (threads: 4) arena alloc=9MB java alloc=4MB native alloc=17MB free=3MB</span><br><span class="line">Install: out/target/product/hammerhead/system/framework/arm/services.odex</span><br><span class="line">............</span><br><span class="line">target Dex: wm</span><br><span class="line">Copying: out/target/common/obj/JAVA_LIBRARIES/wm_intermediates/classes.dex</span><br><span class="line">target Jar: wm (out/target/common/obj/JAVA_LIBRARIES/wm_intermediates/javalib.jar)</span><br><span class="line">Install: out/target/product/hammerhead/system/framework/wm.jar</span><br><span class="line">Dexpreopt Jar: wm (out/target/product/hammerhead/obj/JAVA_LIBRARIES/wm_intermediates/arm/javalib.odex)</span><br><span class="line">dex2oatd I 29202 29202 art/dex2oat/dex2oat.cc:1786] out/host/linux-x86/bin/dex2oatd --runtime-arg -Xms64m --runtime-arg -Xmx512m --boot-image=out/target/product/hammerhead/dex_bootjars/system/framework/boot.art --dex-file=out/target/common/obj/JAVA_LIBRARIES/wm_intermediates/javalib.jar --dex-location=/system/framework/wm.jar --oat-file=out/target/product/hammerhead/obj/JAVA_LIBRARIES/wm_intermediates/arm/javalib.odex --android-root=out/target/product/hammerhead/system --instruction-set=arm --instruction-set-variant=krait --instruction-set-features=default --include-patch-information --runtime-arg -Xnorelocate --no-include-debug-symbols</span><br><span class="line">dex2oatd I 29202 29202 art/dex2oat/dex2oat.cc:1595] dex2oat took 85.975ms (threads: 4) arena alloc=36KB java alloc=3KB native alloc=127KB free=1436KB</span><br><span class="line">Install: out/target/product/hammerhead/system/framework/arm/wm.odex</span><br><span class="line">make: Leaving directory `/home/liudonghua/android'</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">### make completed successfully (51:09 (mm:ss)) ####</span></span></span><br><span class="line"></span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/frameworks/base$</span><br></pre></td></tr></table></figure>
+<p>之后把services.jar/services.odex取出来替换系统原来的文件（注意修复权限），但这次不像之前系统一样会自动给你重启然后重建dalvik-cache，我手动重启了也效果，也确认编译出的odex包含修改的代码（编译生成的中间文件在out/target/common/obj/JAVA_LIBRARIES/services_intermediates），后来尝试删除/data/dalvik-cache/arm/system@framework@services.jar@classes.dex想让他重建这个文件，但重启之后，过了很长时间始终在加载界面不动，最后就没办法，查看日志相关错误显示如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">I/dex2oat ( 8445): /system/bin/dex2oat --zip-fd=6 --zip-location=/system/framework/services.jar --oat-fd=7 --oat-location=/data/dalvik-cache/arm/system@framework@services.jar@classes.dex --instruction-set=arm --instruction-set-features=div --runtime-arg -Xms64m --runtime-arg -Xmx512m</span><br><span class="line">E/dex2oat ( 8445): Failed to open dex from file descriptor for zip file '/system/framework/services.jar': Entry not found</span><br><span class="line">I/dex2oat ( 8445): dex2oat took 248.448ms (threads: 4)</span><br><span class="line">E/installd(  202): DexInv: --- END '/system/framework/services.jar' --- status=0x0100, process failed</span><br><span class="line">I/InstallerConnection( 8430): disconnecting...</span><br><span class="line">E/installd(  202): eof</span><br><span class="line">E/installd(  202): failed to read size</span><br><span class="line">I/installd(  202): closing connection</span><br><span class="line">E/Zygote  ( 8430): Zygote died with exception</span><br><span class="line">E/Zygote  ( 8430): java.lang.RuntimeException: Missing class when invoking static main com.android.server.SystemServer</span><br><span class="line">E/Zygote  ( 8430):      at com.android.internal.os.RuntimeInit.invokeStaticMain(RuntimeInit.java:204)</span><br><span class="line">E/Zygote  ( 8430):      at com.android.internal.os.RuntimeInit.applicationInit(RuntimeInit.java:321)</span><br><span class="line">E/Zygote  ( 8430):      at com.android.internal.os.RuntimeInit.zygoteInit(RuntimeInit.java:276)</span><br><span class="line">E/Zygote  ( 8430):      at com.android.internal.os.ZygoteInit.handleSystemServerProcess(ZygoteInit.java:537)</span><br><span class="line">E/Zygote  ( 8430):      at com.android.internal.os.ZygoteInit.startSystemServer(ZygoteInit.java:624)</span><br><span class="line">E/Zygote  ( 8430):      at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:686)</span><br><span class="line">E/Zygote  ( 8430): Caused by: java.lang.ClassNotFoundException: com.android.server.SystemServer</span><br><span class="line">E/Zygote  ( 8430):      at java.lang.Class.classForName(Native Method)</span><br><span class="line">E/Zygote  ( 8430):      at java.lang.Class.forName(Class.java:308)</span><br><span class="line">E/Zygote  ( 8430):      at com.android.internal.os.RuntimeInit.invokeStaticMain(RuntimeInit.java:202)</span><br><span class="line">E/Zygote  ( 8430):      ... 5 more</span><br><span class="line">E/Zygote  ( 8430): Caused by: java.lang.ClassNotFoundException: Didn't find class "com.android.server.SystemServer" on path: DexPathList[[zip file "/system/framework/services.jar", zip file "/system/framework/ethernet-service.jar", zip file "/system/framework/wifi-service.jar"],nativeLibraryDirectories=[/vendor/lib, /system/lib]]</span><br><span class="line">E/Zygote  ( 8430):      at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)</span><br><span class="line">E/Zygote  ( 8430):      at java.lang.ClassLoader.loadClass(ClassLoader.java:511)</span><br><span class="line">E/Zygote  ( 8430):      at java.lang.ClassLoader.loadClass(ClassLoader.java:469)</span><br><span class="line">E/Zygote  ( 8430):      ... 8 more</span><br><span class="line">E/Zygote  ( 8430):      Suppressed: java.io.IOException: Zip archive '/system/framework/services.jar' doesn't contain classes.dex (error msg: Entry not found)</span><br><span class="line">E/Zygote  ( 8430):              at dalvik.system.DexFile.openDexFileNative(Native Method)</span><br><span class="line">E/Zygote  ( 8430):              at dalvik.system.DexFile.openDexFile(DexFile.java:295)</span><br><span class="line">E/Zygote  ( 8430):              at dalvik.system.DexFile.&lt;init&gt;(DexFile.java:80)</span><br><span class="line">E/Zygote  ( 8430):              at dalvik.system.DexFile.&lt;init&gt;(DexFile.java:59)</span><br><span class="line">E/Zygote  ( 8430):              at dalvik.system.DexPathList.loadDexFile(DexPathList.java:262)</span><br><span class="line">E/Zygote  ( 8430):              at dalvik.system.DexPathList.makeDexElements(DexPathList.java:231)</span><br><span class="line">E/Zygote  ( 8430):              at dalvik.system.DexPathList.&lt;init&gt;(DexPathList.java:109)</span><br><span class="line">E/Zygote  ( 8430):              at dalvik.system.BaseDexClassLoader.&lt;init&gt;(BaseDexClassLoader.java:48)</span><br><span class="line">E/Zygote  ( 8430):              at dalvik.system.PathClassLoader.&lt;init&gt;(PathClassLoader.java:38)</span><br><span class="line">E/Zygote  ( 8430):              at com.android.internal.os.ZygoteInit.handleSystemServerProcess(ZygoteInit.java:530)</span><br><span class="line">E/Zygote  ( 8430):              ... 2 more</span><br><span class="line">E/Zygote  ( 8430):      Caused by: java.io.IOException: Failed to open oat file from dex location '/system/framework/services.jar'</span><br><span class="line">E/Zygote  ( 8430):              ... 12 more</span><br><span class="line">E/Zygote  ( 8430):      Caused by: java.io.IOException: Failed to open oat file from /system/framework/arm/services.odex (error Invalid oat magic for '/system/framework/arm/services.odex') (no dalvik_cache availible) and relocation failed.</span><br><span class="line">E/Zygote  ( 8430):              ... 12 more</span><br><span class="line">E/Zygote  ( 8430):      Caused by: java.io.IOException:</span><br><span class="line">E/Zygote  ( 8430):              ... 12 more</span><br><span class="line">E/Zygote  ( 8430):      Suppressed: java.lang.ClassNotFoundException: Didn't find class "com.android.server.SystemServer" on path: DexPathList[[directory "."],nativeLibraryDirectories=[/vendor/lib, /system/lib]]</span><br><span class="line">E/Zygote  ( 8430):              at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)</span><br><span class="line">E/Zygote  ( 8430):              at java.lang.ClassLoader.loadClass(ClassLoader.java:511)</span><br><span class="line">E/Zygote  ( 8430):              at java.lang.ClassLoader.loadClass(ClassLoader.java:504)</span><br><span class="line">E/Zygote  ( 8430):              ... 9 more</span><br><span class="line">E/Zygote  ( 8430):              Suppressed: java.lang.ClassNotFoundException: com.android.server.SystemServer</span><br><span class="line">E/Zygote  ( 8430):                      at java.lang.Class.classForName(Native Method)</span><br><span class="line">E/Zygote  ( 8430):                      at java.lang.BootClassLoader.findClass(ClassLoader.java:781)</span><br><span class="line">E/Zygote  ( 8430):                      at java.lang.BootClassLoader.loadClass(ClassLoader.java:841)</span><br><span class="line">E/Zygote  ( 8430):                      at java.lang.ClassLoader.loadClass(ClassLoader.java:504)</span><br><span class="line">E/Zygote  ( 8430):                      ... 10 more</span><br><span class="line">E/Zygote  ( 8430):              Caused by: java.lang.NoClassDefFoundError: Class not found using the boot class loader; no stack available</span><br><span class="line">D/AndroidRuntime( 8430): Shutting down VM</span><br><span class="line">E/AndroidRuntime( 8430): *** FATAL EXCEPTION IN SYSTEM PROCESS: main</span><br><span class="line">E/AndroidRuntime( 8430): java.lang.RuntimeException: Missing class when invoking static main com.android.server.SystemServer</span><br><span class="line">E/AndroidRuntime( 8430):        at com.android.internal.os.RuntimeInit.invokeStaticMain(RuntimeInit.java:204)</span><br><span class="line">E/AndroidRuntime( 8430):        at com.android.internal.os.RuntimeInit.applicationInit(RuntimeInit.java:321)</span><br><span class="line">E/AndroidRuntime( 8430):        at com.android.internal.os.RuntimeInit.zygoteInit(RuntimeInit.java:276)</span><br><span class="line">E/AndroidRuntime( 8430):        at com.android.internal.os.ZygoteInit.handleSystemServerProcess(ZygoteInit.java:537)</span><br><span class="line">E/AndroidRuntime( 8430):        at com.android.internal.os.ZygoteInit.startSystemServer(ZygoteInit.java:624)</span><br><span class="line">E/AndroidRuntime( 8430):        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:686)</span><br><span class="line">E/AndroidRuntime( 8430): Caused by: java.lang.ClassNotFoundException: com.android.server.SystemServer</span><br><span class="line">E/AndroidRuntime( 8430):        at java.lang.Class.classForName(Native Method)</span><br><span class="line">E/AndroidRuntime( 8430):        at java.lang.Class.forName(Class.java:308)</span><br><span class="line">E/AndroidRuntime( 8430):        at com.android.internal.os.RuntimeInit.invokeStaticMain(RuntimeInit.java:202)</span><br><span class="line">E/AndroidRuntime( 8430):        ... 5 more</span><br><span class="line">E/AndroidRuntime( 8430): Caused by: java.lang.ClassNotFoundException: Didn't find class "com.android.server.SystemServer" on path: DexPathList[[zip file "/system/framework/services.jar", zip file "/system/framework/ethernet-service.jar", zip file "/system/framework/wifi-service.jar"],nativeLibraryDirectories=[/vendor/lib, /system/lib]]</span><br><span class="line">E/AndroidRuntime( 8430):        at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)</span><br><span class="line">E/AndroidRuntime( 8430):        at java.lang.ClassLoader.loadClass(ClassLoader.java:511)</span><br><span class="line">E/AndroidRuntime( 8430):        at java.lang.ClassLoader.loadClass(ClassLoader.java:469)</span><br><span class="line">E/AndroidRuntime( 8430):        ... 8 more</span><br><span class="line">E/AndroidRuntime( 8430):        Suppressed: java.io.IOException: Zip archive '/system/framework/services.jar' doesn't contain classes.dex (error msg: Entry not found)</span><br><span class="line">E/AndroidRuntime( 8430):                at dalvik.system.DexFile.openDexFileNative(Native Method)</span><br><span class="line">E/AndroidRuntime( 8430):                at dalvik.system.DexFile.openDexFile(DexFile.java:295)</span><br><span class="line">E/AndroidRuntime( 8430):                at dalvik.system.DexFile.&lt;init&gt;(DexFile.java:80)</span><br><span class="line">E/AndroidRuntime( 8430):                at dalvik.system.DexFile.&lt;init&gt;(DexFile.java:59)</span><br><span class="line">E/AndroidRuntime( 8430):                at dalvik.system.DexPathList.loadDexFile(DexPathList.java:262)</span><br><span class="line">E/AndroidRuntime( 8430):                at dalvik.system.DexPathList.makeDexElements(DexPathList.java:231)</span><br><span class="line">E/AndroidRuntime( 8430):                at dalvik.system.DexPathList.&lt;init&gt;(DexPathList.java:109)</span><br><span class="line">E/AndroidRuntime( 8430):                at dalvik.system.BaseDexClassLoader.&lt;init&gt;(BaseDexClassLoader.java:48)</span><br><span class="line">E/AndroidRuntime( 8430):                at dalvik.system.PathClassLoader.&lt;init&gt;(PathClassLoader.java:38)</span><br><span class="line">E/AndroidRuntime( 8430):                at com.android.internal.os.ZygoteInit.handleSystemServerProcess(ZygoteInit.java:530)</span><br><span class="line">E/AndroidRuntime( 8430):                ... 2 more</span><br><span class="line">E/AndroidRuntime( 8430):        Caused by: java.io.IOException: Failed to open oat file from dex location '/system/framework/services.jar'</span><br><span class="line">E/AndroidRuntime( 8430):                ... 12 more</span><br><span class="line">E/AndroidRuntime( 8430):        Caused by: java.io.IOException: Failed to open oat file from /system/framework/arm/services.odex (error Invalid oat magic for '/system/framework/arm/services.odex') (no dalvik_cache availible) and relocation failed.</span><br><span class="line">E/AndroidRuntime( 8430):                ... 12 more</span><br><span class="line">E/AndroidRuntime( 8430):        Caused by: java.io.IOException:</span><br><span class="line">E/AndroidRuntime( 8430):                ... 12 more</span><br><span class="line">E/AndroidRuntime( 8430):        Suppressed: java.lang.ClassNotFoundException: Didn't find class "com.android.server.SystemServer" on path: DexPathList[[directory "."],nativeLibraryDirectories=[/vendor/lib, /system/lib]]</span><br><span class="line">E/AndroidRuntime( 8430):                at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)</span><br><span class="line">E/AndroidRuntime( 8430):                at java.lang.ClassLoader.loadClass(ClassLoader.java:511)</span><br><span class="line">E/AndroidRuntime( 8430):                at java.lang.ClassLoader.loadClass(ClassLoader.java:504)</span><br><span class="line">E/AndroidRuntime( 8430):                ... 9 more</span><br><span class="line">E/AndroidRuntime( 8430):                Suppressed: java.lang.ClassNotFoundException: com.android.server.SystemServer</span><br><span class="line">E/AndroidRuntime( 8430):                        at java.lang.Class.classForName(Native Method)</span><br><span class="line">E/AndroidRuntime( 8430):                        at java.lang.BootClassLoader.findClass(ClassLoader.java:781)</span><br><span class="line">E/AndroidRuntime( 8430):                        at java.lang.BootClassLoader.loadClass(ClassLoader.java:841)</span><br><span class="line">E/AndroidRuntime( 8430):                        at java.lang.ClassLoader.loadClass(ClassLoader.java:504)</span><br><span class="line">E/AndroidRuntime( 8430):                        ... 10 more</span><br><span class="line">E/AndroidRuntime( 8430):                Caused by: java.lang.NoClassDefFoundError: Class not found using the boot class loader; no stack available</span><br><span class="line">E/AndroidRuntime( 8430): Error reporting crash</span><br><span class="line">E/AndroidRuntime( 8430): java.lang.NullPointerException: Attempt to invoke interface method 'void android.app.IActivityManager.handleApplicationCrash(android.os.IBinder, android.app.ApplicationErrorReport$CrashInfo)' on a null object reference</span><br><span class="line">E/AndroidRuntime( 8430):        at com.android.internal.os.RuntimeInit$UncaughtHandler.uncaughtException(RuntimeInit.java:89)</span><br><span class="line">E/AndroidRuntime( 8430):        at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:693)</span><br><span class="line">E/AndroidRuntime( 8430):        at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:690)</span><br><span class="line">I/Process ( 8430): Sending signal. PID: 8430 SIG: 9</span><br><span class="line">E/Zygote  ( 8205): Exit zygote because system server (8430) has terminated</span><br></pre></td></tr></table></figure>
+<p>彻底没辙了，看样子还有待深入研究，暂时只能先恢复吧，不然没手机用了，此时adb shell进去，发现su执行不生效，心中咯噔一下，不好，难道是要重刷系统，oh，不！最后还好连蒙带猜进到TWRP recovery(装<a href="http://forum.xda-developers.com/google-nexus-5/orig-development/mod-multirom-v24-t2571011" target="_blank" rel="noopener">Multirom</a>自带的)模式，挂载system分区，adb shell进去就已经是root权限，于是恢复之前备份的系统文件（这里可以看出备份重要文件的重要性了！！），还得注意一下权限是不是644，权限不对也进不了系统。最终终于进去系统了。</p>
+<p>写这篇文章主要是记录这些错误信息，方便后面查阅，并且也为有类似想法的做次小白鼠，证明这条路暂时走不通！！！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/hierarchyviewer/" rel="tag"># hierarchyviewer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2014/12/05/Android 5.0源码编译tcpdump/" rel="next" title="Android 5.0源码编译tcpdump">
+                <i class="fa fa-chevron-left"></i> Android 5.0源码编译tcpdump
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2014/12/08/Windows和Linux通过主机名互相访问/" rel="prev" title="Windows和Linux通过主机名互相访问">
+                Windows和Linux通过主机名互相访问 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

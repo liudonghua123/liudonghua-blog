@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="gradle,maven," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="[toc] **这里记录一些maven和gradle中可能会经常用到的东西…Maven下载依赖项源码和javadoc**">
+<meta name="keywords" content="gradle,maven">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven和Gradle一些常用的东西">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2014/10/24/Maven和Gradle一些常用的东西/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="[toc] **这里记录一些maven和gradle中可能会经常用到的东西…Maven下载依赖项源码和javadoc**">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/eclipse_maven_settings-293x300.png">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Maven和Gradle一些常用的东西">
+<meta name="twitter:description" content="[toc] **这里记录一些maven和gradle中可能会经常用到的东西…Maven下载依赖项源码和javadoc**">
+<meta name="twitter:image" content="http://65031141.ynu.edu.cn/resources/2014/10/eclipse_maven_settings-293x300.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2014/10/24/Maven和Gradle一些常用的东西/"/>
+
+
+
+
+
+  <title>Maven和Gradle一些常用的东西 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2014/10/24/Maven和Gradle一些常用的东西/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Maven和Gradle一些常用的东西</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-10-24T09:49:07+00:00">
+                2014-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[toc]</p>
+<h6 id="这里记录一些maven和gradle中可能会经常用到的东西…"><a href="#这里记录一些maven和gradle中可能会经常用到的东西…" class="headerlink" title="**这里记录一些maven和gradle中可能会经常用到的东西…"></a>**这里记录一些maven和gradle中可能会经常用到的东西…</h6><p>Maven下载依赖项源码和javadoc**</p>
+<a id="more"></a>
+<p>Maven中定义的依赖库默认是不下载源码和javadoc的，如果需要下载源码或者javadoc，可以使用以下几种方式</p>
+<ol>
+<li>可以在命令行上参数方式<br>同时下载源码和javadoc</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn depdency:resolve -DdownloadSources -DdownloadJavadocs</span><br></pre></td></tr></table></figure>
+<p>只下载源码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn dependency:sources</span><br></pre></td></tr></table></figure>
+<p>只下载javadoc</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn dependency:resolve -Dclassifier=javadoc</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在项目pom.xml文件中添加如下配置</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">    &lt;plugins&gt;</span><br><span class="line">        &lt;plugin&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;</span><br><span class="line">            &lt;configuration&gt;</span><br><span class="line">                &lt;downloadSources&gt;true&lt;/downloadSources&gt;</span><br><span class="line">                &lt;downloadJavadocs&gt;true&lt;/downloadJavadocs&gt;</span><br><span class="line">            &lt;/configuration&gt;</span><br><span class="line">        &lt;/plugin&gt;</span><br><span class="line">    &lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在更高层次全局设置(~/.m2/settings.xml).</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;profiles&gt;</span><br><span class="line">    &lt;profile&gt;</span><br><span class="line">        &lt;id&gt;downloadSources&lt;/id&gt;</span><br><span class="line">        &lt;properties&gt;</span><br><span class="line">            &lt;downloadSources&gt;true&lt;/downloadSources&gt;</span><br><span class="line">            &lt;downloadJavadocs&gt;true&lt;/downloadJavadocs&gt;</span><br><span class="line">        &lt;/properties&gt;</span><br><span class="line">    &lt;/profile&gt;</span><br><span class="line">&lt;/profiles&gt;</span><br><span class="line"></span><br><span class="line">&lt;activeProfiles&gt;</span><br><span class="line">    &lt;activeProfile&gt;downloadSources&lt;/activeProfile&gt;</span><br><span class="line">&lt;/activeProfiles&gt;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在Eclipse的maven插件设置中设置，如下图所示<br><a href="/resources/2014/10/eclipse_maven_settings.png"><img src="/resources/2014/10/eclipse_maven_settings-293x300.png" alt="eclipse_maven_settings"></a></li>
+</ol>
+<h6 id="Maven创建web工程"><a href="#Maven创建web工程" class="headerlink" title="Maven创建web工程"></a><strong>Maven创建web工程</strong></h6><p>使用如下命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn archetype:generate -DgroupId=&#123;project-packaging&#125; -DartifactId=&#123;project-name&#125; -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false</span><br></pre></td></tr></table></figure>
+<p>进一步使用以下命令可以生成eclipse java web工程项目，并且下载依赖项，然后就可以在eclipse中导入已存在的普通eclipse项目。<br>或者也可以不执行以下命令，直接在eclipse中导入maven项目。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn eclipse:eclipse -Dwtpversion=2.0</span><br></pre></td></tr></table></figure>
+<p>mvn eclipse:eclipse 把maven项目转换成eclipse项目，”-Dwtpversion=2.0”是指定转换成eclipse web项目。</p>
+<h6 id="Gradle中使用provided-scope的depedency"><a href="#Gradle中使用provided-scope的depedency" class="headerlink" title="Gradle中使用provided scope的depedency"></a><strong>Gradle中使用provided scope的depedency</strong></h6><p>目前官方暂时不支持，见<a href="https://issues.gradle.org/browse/GRADLE-784" target="_blank" rel="noopener">Provide a ‘provided’ configuration</a>，不过可以通过以下方式，在gradle中添加</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: 'eclipse'  // Eclipse users only</span><br><span class="line"></span><br><span class="line">configurations &#123;</span><br><span class="line">    provided</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sourceSets &#123;</span><br><span class="line">    main.compileClasspath += configurations.provided</span><br><span class="line">    test.compileClasspath += configurations.provided</span><br><span class="line">    test.runtimeClasspath += configurations.provided</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">eclipse.classpath.plusConfigurations += configurations.provided  // Eclipse users only</span><br></pre></td></tr></table></figure>
+<p>第一行和最后一行仅针对eclipse适用</p>
+<h6 id="Gradle下载依赖项源码和javadoc"><a href="#Gradle下载依赖项源码和javadoc" class="headerlink" title="Gradle下载依赖项源码和javadoc"></a><strong>Gradle下载依赖项源码和javadoc</strong></h6><p>eclipse中通过eclipse插件下载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: 'java'</span><br><span class="line">apply plugin: 'eclipse'</span><br><span class="line"></span><br><span class="line">eclipse &#123;</span><br><span class="line">    classpath &#123;</span><br><span class="line">       downloadSources=true</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>intellij中通过idea插件下载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: 'groovy'</span><br><span class="line">apply plugin: 'idea'</span><br><span class="line"></span><br><span class="line">repositories &#123;</span><br><span class="line">    mavenCentral()</span><br><span class="line">    mavenRepo name: "Grails", url: "http://repo.grails.org/grails/repo/"</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    groovy 'org.codehaus.groovy:groovy-all:2.0.4'</span><br><span class="line">    compile 'org.slf4j:slf4j-log4j12:1.6.6', 'postgresql:postgresql:9.1-901.jdbc4', 'net.sourceforge.nekohtml:nekohtml:1.9.16'</span><br><span class="line">    ['core', 'hibernate', 'plugin-datasource', 'plugin-domain-class'].each &#123; plugin -&gt;</span><br><span class="line">        compile "org.grails:grails-$plugin:2.1.0"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">idea &#123;</span><br><span class="line">    module &#123;</span><br><span class="line">        downloadJavadoc = true</span><br><span class="line">        downloadSources = true</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Fat Jar Option (http://docs.codehaus.org/display/GRADLE/Cookbook#Cookbook-Creatingafatjar)</span><br><span class="line">jar &#123;</span><br><span class="line">    from &#123; configurations.compile.collect &#123; it.isDirectory() ? it : zipTree(it) &#125; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task wrapper(type: Wrapper) &#123;</span><br><span class="line">    gradleVersion = '1.0'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><strong>参考资料</strong></h6><p><a href="http://stackoverflow.com/questions/5780758/maven-always-download-sources-and-javadocs" target="_blank" rel="noopener">maven-always-download-sources-and-javadocs</a><br><a href="http://stackoverflow.com/questions/310720/get-source-jar-files-attached-to-eclipse-for-maven-managed-dependencies" target="_blank" rel="noopener">get-source-jar-files-attached-to-eclipse-for-maven-managed-dependencies</a><br><a href="http://www.mkyong.com/maven/how-to-create-a-web-application-project-with-maven/" target="_blank" rel="noopener">how-to-create-a-web-application-project-with-maven</a><br><a href="http://stackoverflow.com/questions/18738888/how-to-use-provided-scope-for-jar-file-in-gradle-build" target="_blank" rel="noopener">how-to-use-provided-scope-for-jar-file-in-gradle-build</a><br><a href="http://www.sinking.in/blog/provided-scope-in-gradle/" target="_blank" rel="noopener">provided-scope-in-gradle</a><br><a href="http://blog.codeaholics.org/2012/emulating-mavens-provided-scope-in-gradle/" target="_blank" rel="noopener">emulating-mavens-provided-scope-in-gradle</a><br><a href="http://stackoverflow.com/questions/12718753/how-to-download-dependency-sources-for-gradle-project-in-idea" target="_blank" rel="noopener">how-to-download-dependency-sources-for-gradle-project-in-idea</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gradle/" rel="tag"># gradle</a>
+          
+            <a href="/tags/maven/" rel="tag"># maven</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2014/10/24/Android中support库的版本/" rel="next" title="Android中support库的版本">
+                <i class="fa fa-chevron-left"></i> Android中support库的版本
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2014/10/26/Windows中JumpList与查看命令行参数/" rel="prev" title="Windows中JumpList与查看命令行参数">
+                Windows中JumpList与查看命令行参数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#这里记录一些maven和gradle中可能会经常用到的东西…"><span class="nav-number">1.</span> <span class="nav-text">**这里记录一些maven和gradle中可能会经常用到的东西…</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Maven创建web工程"><span class="nav-number">2.</span> <span class="nav-text">Maven创建web工程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Gradle中使用provided-scope的depedency"><span class="nav-number">3.</span> <span class="nav-text">Gradle中使用provided scope的depedency</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Gradle下载依赖项源码和javadoc"><span class="nav-number">4.</span> <span class="nav-text">Gradle下载依赖项源码和javadoc</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

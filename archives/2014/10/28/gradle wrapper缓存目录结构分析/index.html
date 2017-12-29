@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="gradle,bc,md5," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="使用gradle wrapper虽然带来了方便，但首次使用会去下载相应版本的gradle，我最近经常遇到下载速度慢，下载完文件又损坏，非常痛苦，所以就稍微研究一下gradle wrapper缓存的结构。">
+<meta name="keywords" content="gradle,bc,md5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gradle wrapper缓存目录结构分析">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2014/10/28/gradle wrapper缓存目录结构分析/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="使用gradle wrapper虽然带来了方便，但首次使用会去下载相应版本的gradle，我最近经常遇到下载速度慢，下载完文件又损坏，非常痛苦，所以就稍微研究一下gradle wrapper缓存的结构。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gradle wrapper缓存目录结构分析">
+<meta name="twitter:description" content="使用gradle wrapper虽然带来了方便，但首次使用会去下载相应版本的gradle，我最近经常遇到下载速度慢，下载完文件又损坏，非常痛苦，所以就稍微研究一下gradle wrapper缓存的结构。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2014/10/28/gradle wrapper缓存目录结构分析/"/>
+
+
+
+
+
+  <title>gradle wrapper缓存目录结构分析 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2014/10/28/gradle wrapper缓存目录结构分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">gradle wrapper缓存目录结构分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-10-28T13:17:29+00:00">
+                2014-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>使用gradle wrapper虽然带来了方便，但首次使用会去下载相应版本的gradle，我最近经常遇到下载速度慢，下载完文件又损坏，非常痛苦，所以就稍微研究一下gradle wrapper缓存的结构。</p>
+<a id="more"></a>
+<p>其缓存位置是在~/.gradle/wrapper/dists 下，以下是我的目录层次结构</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">LiudonghuadeMacBook-Air:dists liudonghua$ pwd</span><br><span class="line">/Users/liudonghua/.gradle/wrapper/dists</span><br><span class="line">LiudonghuadeMacBook-Air:dists liudonghua$ tree -L 3</span><br><span class="line">.</span><br><span class="line">├── gradle-1.10-all</span><br><span class="line">│   └── 6vpvhqu0efs1fqmqr2decq1v12</span><br><span class="line">│       ├── gradle-1.10</span><br><span class="line">│       ├── gradle-1.10-all.zip</span><br><span class="line">│       ├── gradle-1.10-all.zip.lck</span><br><span class="line">│       └── gradle-1.10-all.zip.ok</span><br><span class="line">├── gradle-1.10-bin</span><br><span class="line">│   └── 6oa4rff9viiqskhgd6uns5v1f8</span><br><span class="line">│       ├── gradle-1.10</span><br><span class="line">│       ├── gradle-1.10-bin.zip</span><br><span class="line">│       ├── gradle-1.10-bin.zip.lck</span><br><span class="line">│       └── gradle-1.10-bin.zip.ok</span><br><span class="line">├── gradle-1.11-all</span><br><span class="line">│   └── 7qd8qq8te5j4f5q9aaei3gh3lj</span><br><span class="line">│       ├── gradle-1.11</span><br><span class="line">│       ├── gradle-1.11-all.zip</span><br><span class="line">│       ├── gradle-1.11-all.zip.lck</span><br><span class="line">│       └── gradle-1.11-all.zip.ok</span><br><span class="line">├── gradle-1.11-bin</span><br><span class="line">│   └── 4h5v8877arc3jhuqbm3osbr7o7</span><br><span class="line">│       ├── gradle-1.11</span><br><span class="line">│       ├── gradle-1.11-bin.zip</span><br><span class="line">│       ├── gradle-1.11-bin.zip.lck</span><br><span class="line">│       └── gradle-1.11-bin.zip.ok</span><br><span class="line">├── gradle-1.12-all</span><br><span class="line">│   └── 2apkk7d25miauqf1pdjp1bm0uo</span><br><span class="line">│       ├── gradle-1.12</span><br><span class="line">│       ├── gradle-1.12-all.zip</span><br><span class="line">│       ├── gradle-1.12-all.zip.lck</span><br><span class="line">│       └── gradle-1.12-all.zip.ok</span><br><span class="line">├── gradle-1.12-bin</span><br><span class="line">│   └── 64p5p2nte80b6rt6bb068pabi6</span><br><span class="line">│       ├── gradle-1.12</span><br><span class="line">│       ├── gradle-1.12-bin.zip</span><br><span class="line">│       ├── gradle-1.12-bin.zip.lck</span><br><span class="line">│       └── gradle-1.12-bin.zip.ok</span><br><span class="line">└── gradle-2.1-all</span><br><span class="line">    └── 6n6ckv1svbjkm5ebj9is3php05</span><br><span class="line">        ├── gradle-2.1</span><br><span class="line">        ├── gradle-2.1-all.zip</span><br><span class="line">        ├── gradle-2.1-all.zip.lck</span><br><span class="line">        └── gradle-2.1-all.zip.ok</span><br><span class="line"></span><br><span class="line">21 directories, 21 files</span><br><span class="line">LiudonghuadeMacBook-Air:dists liudonghua$</span><br></pre></td></tr></table></figure>
+<p>其中gradle各版本名称下还有一层文件名，如6vpvhqu0efs1fqmqr2decq1v12、6oa4rff9viiqskhgd6uns5v1f8等，当时就猜想应该是文件内容的一些hash值，但我观察到下载gradle时就已经下载创建了这层文件夹，并且官方下载站点也没有相应文件的md5或sha，很有可能是文件名或gradle-wrapper.properties中定义的distributionUrl的hash，自己也尝试hash对比但都不匹配，并且在网上也查了很多资料都没有找到这方面的信息，所以就打算自己研究一下，看一下代码里面是怎么实现的。</p>
+<p>一般本地如果没有相应的gradle wrapper，那执行./gradlew assemble是就会自动下载，所以从gradlew这个脚本文件找起，从这个脚本文件中最后</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec "$JAVACMD" "$&#123;JVM_OPTS[@]&#125;" -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"</span><br></pre></td></tr></table></figure>
+<p>或Windows版的gradlew.bat</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %GRADLE_OPTS% "-Dorg.gradle.appname=%APP_BASE_NAME%" -classpath "%CLASSPATH%" org.gradle.wrapper.GradleWrapperMain %CMD_LINE_ARGS%</span><br></pre></td></tr></table></figure>
+<p>中可以看出是执行了org.gradle.wrapper.GradleWrapperMain，并且把命令行参数带进去的，所以后面查看gradle源码的<a href="https://github.com/gradle/gradle/blob/REL_2.1/subprojects/wrapper/src/main/java/org/gradle/wrapper/GradleWrapperMain.java" target="_blank" rel="noopener">GradleWrapperMain</a>，位于subprojects/wrapper/src/main/java/org/gradle/wrapper/GradleWrapperMain.java，在wrapper的子项目中，分析里面的main方法，注意到下面的高亮显示部分</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    File wrapperJar = wrapperJar();</span><br><span class="line">    File propertiesFile = wrapperProperties(wrapperJar);</span><br><span class="line">    File rootDir = rootDir(wrapperJar);</span><br><span class="line"></span><br><span class="line">    CommandLineParser parser = <span class="keyword">new</span> CommandLineParser();</span><br><span class="line">    parser.allowUnknownOptions();</span><br><span class="line">    parser.option(GRADLE_USER_HOME_OPTION, GRADLE_USER_HOME_DETAILED_OPTION).hasArgument();</span><br><span class="line"></span><br><span class="line">    SystemPropertiesCommandLineConverter converter = <span class="keyword">new</span> SystemPropertiesCommandLineConverter();</span><br><span class="line">    converter.configure(parser);</span><br><span class="line"></span><br><span class="line">    ParsedCommandLine options = parser.parse(args);</span><br><span class="line"></span><br><span class="line">    Properties systemProperties = System.getProperties();</span><br><span class="line">    systemProperties.putAll(converter.convert(options, <span class="keyword">new</span> HashMap&lt;String, String&gt;()));</span><br><span class="line"></span><br><span class="line">    File gradleUserHome = gradleUserHome(options);</span><br><span class="line"></span><br><span class="line">    addSystemProperties(gradleUserHome, rootDir);</span><br><span class="line"></span><br><span class="line">    WrapperExecutor wrapperExecutor = WrapperExecutor.forWrapperPropertiesFile(propertiesFile, System.out);</span><br><span class="line">    wrapperExecutor.execute(</span><br><span class="line">            args,</span><br><span class="line">            <span class="keyword">new</span> Install(<span class="keyword">new</span> Download(<span class="string">"gradlew"</span>, wrapperVersion()), <span class="keyword">new</span> PathAssembler(gradleUserHome)),</span><br><span class="line">            <span class="keyword">new</span> BootstrapMainStarter());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后顺着<a href="https://github.com/gradle/gradle/blob/REL_2.1/subprojects/wrapper/src/main/java/org/gradle/wrapper/Install.java" target="_blank" rel="noopener">Install</a>查找</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> File <span class="title">createDist</span><span class="params">(WrapperConfiguration configuration)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> URI distributionUrl = configuration.getDistribution();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> PathAssembler.LocalDistribution localDistribution = pathAssembler.getDistribution(configuration);</span><br><span class="line">    <span class="keyword">final</span> File distDir = localDistribution.getDistributionDir();</span><br><span class="line">    <span class="keyword">final</span> File localZipFile = localDistribution.getZipFile();</span><br></pre></td></tr></table></figure>
+<p>找到<a href="https://github.com/gradle/gradle/blob/REL_2.1/subprojects/wrapper/src/main/java/org/gradle/wrapper/PathAssembler.java" target="_blank" rel="noopener">PathAssembler</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Determines the local locations for the distribution to use given the supplied configuration.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> LocalDistribution <span class="title">getDistribution</span><span class="params">(WrapperConfiguration configuration)</span> </span>&#123;</span><br><span class="line">    String baseName = getDistName(configuration.getDistribution());</span><br><span class="line">    String distName = removeExtension(baseName);</span><br><span class="line">    String rootDirName = rootDirName(distName, configuration);</span><br><span class="line">    File distDir = <span class="keyword">new</span> File(getBaseDir(configuration.getDistributionBase()), configuration.getDistributionPath() + <span class="string">"/"</span> + rootDirName);</span><br><span class="line">    File distZip = <span class="keyword">new</span> File(getBaseDir(configuration.getZipBase()), configuration.getZipPath() + <span class="string">"/"</span> + rootDirName + <span class="string">"/"</span> + baseName);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> LocalDistribution(distDir, distZip);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">rootDirName</span><span class="params">(String distName, WrapperConfiguration configuration)</span> </span>&#123;</span><br><span class="line">    String urlHash = getHash(configuration.getDistribution().toString());</span><br><span class="line">    <span class="keyword">return</span> String.format(<span class="string">"%s/%s"</span>, distName, urlHash);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This method computes a hash of the provided &#123;<span class="doctag">@code</span> string&#125;.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * The algorithm in use by this method is as follows:</span></span><br><span class="line"><span class="comment"> * &lt;ol&gt;</span></span><br><span class="line"><span class="comment"> *    &lt;li&gt;Compute the MD5 value of &#123;<span class="doctag">@code</span> string&#125;.&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *    &lt;li&gt;Truncate leading zeros (i.e., treat the MD5 value as a number).&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *    &lt;li&gt;Convert to base 36 (the characters &#123;<span class="doctag">@code</span> 0-9a-z&#125;).&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> * &lt;/ol&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">getHash</span><span class="params">(String string)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        MessageDigest messageDigest = MessageDigest.getInstance(<span class="string">"MD5"</span>);</span><br><span class="line">        <span class="keyword">byte</span>[] bytes = string.getBytes();</span><br><span class="line">        messageDigest.update(bytes);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> BigInteger(<span class="number">1</span>, messageDigest.digest()).toString(<span class="number">36</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Could not hash input string."</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>应该就是上面的第十四行了，我自己也尝试调用getHash方法验证，但始终得不到预期的结果，想了很久，突然想到虽然都是md5（128bit），但我们平时使用的都是16进制的字符表示，有128/4=32位，但这里如”6n6ckv1svbjkm5ebj9is3php05”只有26位，代码中是使用36进制的字符表示，我尝试改成32位的试试，没想到突然得到了预期的正确结果，但代码里明明是使用36进制，而不是32进制，是不是最近才修改了代码，所以又看一下之前tag的代码，如1.12版本的果然是32而不是36（可以在<a href="https://github.com/gradle/gradle/commit/2e6659547e71bb3fca1c952d823ec660433ab5d9" target="_blank" rel="noopener">这里</a>看到这次修改相应的commit，至少在2.1正式版中还是32进制表示的）<br>附上一些测试的shell命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">LiudonghuadeMacBook-Air:dists liudonghua$ md5 -s "http://services.gradle.org/distributions/gradle-2.1-all.zip"</span><br><span class="line">MD5 ("http://services.gradle.org/distributions/gradle-2.1-all.zip") = d73329f0f3eb9d2c572e69970798e405</span><br><span class="line">LiudonghuadeMacBook-Air:dists liudonghua$</span><br><span class="line">LiudonghuadeMacBook-Air:dists liudonghua$ echo d73329f0f3eb9d2c572e69970798e405 |  awk '&#123;print toupper($0)'&#125;</span><br><span class="line">D73329F0F3EB9D2C572E69970798E405</span><br><span class="line">LiudonghuadeMacBook-Air:dists liudonghua$ echo "obase=32;ibase=16; $(echo $(echo $(md5 -q -s 'http://services.gradle.org/distributions/gradle-2.1-all.zip') | awk '&#123;print toupper($0)&#125;'))" | bc</span><br><span class="line"> 06 23 06 12 20 31 01 28 31 11 19 20 22 05 14 11 19 09 18 28 03 25 1\</span><br><span class="line">7 25 00 05</span><br><span class="line">LiudonghuadeMacBook-Air:dists liudonghua$ bc</span><br><span class="line">bc 1.06</span><br><span class="line">Copyright 1991-1994, 1997, 1998, 2000 Free Software Foundation, Inc.</span><br><span class="line">This is free software with ABSOLUTELY NO WARRANTY.</span><br><span class="line">For details type `warranty'.</span><br><span class="line">obase=32</span><br><span class="line">ibase=16</span><br><span class="line">D73329F0F3EB9D2C572E69970798E405</span><br><span class="line"> 06 23 06 12 20 31 01 28 31 11 19 20 22 05 14 11 19 09 18 28 03 25 1\</span><br><span class="line">7 25 00 05</span><br><span class="line">quit</span><br><span class="line">LiudonghuadeMacBook-Air:dists liudonghua$</span><br></pre></td></tr></table></figure>
+<p>注意bc做进制转换时，一定要先设置obase，在设置inbase，并且数据中的字母要大写</p>
+<p>现在知道了原理，但后面如果遇到一些版本下载有问题，就直接创建指定的目录，然后把用其他方式下载回来的zip放到指定目录中，就会自动解压安装了。如下载gradle-1.12-all有问题，那就创建~/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo，这里2apkk7d25miauqf1pdjp1bm0uo是字符串”<a href="http://services.gradle.org/distributions/gradle-1.12-all.zip&quot;的32位md5表示形式（在未来版本中这会变成36位），再把gradle-1.12-all.zip直接放在里面就可以了。" target="_blank" rel="noopener">http://services.gradle.org/distributions/gradle-1.12-all.zip&quot;的32位md5表示形式（在未来版本中这会变成36位），再把gradle-1.12-all.zip直接放在里面就可以了。</a></p>
+<p>注：补充gradle依赖库缓存位置(~/.gradle/caches/modules-2/files-2.1)及目录结构</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">LiudonghuadeMacBook-Air:files-2.1 liudonghua$ pwd</span><br><span class="line">/Users/liudonghua/.gradle/caches/modules-2/files-2.1</span><br><span class="line">LiudonghuadeMacBook-Air:files-2.1 liudonghua$ ll</span><br><span class="line">total 0</span><br><span class="line">drwxr-xr-x@ 39 liudonghua  staff  1326 Oct 18 19:32 .</span><br><span class="line">drwxr-xr-x@  8 liudonghua  staff   272 Oct 28 19:58 ..</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 aopalliance</span><br><span class="line">drwxr-xr-x@  4 liudonghua  staff   136 Oct 18 19:32 com.actionbarsherlock</span><br><span class="line">drwxr-xr-x@  6 liudonghua  staff   204 Oct 18 19:32 com.android.tools</span><br><span class="line">drwxr-xr-x@  7 liudonghua  staff   238 Oct 18 19:32 com.android.tools.build</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 com.android.tools.ddms</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 com.android.tools.external.lombok</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 com.android.tools.layoutlib</span><br><span class="line">drwxr-xr-x@  5 liudonghua  staff   170 Oct 18 19:32 com.android.tools.lint</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 com.github.dcendents</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 com.google.android</span><br><span class="line">drwxr-xr-x@  4 liudonghua  staff   136 Oct 18 19:32 com.google.guava</span><br><span class="line">drwxr-xr-x@  5 liudonghua  staff   170 Oct 18 19:32 com.googlecode.androidannotations</span><br><span class="line">drwxr-xr-x@  4 liudonghua  staff   136 Oct 18 19:32 com.joanzapata.pdfview</span><br><span class="line">drwxr-xr-x@  4 liudonghua  staff   136 Oct 18 19:32 com.nineoldandroids</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 com.squareup</span><br><span class="line">drwxr-xr-x@  4 liudonghua  staff   136 Oct 18 19:32 com.sun.codemodel</span><br><span class="line">drwxr-xr-x@  4 liudonghua  staff   136 Oct 18 19:32 com.twotoasters.jazzylistview</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 com.viewpagerindicator</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 commons-codec</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 commons-logging</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 de.keyboardsurfer.android.widget</span><br><span class="line">drwxr-xr-x@  4 liudonghua  staff   136 Oct 18 19:32 javax.servlet</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 joda-time</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 kxml2</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 net.java</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 net.sf.kxml</span><br><span class="line">drwxr-xr-x@  5 liudonghua  staff   170 Oct 18 19:32 net.sf.proguard</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 org.apache</span><br><span class="line">drwxr-xr-x@  4 liudonghua  staff   136 Oct 18 19:32 org.apache.commons</span><br><span class="line">drwxr-xr-x@  8 liudonghua  staff   272 Oct 18 19:32 org.apache.httpcomponents</span><br><span class="line">drwxr-xr-x@  4 liudonghua  staff   136 Oct 18 19:32 org.bouncycastle</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 org.eclipse.jdt.core.compiler</span><br><span class="line">drwxr-xr-x@  7 liudonghua  staff   238 Oct 18 19:32 org.jacoco</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 org.ow2</span><br><span class="line">drwxr-xr-x@  7 liudonghua  staff   238 Oct 18 19:32 org.ow2.asm</span><br><span class="line">drwxr-xr-x@  3 liudonghua  staff   102 Oct 18 19:32 org.sonatype.oss</span><br><span class="line">drwxr-xr-x@  9 liudonghua  staff   306 Oct 18 19:32 org.springframework</span><br><span class="line">LiudonghuadeMacBook-Air:files-2.1 liudonghua$</span><br><span class="line">LiudonghuadeMacBook-Air:files-2.1 liudonghua$ cd javax.servlet/</span><br><span class="line">jstl/        servlet-api/</span><br><span class="line">LiudonghuadeMacBook-Air:files-2.1 liudonghua$ cd javax.servlet/servlet-api/2.5/</span><br><span class="line">21599814ad9a605b86f3e6381571beccd861a32/  a159fa05cce714c83deff647655dd53db064b21c/</span><br><span class="line">5959582d97d8b61f4d154ca9e495aafd16726e34/</span><br><span class="line">LiudonghuadeMacBook-Air:files-2.1 liudonghua$ cd javax.servlet/servlet-api/2.5/</span><br><span class="line">LiudonghuadeMacBook-Air:2.5 liudonghua$</span><br><span class="line">LiudonghuadeMacBook-Air:2.5 liudonghua$ tree</span><br><span class="line">.</span><br><span class="line">├── 21599814ad9a605b86f3e6381571beccd861a32</span><br><span class="line">│   └── servlet-api-2.5-sources.jar</span><br><span class="line">├── 5959582d97d8b61f4d154ca9e495aafd16726e34</span><br><span class="line">│   └── servlet-api-2.5.jar</span><br><span class="line">└── a159fa05cce714c83deff647655dd53db064b21c</span><br><span class="line">    └── servlet-api-2.5.pom</span><br><span class="line"></span><br><span class="line">3 directories, 3 files</span><br><span class="line">LiudonghuadeMacBook-Air:2.5 liudonghua$</span><br><span class="line">LiudonghuadeMacBook-Air:2.5 liudonghua$ shasum 21599814ad9a605b86f3e6381571beccd861a32/servlet-api-2.5-sources.jar</span><br><span class="line">021599814ad9a605b86f3e6381571beccd861a32  21599814ad9a605b86f3e6381571beccd861a32/servlet-api-2.5-sources.jar</span><br><span class="line">LiudonghuadeMacBook-Air:2.5 liudonghua$</span><br><span class="line">LiudonghuadeMacBook-Air:2.5 liudonghua$ shasum 5959582d97d8b61f4d154ca9e495aafd16726e34/servlet-api-2.5.jar</span><br><span class="line">5959582d97d8b61f4d154ca9e495aafd16726e34  5959582d97d8b61f4d154ca9e495aafd16726e34/servlet-api-2.5.jar</span><br><span class="line">LiudonghuadeMacBook-Air:2.5 liudonghua$</span><br></pre></td></tr></table></figure>
+<p>这与maven的管理方式还是有些不同，目录层次减少了，并且也加入了强制文件验证。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gradle/" rel="tag"># gradle</a>
+          
+            <a href="/tags/bc/" rel="tag"># bc</a>
+          
+            <a href="/tags/md5/" rel="tag"># md5</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2014/10/27/非Android源码中编译tcpdump/" rel="next" title="非Android源码中编译tcpdump">
+                <i class="fa fa-chevron-left"></i> 非Android源码中编译tcpdump
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2014/10/29/命令行计算器bc增强版/" rel="prev" title="命令行计算器bc增强版">
+                命令行计算器bc增强版 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

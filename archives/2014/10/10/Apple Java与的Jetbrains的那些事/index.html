@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java,Jetbrains,PhpStorm," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="最近升级了yosemite系统导致原来安装的jetbrains系列开发工具（如Intellj、PhpStorm、RubyMine、PyCharm、WebStorm）无法使用，直接闪退，没有任何错误信息，但查看本机安装的JDK已经有JDK7和JDK8了，JAVA_HOME环境变量等都是配置正确的，Eclipse也是可以使">
+<meta name="keywords" content="java,Jetbrains,PhpStorm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apple Java与的Jetbrains的那些事">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2014/10/10/Apple Java与的Jetbrains的那些事/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="最近升级了yosemite系统导致原来安装的jetbrains系列开发工具（如Intellj、PhpStorm、RubyMine、PyCharm、WebStorm）无法使用，直接闪退，没有任何错误信息，但查看本机安装的JDK已经有JDK7和JDK8了，JAVA_HOME环境变量等都是配置正确的，Eclipse也是可以使用的，后来运行这个才发现问题">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Apple Java与的Jetbrains的那些事">
+<meta name="twitter:description" content="最近升级了yosemite系统导致原来安装的jetbrains系列开发工具（如Intellj、PhpStorm、RubyMine、PyCharm、WebStorm）无法使用，直接闪退，没有任何错误信息，但查看本机安装的JDK已经有JDK7和JDK8了，JAVA_HOME环境变量等都是配置正确的，Eclipse也是可以使用的，后来运行这个才发现问题">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2014/10/10/Apple Java与的Jetbrains的那些事/"/>
+
+
+
+
+
+  <title>Apple Java与的Jetbrains的那些事 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2014/10/10/Apple Java与的Jetbrains的那些事/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Apple Java与的Jetbrains的那些事</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-10-10T01:31:29+00:00">
+                2014-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近升级了yosemite系统导致原来安装的jetbrains系列开发工具（如Intellj、PhpStorm、RubyMine、PyCharm、WebStorm）无法使用，直接闪退，没有任何错误信息，但查看本机安装的JDK已经有JDK7和JDK8了，JAVA_HOME环境变量等都是配置正确的，Eclipse也是可以使用的，后来运行这个才发现问题</p>
+<a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/Applications/PhpStorm.app/Contents/MacOS/phpstorm</span><br><span class="line">[JavaAppLauncher Error] CFBundleCopyResourceURL() failed loading MRJApp.properties file</span><br><span class="line">[JavaAppLauncher Error] CFBundleCopyResourceURL() failed <span class="keyword">while</span> getting Resource/Java directory</span><br><span class="line">JavaVM: Failed to load JVM: /Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/bundle/Libraries/libserver.dylib</span><br><span class="line">JavaVM: Failed to load JVM: /Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/bundle/Libraries/libserver.dylib</span><br><span class="line">JavaVM FATAL: Failed to load the jvm library.</span><br><span class="line">[JavaAppLauncher Error] JNI_CreateJavaVM() failed, error: -1</span><br></pre></td></tr></table></figure>
+<p>查看phpstorm的<a href="https://www.jetbrains.com/phpstorm/webhelp/system-requirements-and-installation.html" target="_blank" rel="noopener">System Requirements and Installation</a>才发现Mac下只支持Apple的JDK6，不过<a href="https://intellij-support.jetbrains.com/entries/23455956-Selecting-the-JDK-version-the-IDE-will-run-under" target="_blank" rel="noopener">这里</a>提到可以尝试一下JDK7的方法</p>
+<p>知道了问题所在就方便解决了<br>首先安装最新的Apple JDK <a href="http://support.apple.com/kb/DL1572" target="_blank" rel="noopener">JavaForOSX2014-001.dmg
+</a>然后设置系统默认的JDK版本<br>这里的关键是/usr/libexec/java_home</p>
+<p>未安装apple的JDK，只安装Oracle JDK（Oracle知道JDK7才开始提供Mac版本，从此Apple JDK就不再开发新版本了）时/usr/libexec/java_home是一个文件，执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/java_home -V</span><br><span class="line">Matching Java Virtual Machines (2):</span><br><span class="line">1. 8.0_20, x86_64: <span class="string">"Java SE 8"</span> /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home</span><br><span class="line">1. 7.0_45, x86_64: <span class="string">"Java SE 7"</span> /Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home</span><br></pre></td></tr></table></figure>
+<p>安装apple的JDK后/usr/libexec/java_home是一个软链接，指向/System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java_home</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java_home -V</span><br><span class="line">Matching Java Virtual Machines (4):</span><br><span class="line">1. 8.0_20, x86_64: <span class="string">"Java SE 8"</span> /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home</span><br><span class="line">1. 7.0_45, x86_64: <span class="string">"Java SE 7"</span> /Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home</span><br><span class="line">1. 6.0_65-b14-466.1, x86_64: <span class="string">"Java SE 6"</span> /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home</span><br><span class="line">1. 6.0_65-b14-466.1, i386: <span class="string">"Java SE 6"</span> /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home</span><br></pre></td></tr></table></figure>
+<p>由此可知Mac下Apple JDK安装在/System/Library/Java/JavaVirtualMachines/下，Oracle JDK安装在/Library/Java/JavaVirtualMachines/</p>
+<p>值得注意的还有/System/Library/Frameworks/JavaVM.framework/Versions/列出了当前所有的JDK版本，由于我是现有Oracle JDK在安装Apple JDK的，所以这里没有1.7、1.8</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ll /System/Library/Frameworks/JavaVM.framework/Versions/</span><br><span class="line"></span><br><span class="line">total 64</span><br><span class="line">drwxr-xr-x 11 root wheel 374 10 10 08:17 .</span><br><span class="line">drwxr-xr-x 12 root wheel 408 10 10 08:17 ..</span><br><span class="line">lrwxr-xr-x 1 root wheel 10 10 10 08:17 1.4 -&gt; CurrentJDK</span><br><span class="line">lrwxr-xr-x 1 root wheel 10 10 10 08:17 1.4.2 -&gt; CurrentJDK</span><br><span class="line">lrwxr-xr-x 1 root wheel 10 10 10 08:17 1.5 -&gt; CurrentJDK</span><br><span class="line">lrwxr-xr-x 1 root wheel 10 10 10 08:17 1.5.0 -&gt; CurrentJDK</span><br><span class="line">lrwxr-xr-x 1 root wheel 10 10 10 08:17 1.6 -&gt; CurrentJDK</span><br><span class="line">lrwxr-xr-x 1 root wheel 10 10 10 08:17 1.6.0 -&gt; CurrentJDK</span><br><span class="line">drwxr-xr-x 8 root wheel 272 10 10 08:17 A</span><br><span class="line">lrwxr-xr-x 1 root wheel 1 10 10 08:17 Current -&gt; A</span><br><span class="line">lrwxr-xr-x 1 root wheel 59 10 10 08:17 CurrentJDK -&gt; /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents</span><br></pre></td></tr></table></figure>
+<p>配置系统默认的JDK版本方法如下备份java_home_bak，修改java_home内容为echo <code>/usr/libexec/java_home_bak -v 1.6*</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo mv /usr/libexec/java_home /usr/libexec/java_home_bak</span><br><span class="line">sudo vi /usr/libexec/java_home</span><br><span class="line"><span class="built_in">echo</span> `/usr/libexec/java_home_bak -v 1.6*`</span><br><span class="line">sudo chmod a+x /usr/libexec/java_home</span><br></pre></td></tr></table></figure>
+<p>这时执行<br>/usr/libexec/java_home返回<br>/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home</p>
+<p>至此jetbrains系列工具就可以使用了，不需要重启或注销，这似乎可以看出jetbrains产品只依赖于/usr/libexec/java_home，JAVA_HOME可以指向其他版本的JDK</p>
+<p>如果需要在终端中临时改变JDK版本，可以添加下列Bash脚本到~/.bash_profile中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">setjdk</span></span>() &#123;</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">removeFromPath <span class="string">'/System/Library/Frameworks/JavaVM.framework/Home/bin'</span></span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$&#123;JAVA_HOME+x&#125;</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">removeFromPath <span class="variable">$JAVA_HOME</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=`/usr/libexec/java_home_bak -v <span class="variable">$@</span>`</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">removeFromPath</span></span>() &#123;</span><br><span class="line"><span class="built_in">export</span> PATH=$(<span class="built_in">echo</span> <span class="variable">$PATH</span> | sed -E -e <span class="string">"s;:<span class="variable">$1</span>;;"</span> -e <span class="string">"s;<span class="variable">$1</span>:?;;"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以后切换时就只需要setjdk 1.6或setjdk 1.7等等的了</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/Jetbrains/" rel="tag"># Jetbrains</a>
+          
+            <a href="/tags/PhpStorm/" rel="tag"># PhpStorm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2014/10/09/mac下的awk、sed/" rel="next" title="mac下的awk、sed">
+                <i class="fa fa-chevron-left"></i> mac下的awk、sed
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2014/10/10/Emulator v.s. Simulator之我见/" rel="prev" title="Emulator v.s. Simulator之我见">
+                Emulator v.s. Simulator之我见 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

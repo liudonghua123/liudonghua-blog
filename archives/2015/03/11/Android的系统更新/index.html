@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="昨天看到消息Google发布了Android 5.1(Codename还是Lollipop，说明变化不大)，但是上网搜了一下只有factory image，这样刷的话会清除手机上原来的所有数据，而且我原来装的系统也没有被我修改过，所以最好还是通过OTA升级，但OTA升级在国内一般都比较慢，而且由于Google在国内不稳">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android的系统更新">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2015/03/11/Android的系统更新/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="昨天看到消息Google发布了Android 5.1(Codename还是Lollipop，说明变化不大)，但是上网搜了一下只有factory image，这样刷的话会清除手机上原来的所有数据，而且我原来装的系统也没有被我修改过，所以最好还是通过OTA升级，但OTA升级在国内一般都比较慢，而且由于Google在国内不稳定或根本就无法访问，所以最好还是手动下载OTA升级。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android的系统更新">
+<meta name="twitter:description" content="昨天看到消息Google发布了Android 5.1(Codename还是Lollipop，说明变化不大)，但是上网搜了一下只有factory image，这样刷的话会清除手机上原来的所有数据，而且我原来装的系统也没有被我修改过，所以最好还是通过OTA升级，但OTA升级在国内一般都比较慢，而且由于Google在国内不稳定或根本就无法访问，所以最好还是手动下载OTA升级。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2015/03/11/Android的系统更新/"/>
+
+
+
+
+
+  <title>Android的系统更新 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2015/03/11/Android的系统更新/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android的系统更新</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-03-11T02:05:33+00:00">
+                2015-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>昨天看到消息Google发布了Android 5.1(Codename还是Lollipop，说明变化不大)，但是上网搜了一下只有factory image，这样刷的话会清除手机上原来的所有数据，而且我原来装的系统也没有被我修改过，所以最好还是通过OTA升级，但OTA升级在国内一般都比较慢，而且由于Google在国内不稳定或根本就无法访问，所以最好还是手动下载OTA升级。</p>
+<a id="more"></a>
+<p>但找了很久都没找到N5的OTA下载链接，可能过几天就会有了。</p>
+<p>所以就想看一下Android“系统更新”模块是怎样实现的，这样或许就可以直接从代码里找出下载链接</p>
+<p>在Settings的源码下一步一步搜索，最终找到这里<br>res\xml\device_info_settings.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- System update settings - launches activity --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PreferenceScreen</span> <span class="attr">android:key</span>=<span class="string">"system_update_settings"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:title</span>=<span class="string">"@string/system_update_settings_list_item_title"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:summary</span>=<span class="string">"@string/system_update_settings_list_item_summary"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent</span> <span class="attr">android:action</span>=<span class="string">"android.settings.SYSTEM_UPDATE_SETTINGS"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PreferenceScreen</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>也就是说在设置里点了系统更新之后，只会发一个”android.settings.SYSTEM_UPDATE_SETTINGS”的广播，然后由注册了这个广播的组件来处理。<br>GoogleServicesFramework的AndroidManifest.xml有</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8" standalone="no"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span> <span class="attr">android:sharedUserId</span>=<span class="string">"com.google.uid.shared"</span> <span class="attr">package</span>=<span class="string">"com.google.android.gsf"</span> <span class="attr">platformBuildVersionCode</span>=<span class="string">"21"</span> <span class="attr">platformBuildVersionName</span>=<span class="string">"5.0.1-1602158"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">application</span>&gt;</span></span><br><span class="line">        ......</span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:enabled</span>=<span class="string">"false"</span> <span class="attr">android:hardwareAccelerated</span>=<span class="string">"true"</span> <span class="attr">android:label</span>=<span class="string">"@string/system_update_activity_name"</span> <span class="attr">android:launchMode</span>=<span class="string">"singleTop"</span> <span class="attr">android:name</span>=<span class="string">".update.SystemUpdateActivity"</span> <span class="attr">android:theme</span>=<span class="string">"@android:style/Theme.Holo.NoActionBar"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.settings.SYSTEM_UPDATE_SETTINGS"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">        ......</span><br><span class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>对于N5来说，就是由GoogleServicesFramework中的com.google.android.gsf.update.SystemUpdateActivity来处理，由于这部分源码不是开源的，反编译代码错综复杂，现在暂时还没找到。</p>
+<p>不过后来搜索以前N5的OTA下载地址，网址一般都是<a href="http://android.clients.google.com/packages/ota/**google_hammerhead**/**some_hash**.signed-hammerhead-**new_build_name**-from-**old_build_name**.**some_other_hash**.zip" target="_blank" rel="noopener">http://android.clients.google.com/packages/ota/**google_hammerhead**/**some_hash**.signed-hammerhead-**new_build_name**-from-**old_build_name**.**some_other_hash**.zip</a><br>如Nexus 5 (hammerhead) LRX21O to LRX22C<br><a href="http://android.clients.google.com/packages/ota/**google_hammerhead**/**785a2f7af3718dba7e569decde8b6c4dc476a309**.signed-hammerhead-**LRX22C**-from-**LRX21O**.**785a2f7a**.zip" target="_blank" rel="noopener">http://android.clients.google.com/packages/ota/**google_hammerhead**/**785a2f7af3718dba7e569decde8b6c4dc476a309**.signed-hammerhead-**LRX22C**-from-**LRX21O**.**785a2f7a**.zip</a></p>
+<p><del>这样在Google中搜索”google_hammerhead LMY47D LRX22C”关键字，找到如下的下载链接</del><br><del> <a href="http://android.clients.google.com/packages/ota/google_hammerhead/683daf65f4daf477b5f42f565f42f42f5681b03f41.signed-hammerhead-1234567890123LMY47D-from-LRX22C.683daf65.zip" target="_blank" rel="noopener">http://android.clients.google.com/packages/ota/google_hammerhead/683daf65f4daf477b5f42f565f42f42f5681b03f41.signed-hammerhead-1234567890123LMY47D-from-LRX22C.683daf65.zip</a></del><br><del> 现在正在验证一下是不是可以下载。<br></del>已证实上面地址是假的，在EC2服务器上下载时404</p>
+<p>2015/3/21 更新：正确的下载地址  <a href="http://android.clients.google.com/packages/ota/google_hammerhead/e16268c5a3df75a65054ab258d7d615288b7e3b4.signed-hammerhead-ota-LMY47D-from-LRX22C-radio-restricted.zip" target="_blank" rel="noopener">http://android.clients.google.com/packages/ota/google_hammerhead/e16268c5a3df75a65054ab258d7d615288b7e3b4.signed-hammerhead-ota-LMY47D-from-LRX22C-radio-restricted.zip</a> ， 详见<a href="http://www.droid-life.com/2015/03/11/download-android-5-1-ota-updates-for-nexus-devices-4-5-6-7-9-10/" target="_blank" rel="noopener">Download: Android 5.1 OTA Updates for Nexus Devices (Updated)</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2015/03/10/分享一个自己写的小工具——APK签名、对齐/" rel="next" title="分享一个自己写的小工具——APK签名、对齐">
+                <i class="fa fa-chevron-left"></i> 分享一个自己写的小工具——APK签名、对齐
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2015/03/12/Android 5.1的升级过程/" rel="prev" title="Android 5.1的升级过程">
+                Android 5.1的升级过程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

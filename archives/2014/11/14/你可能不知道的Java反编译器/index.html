@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java,decompile,Procyon," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="我最近看到一个使用动画演示排序算法的Android应用sorts，做的挺不错的，对学习算法还是有很大帮助，但美中不足的是缺少冒泡算法，所以想找一下是否有源码，然后再自己添加进去，最终还是没找到，所以就只有反编译看一下能不能添加。">
+<meta name="keywords" content="java,decompile,Procyon">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你可能不知道的Java反编译器">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2014/11/14/你可能不知道的Java反编译器/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="我最近看到一个使用动画演示排序算法的Android应用sorts，做的挺不错的，对学习算法还是有很大帮助，但美中不足的是缺少冒泡算法，所以想找一下是否有源码，然后再自己添加进去，最终还是没找到，所以就只有反编译看一下能不能添加。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你可能不知道的Java反编译器">
+<meta name="twitter:description" content="我最近看到一个使用动画演示排序算法的Android应用sorts，做的挺不错的，对学习算法还是有很大帮助，但美中不足的是缺少冒泡算法，所以想找一下是否有源码，然后再自己添加进去，最终还是没找到，所以就只有反编译看一下能不能添加。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2014/11/14/你可能不知道的Java反编译器/"/>
+
+
+
+
+
+  <title>你可能不知道的Java反编译器 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2014/11/14/你可能不知道的Java反编译器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">你可能不知道的Java反编译器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-11-14T13:55:52+00:00">
+                2014-11-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我最近看到一个使用动画演示排序算法的Android应用<a href="https://play.google.com/store/apps/details?id=com.sorts&amp;hl=en" target="_blank" rel="noopener">sorts</a>，做的挺不错的，对学习算法还是有很大帮助，但美中不足的是缺少冒泡算法，所以想找一下是否有源码，然后再自己添加进去，最终还是没找到，所以就只有反编译看一下能不能添加。</p>
+<a id="more"></a>
+<p>首先想到的是强大的APKTool，这个工具可以反编译res资源、AndroidManifest.xml，Java编译后生成的class转换成的dex可以通过内建的baksmali转换成smali文件，但smali文件只适用于小的修改，所以直接使用dex2jar把dex先转换成class文件，再有jd-gui转换成java源文件。虽然可以转换，但转换之后的Java代码有些和源代码相差太大，不好理解，如以下是部分难看懂的代码（要想看懂也是可以的，不过需要很多其他知识，如可以参考一下<a href="http://stackoverflow.com/questions/19855800/difference-between-packed-switch-and-sparse-switch-dalvik-opcode" target="_blank" rel="noopener">difference-between-packed-switch-and-sparse-switch-dalvik-opcode</a>，<a href="http://stackoverflow.com/questions/6347930/dealing-with-labels-in-decompiled-code" target="_blank" rel="noopener">dealing-with-labels-in-decompiled-code</a>等）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (;;) &#123;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">	((Animation) InsertionActivity.<span class="keyword">this</span>.animationList.get(j))</span><br><span class="line">			.setStartOffset(<span class="number">600000L</span> + ((Animation) InsertionActivity.<span class="keyword">this</span>.animationList</span><br><span class="line">					.get(j)).getStartOffset());</span><br><span class="line">	j++;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line">	......</span><br></pre></td></tr></table></figure>
+<p>为了生成更容易理解、更接近源代码的代码，寻找新的Java反编译器就非常必要了，这里简单总结一下一些常用的Java反编译器（有点少，很多都老旧过时的，并且这个领域额也不热门）<br><del>1. JAva Decompiler (JAD – No longer maintained)</del><br><del>2. DJ Java Decompiler (UI for JAD)</del></p>
+<ol>
+<li>JD Java Decompiler（JD-GUI的核心）</li>
+<li><a href="http://jd.benow.ca/" target="_blank" rel="noopener">JD-GUI</a></li>
+<li><a href="https://bitbucket.org/mstrobel/procyon" target="_blank" rel="noopener">Procyon</a><br>JAD的只支持近版本，而且非常老旧，只能抛弃<br>JD用的比较多，效果也还好<br>Procyon是我认为目前最好的，并且这个项目还在不断开发维护，值得推荐。</li>
+</ol>
+<p>并且我用基于Procyon的<a href="http://www.secureteam.net/Java-Decompiler.aspx" target="_blank" rel="noopener">SecureTeam</a>反编译出sorts的Java源代码，做了一些修改，直接又可以当作源码编译。</p>
+<p>Procyon反编译后的Java我做的修改有</p>
+<ol>
+<li>删除xxx$xxx内部类（这是冗余的，xxx已经包括这些内部类了）</li>
+<li>修改一些类名，如View$OnClickListener改为View.OnClickListener</li>
+</ol>
+<p>我想这是一些这个反编译器存在的不足，不过相比JD反编译出的质量高了很多，后面有时间可以给Procyon提交一些代码让它能够处理以上两个不足的地方，然后再顺便解决源码里R资源直接是数字的问题，让他替换成R.id.xxx或R.layout.xxx等更有意义的代码</p>
+<p>以下是自己写的使用Python替换反编译代码中的R资源</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">__author__ = <span class="string">'Liu.D.H'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> fileinput</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> fnmatch</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parseRresource</span><span class="params">(filePath)</span>:</span></span><br><span class="line">    r_resource = &#123;&#125;</span><br><span class="line">    classbeginpattern = re.compile(<span class="string">r".*class\s*(?P&lt;className&gt;[a-zA-Z_][a-zA-Z_0-9]*)\s*&#123;"</span>)</span><br><span class="line">    classendpattern = re.compile(<span class="string">r"\s*&#125;\s*"</span>)</span><br><span class="line">    fieldpattern = re.compile(<span class="string">r".*int\s*(?P&lt;fieldName&gt;[_A-Za-z][_0-9A-Za-z]*)\s*=\s*(?P&lt;fieldValue&gt;\d+);"</span>)</span><br><span class="line">    innerclassname = <span class="keyword">None</span></span><br><span class="line">    innerclassfieldname = <span class="keyword">None</span></span><br><span class="line">    innerclassfieldvalue = <span class="keyword">None</span></span><br><span class="line">    parseinnerclass = <span class="keyword">False</span></span><br><span class="line">    <span class="keyword">with</span> open(filePath) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> file:</span><br><span class="line">            classbegin = classbeginpattern.match(line)</span><br><span class="line">            classend = classendpattern.match(line)</span><br><span class="line">            <span class="comment"># Parse begin or end of inner class</span></span><br><span class="line">            <span class="keyword">if</span> classbegin:</span><br><span class="line">                parseinnerclass = <span class="keyword">True</span></span><br><span class="line">                innerclassname = classbegin.group(<span class="string">"className"</span>)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">elif</span> classend:</span><br><span class="line">                parseinnerclass = <span class="keyword">False</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># Parse field of inner class</span></span><br><span class="line">            <span class="keyword">if</span> parseinnerclass:</span><br><span class="line">                innerclassfield = fieldpattern.match(line)</span><br><span class="line">                <span class="keyword">if</span> innerclassfield:</span><br><span class="line">                    innerclassfieldname = innerclassfield.group(<span class="string">"fieldName"</span>)</span><br><span class="line">                    innerclassfieldvalue = innerclassfield.group(<span class="string">"fieldValue"</span>)</span><br><span class="line">                    r_resource[innerclassfieldvalue] = <span class="string">"R.%s.%s"</span> % (innerclassname, innerclassfieldname)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> r_resource</span><br><span class="line"></span><br><span class="line"><span class="comment"># http://stackoverflow.com/questions/7868554/python-re-subs-replace-function-doesnt-accept-extra-arguments-how-to-avoid</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">numberrepl</span><span class="params">(rResource)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">repl</span><span class="params">(matchobj)</span>:</span></span><br><span class="line">        number = matchobj.group(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span> number <span class="keyword">in</span> rResource:</span><br><span class="line">            <span class="keyword">return</span> rResource[number]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> number</span><br><span class="line">    <span class="keyword">return</span> repl</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">processJavaFile</span><span class="params">(filePath, r_resource)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> fileinput.input(filePath, inplace=<span class="number">1</span>):</span><br><span class="line">        line = re.sub(<span class="string">"\d+"</span>, numberrepl(r_resource), line)</span><br><span class="line">        <span class="keyword">print</span> line,</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getFilePaths</span><span class="params">(rootDirectoryPath)</span>:</span></span><br><span class="line">    filePaths = []</span><br><span class="line">    rFilePaths = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">recursiveSubFiles</span><span class="params">(directoryPath)</span>:</span></span><br><span class="line">        <span class="keyword">global</span> rFilePath</span><br><span class="line">        <span class="keyword">for</span> root, directories, files <span class="keyword">in</span> os.walk(directoryPath):</span><br><span class="line">            <span class="keyword">for</span> filename <span class="keyword">in</span> files:</span><br><span class="line">                <span class="keyword">if</span> filename == <span class="string">"R.java"</span>:</span><br><span class="line">                    rFilePath = os.path.join(root, filename)</span><br><span class="line">                    rFilePaths.append(rFilePath)</span><br><span class="line">                <span class="keyword">elif</span> fnmatch.fnmatch(filename, <span class="string">"*.java"</span>):</span><br><span class="line">                    <span class="comment"># Join the two strings in order to form the full filepath.</span></span><br><span class="line">                    filepath = os.path.join(root, filename)</span><br><span class="line">                    filePaths.append(filepath)  <span class="comment"># Add it to the list.</span></span><br><span class="line">            <span class="keyword">for</span> dirName <span class="keyword">in</span> directories:</span><br><span class="line">                dirPath = os.path.join(root, dirName)</span><br><span class="line">                recursiveSubFiles(dirName)</span><br><span class="line"></span><br><span class="line">    recursiveSubFiles(rootDirectoryPath)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> filePaths, rFilePaths</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="comment"># parse command line argument</span></span><br><span class="line">    parser = argparse.ArgumentParser(description=<span class="string">'Replace R resource name with its value.'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'-s'</span>, <span class="string">'--srcRootDir'</span>, nargs=<span class="string">"?"</span>, const=<span class="string">"."</span>, default=<span class="string">"."</span>, help=<span class="string">'the root direcotory of src'</span>)</span><br><span class="line">    args = parser.parse_args(argv[<span class="number">1</span>:])</span><br><span class="line">    <span class="comment"># get all java source file paths</span></span><br><span class="line">    javaFilePaths, rFilePaths = getFilePaths(args.srcRootDir)</span><br><span class="line">    <span class="comment"># parse R.java resources</span></span><br><span class="line">    rResources = parseRresource(rFilePaths[<span class="number">0</span>])</span><br><span class="line">    <span class="comment"># process all java source file</span></span><br><span class="line">    <span class="keyword">for</span> filePath <span class="keyword">in</span> javaFilePaths:</span><br><span class="line">        processJavaFile(filePath, rResources)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main(sys.argv)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/decompile/" rel="tag"># decompile</a>
+          
+            <a href="/tags/Procyon/" rel="tag"># Procyon</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2014/11/14/网络安装操作系统简述/" rel="next" title="网络安装操作系统简述">
+                <i class="fa fa-chevron-left"></i> 网络安装操作系统简述
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2014/11/20/Eclipse中打开文件所在的文件夹/" rel="prev" title="Eclipse中打开文件所在的文件夹">
+                Eclipse中打开文件所在的文件夹 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="android,avd," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="昨天发现Android5.0的彩蛋原来是类似于Flappy Bird的游戏，不过相比更难，如下图，突发奇想想看一下Android 5.0的彩蛋的源码。">
+<meta name="keywords" content="android,avd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android AVD 折腾记">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2014/10/22/Android AVD 折腾记/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="昨天发现Android5.0的彩蛋原来是类似于Flappy Bird的游戏，不过相比更难，如下图，突发奇想想看一下Android 5.0的彩蛋的源码。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/android_5.0_eggs.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/android_sdk_manager.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/vt-x-problem.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/vt-x-not-support.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/hyper-v-turn-off.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/avd_startup_problem.png">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.100Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android AVD 折腾记">
+<meta name="twitter:description" content="昨天发现Android5.0的彩蛋原来是类似于Flappy Bird的游戏，不过相比更难，如下图，突发奇想想看一下Android 5.0的彩蛋的源码。">
+<meta name="twitter:image" content="http://65031141.ynu.edu.cn/resources/2014/10/android_5.0_eggs.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2014/10/22/Android AVD 折腾记/"/>
+
+
+
+
+
+  <title>Android AVD 折腾记 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2014/10/22/Android AVD 折腾记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android AVD 折腾记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-10-22T07:48:07+00:00">
+                2014-10-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><audio controls autoplay><br>    <source src="/resources/2014/10/醉清风.mp3"><br><br>昨天发现Android5.0的彩蛋原来是类似于Flappy Bird的游戏，不过相比更难，如下图，突发奇想想看一下Android 5.0的彩蛋的源码。</audio></p>
+<a id="more"></a>
+<p>正确开启彩蛋的方法是：快速点击”设置-关于手机-Android版本”4/5下，然后会有一个小圆圈，点几下变成大棒棒糖之后，长按即会出现。<br><a href="/resources/2014/10/android_5.0_eggs.png"><img src="/resources/2014/10/android_5.0_eggs.png" alt="android_5.0_eggs"></a></p>
+<p>想到这部分源码不属于GAPPS，所以应该是开源的，查看”recent used apps”(点击底部导航栏最右边虚拟按键)显示这个游戏属于”设置”，所以猜想这块的源码应该在设置里，查看<a href="https://android.googlesource.com/platform/packages/apps/Settings/" target="_blank" rel="noopener">最新的设置源码</a>，最新Tags是android-l-preview_r2，所以相应源码应该就在master分支上，但这么多源码怎么快速找到彩蛋相应的源码呢，试试使用hierarchyviewer可以看到一些View的类名然后再搜索是一个不错的想法，但真机上不能使用hierarchyviewer，只能在模拟器上验证（其实真机也可以只是相对麻烦一点，只需修改WindowManagerService.java中<a href="https://github.com/android/platform_frameworks_base/blob/master/services/java/com/android/server/wm/WindowManagerService.java#LC6179" target="_blank" rel="noopener">isSystemSecure</a>一行代码，返回false即可，不过一般情况下对于普通人修改源码再编译有些困难，不过可以修改编译好的dex文件呀，详情可参考<a href="http://blog.apkudo.com/2012/07/26/enabling-hierarchyviewer-on-rooted-android-devices/" target="_blank" rel="noopener">enabling-hierarchyviewer-on-rooted-android-devices</a>，后面再写一篇文章来简单讲述一下）。</p>
+<p>那行，现在就启动模拟器吧，当然首先Intel 64位的模拟器吧，如下图所示<br><a href="/resources/2014/10/android_sdk_manager.png"><img src="/resources/2014/10/android_sdk_manager.png" alt="android_sdk_manager">
+</a>不过提示没有VTx支持，如下图所示，进入BIOS开启VTX<br><a href="/resources/2014/10/vt-x-problem.png"><img src="/resources/2014/10/vt-x-problem.png" alt="vt-x-problem"></a><br>开启VTx之后安装%ANDROID_HOME%\extras\intel\Hardware_Accelerated_Execution_Manager\intelhaxm.exe，还没开始装又提示如下错误<br><a href="/resources/2014/10/vt-x-not-support.png"><img src="/resources/2014/10/vt-x-not-support.png" alt="vt-x-not-support"></a><br>那好吧Google一下还得<a href="http://stackoverflow.com/questions/16091677/intel-haxm-installation-error-this-computer-does-not-support-intel-virtualizat" target="_blank" rel="noopener">关闭Hyper-V</a>，这可以在控制面板-删除或修改程序（Control Panel\Programs\Programs and Features）-打开或关闭Windows特性中关闭之（见下图，去选Hyper-V Platform），或者直接管理员权限运行”dism.exe /Online /Disable-Feature:Microsoft-Hyper-V”即可<br><a href="/resources/2014/10/hyper-v-turn-off.png"><img src="/resources/2014/10/hyper-v-turn-off.png" alt="hyper-v-turn-off"></a></p>
+<p>不过创建Intel x86_64 AVD启动时还是提示”Missing emulator-x86_64”，tools目录下确实没有这个文件，已经是最新的的Android SDK Tools了，这Android团队可真是的，发布了64位模拟器镜像不提供64位模拟器，暂时没办法，如果手上有完整的源码可以编一个出来，现在就使用32位的吧。启动之后直接黑屏，后来参考<a href="http://stackoverflow.com/questions/10022580/android-emulator-shows-nothing-except-black-screen-and-adb-devices-shows-device" title="android-emulator-shows-nothing-except-black-screen-and-adb-devices-shows-device" target="_blank" rel="noopener">这里</a>修改模拟器设置”Use Host GPU”选中，这时有Android在那一闪一闪了，不过十多分钟过去了，还是没有进展，那就adb log看一下吧，最后循环这个错误，暂时没辙了，那就想办法在真机环境下运行hierarchyviewer吧！<br><a href="/resources/2014/10/avd_startup_problem.png"><img src="/resources/2014/10/avd_startup_problem.png" alt="avd_startup_problem"></a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/avd/" rel="tag"># avd</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2014/10/20/RSA中的public_private加解密/" rel="next" title="RSA中的public/private加解密">
+                <i class="fa fa-chevron-left"></i> RSA中的public/private加解密
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2014/10/22/寻找Android彩蛋之路[2014-11-06更新]/" rel="prev" title="寻找Android彩蛋之路[2014-11-06更新]">
+                寻找Android彩蛋之路[2014-11-06更新] <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

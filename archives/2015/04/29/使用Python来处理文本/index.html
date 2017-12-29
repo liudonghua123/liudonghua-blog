@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="今天一个朋友需要处理MovieLens的数据集，他想获取评分、用户性别、年龄、职业、电影分类这样的信息，但原始数据集中是分成三个文本文件（使用::分割的CSV文件）存储的，分别是movies.dat（MovieID::Title::Genres）、users.dat（UserID::Gender::Age::Occup">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Python来处理文本">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2015/04/29/使用Python来处理文本/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="今天一个朋友需要处理MovieLens的数据集，他想获取评分、用户性别、年龄、职业、电影分类这样的信息，但原始数据集中是分成三个文本文件（使用::分割的CSV文件）存储的，分别是movies.dat（MovieID::Title::Genres）、users.dat（UserID::Gender::Age::Occupation::Zip-code）、ratings.dat（UserID::Mov">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Python来处理文本">
+<meta name="twitter:description" content="今天一个朋友需要处理MovieLens的数据集，他想获取评分、用户性别、年龄、职业、电影分类这样的信息，但原始数据集中是分成三个文本文件（使用::分割的CSV文件）存储的，分别是movies.dat（MovieID::Title::Genres）、users.dat（UserID::Gender::Age::Occupation::Zip-code）、ratings.dat（UserID::Mov">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2015/04/29/使用Python来处理文本/"/>
+
+
+
+
+
+  <title>使用Python来处理文本 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2015/04/29/使用Python来处理文本/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用Python来处理文本</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-29T12:28:38+00:00">
+                2015-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天一个朋友需要处理MovieLens的数据集，他想获取评分、用户性别、年龄、职业、电影分类这样的信息，但原始数据集中是分成三个文本文件（使用::分割的CSV文件）存储的，分别是movies.dat（MovieID::Title::Genres）、users.dat（UserID::Gender::Age::Occupation::Zip-code）、ratings.dat（UserID::MovieID::Rating::Timestamp）。</p>
+<a id="more"></a>
+<p>这个需求其实很简单的，本来想用熟悉的Java快速完成，但想到好久没用Python了，很多东西都忘了，所以就用Python帮他实现了一下，就当作回顾Python的知识<br>以下就是这部分代码，没有做什么优化（对这块了解的不是很深入），如果有什么建议大家可以告诉我！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">__author__ = <span class="string">'Liu.D.H'</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Movie</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""This is movie class which contains movie_id, title, and genres fields"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, movie_id, title, genres)</span>:</span></span><br><span class="line">        self.movie_id = movie_id</span><br><span class="line">        self.title = title</span><br><span class="line">        self.genres = genres</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""This is user class which contains user_id, gender, age, occupation and zipcode fields"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, user_id, gender, age, occupation, zipcode)</span>:</span></span><br><span class="line">        self.user_id = user_id</span><br><span class="line">        self.gender = gender</span><br><span class="line">        self.age = age</span><br><span class="line">        self.occupation = occupation</span><br><span class="line">        self.zipcode = zipcode</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rating</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""This is movie class which contains user_id, movie_id, rating and timestamp fields"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, user_id, movie_id, rating, timestamp)</span>:</span></span><br><span class="line">        self.user_id = user_id</span><br><span class="line">        self.movie_id = movie_id</span><br><span class="line">        self.rating = rating</span><br><span class="line">        self.timestamp = timestamp</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># define movie, user and rating storage</span></span><br><span class="line">    movie_dict = &#123;&#125;</span><br><span class="line">    user_dict = &#123;&#125;</span><br><span class="line">    rating_list = []</span><br><span class="line">    detailed_rating_list = []</span><br><span class="line">    occupations = &#123;<span class="number">0</span>: <span class="string">"other"</span>, <span class="number">1</span>: <span class="string">"academic/educator"</span>, <span class="number">2</span>: <span class="string">"artist"</span>, <span class="number">3</span>: <span class="string">"clerical/admin"</span>, <span class="number">4</span>: <span class="string">"college/grad student"</span>,</span><br><span class="line">                   <span class="number">5</span>: <span class="string">"customer service"</span>, <span class="number">6</span>: <span class="string">"doctor/health care"</span>, <span class="number">7</span>: <span class="string">"executive/managerial"</span>, <span class="number">8</span>: <span class="string">"farmer"</span>,</span><br><span class="line">                   <span class="number">9</span>: <span class="string">"homemaker"</span>, <span class="number">10</span>: <span class="string">"K-12 student"</span>, <span class="number">11</span>: <span class="string">"lawyer"</span>, <span class="number">12</span>: <span class="string">"programmer"</span>, <span class="number">13</span>: <span class="string">"retired"</span>,</span><br><span class="line">                   <span class="number">14</span>: <span class="string">"sales/marketing"</span>, <span class="number">15</span>: <span class="string">"scientist"</span>, <span class="number">16</span>: <span class="string">"self-employed"</span>, <span class="number">17</span>: <span class="string">"technician/engineer"</span>,</span><br><span class="line">                   <span class="number">18</span>: <span class="string">"tradesman/craftsman"</span>, <span class="number">19</span>: <span class="string">"unemployed"</span>, <span class="number">20</span>: <span class="string">"writer"</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Parse movie, user, rating file</span></span><br><span class="line">    <span class="comment"># Here we use absolute path because the CWD may not be the directory of the current script</span></span><br><span class="line">    <span class="comment"># For example, in PyCharm the "os.getcwd()" only returns "."</span></span><br><span class="line">    root_dir = os.path.dirname(os.path.abspath(__file__)) + os.sep + <span class="string">"ml-1m"</span></span><br><span class="line">    movie_file_path = root_dir + os.sep + <span class="string">"movies.dat"</span></span><br><span class="line">    user_file_path = root_dir + os.sep + <span class="string">"users.dat"</span></span><br><span class="line">    rating_file_path = root_dir + os.sep + <span class="string">"ratings.dat"</span></span><br><span class="line">    movie_fd = open(movie_file_path)</span><br><span class="line">    user_fd = open(user_file_path)</span><br><span class="line">    rating_fd = open(rating_file_path)</span><br><span class="line">    <span class="comment"># To get all lines of the file, notice that each line may end with '\n', So we need "rstrip" function</span></span><br><span class="line">    <span class="comment"># Or we can get stripped lines via movie_fd.read().splitlines()</span></span><br><span class="line">    <span class="comment"># see also http://stackoverflow.com/questions/15233340/getting-rid-of-n-when-using-readlines</span></span><br><span class="line">    movie_lines = movie_fd.readlines()</span><br><span class="line">    user_lines = user_fd.readlines()</span><br><span class="line">    rating_lines = rating_fd.readlines()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> movie_lines:</span><br><span class="line">        <span class="comment"># The structure of movie files is "MovieID::Title::Genres"</span></span><br><span class="line">        (movie_id, title, genres) = line.rstrip().split(<span class="string">"::"</span>)</span><br><span class="line">        movie_dict[movie_id] = Movie(movie_id, title, genres)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> user_lines:</span><br><span class="line">        <span class="comment"># The structure of user files is "UserID::Gender::Age::Occupation::Zipcode"</span></span><br><span class="line">        (user_id, gender, age, occupation, zipcode) = line.rstrip().split(<span class="string">"::"</span>)</span><br><span class="line">        user_dict[user_id] = User(user_id, gender, age, occupation, zipcode)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> rating_lines:</span><br><span class="line">        <span class="comment"># The structure of movie files is "UserID::MovieID::Rating::Timestamp"</span></span><br><span class="line">        (user_id, movie_id, rating, timestamp) = line.rstrip().split(<span class="string">"::"</span>)</span><br><span class="line">        rating_list.append(Rating(user_id, movie_id, rating, timestamp))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> rating <span class="keyword">in</span> rating_list:</span><br><span class="line">        <span class="comment"># Extract the needed information, assemble as dict and save in a list</span></span><br><span class="line">        detailed_rating_list.append(&#123;<span class="string">"rating"</span>: rating.rating,</span><br><span class="line">                                     <span class="string">"movie_genres"</span>: movie_dict[rating.movie_id].genres,</span><br><span class="line">                                     <span class="string">"user_gender"</span>: user_dict[rating.user_id].gender,</span><br><span class="line">                                     <span class="string">"user_age"</span>: user_dict[rating.user_id].age,</span><br><span class="line">                                     <span class="string">"user_occupation"</span>: occupations[int(user_dict[rating.user_id].occupation)],</span><br><span class="line">                                     <span class="string">"user_zipcode"</span>: user_dict[rating.user_id].zipcode&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Write the information to a file</span></span><br><span class="line">    detailed_rating_fd = open(<span class="string">"detailed_rating_list.txt"</span>, <span class="string">"w"</span>)</span><br><span class="line">    <span class="keyword">for</span> detailed_rating <span class="keyword">in</span> detailed_rating_list:</span><br><span class="line">        detailed_rating_fd.write(<span class="string">"&#123;0&#125;, &#123;1&#125;, &#123;2&#125;, &#123;3&#125;, &#123;4&#125;\n"</span>.format(</span><br><span class="line">            detailed_rating[<span class="string">"rating"</span>],</span><br><span class="line">            detailed_rating[<span class="string">"movie_genres"</span>].split(<span class="string">"|"</span>)[<span class="number">0</span>],</span><br><span class="line">            detailed_rating[<span class="string">"user_gender"</span>],</span><br><span class="line">            detailed_rating[<span class="string">"user_age"</span>],</span><br><span class="line">            detailed_rating[<span class="string">"user_occupation"</span>]))</span><br><span class="line">    detailed_rating_fd.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p><strong>4/30/2015 更新</strong><br>顺便添加一个Ruby的版本（额，好多东西都忘了，边查边写的）</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Author:: Donghua Liu (liudonghua123<span class="doctag">@gmail</span>.com)</span></span><br><span class="line"><span class="comment"># The following documentation need to rewrite according to RDoc convention</span></span><br><span class="line"><span class="comment"># There are a lot of links for refering some basics</span></span><br><span class="line"><span class="comment"># http://rdoc.sourceforge.net/doc/index.html</span></span><br><span class="line"><span class="comment"># http://blog.firsthand.ca/2010/09/ruby-rdoc-example.html</span></span><br><span class="line"><span class="comment"># This is movie class which contains movie_id, title, and genres fields</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Movie</span></span></span><br><span class="line">  <span class="comment"># http://ruby.about.com/od/oo/ss/Using-Attributes.htm</span></span><br><span class="line">  <span class="comment"># http://www.quora.com/What-are-setters-and-getters-in-Ruby</span></span><br><span class="line">  <span class="keyword">attr_accessor</span> <span class="symbol">:movie_id</span>, <span class="symbol">:title</span>, <span class="symbol">:genres</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="params">(movie_id, title, genres)</span></span></span><br><span class="line">    @movie_id = movie_id</span><br><span class="line">    @title = title</span><br><span class="line">    @genres = genres</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This is user class which contains user_id, gender, age, occupation and zipcode fields</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span></span><br><span class="line">  <span class="keyword">attr_accessor</span> <span class="symbol">:user_id</span>, <span class="symbol">:gender</span>, <span class="symbol">:age</span>, <span class="symbol">:occupation</span>, <span class="symbol">:zipcode</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="params">(user_id, gender, age, occupation, zipcode)</span></span></span><br><span class="line">    @user_id = user_id</span><br><span class="line">    @gender = gender</span><br><span class="line">    @age = age</span><br><span class="line">    @occupation = occupation</span><br><span class="line">    @zipcode = zipcode</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This is movie class which contains user_id, movie_id, rating and timestamp fields</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rating</span></span></span><br><span class="line">  <span class="keyword">attr_accessor</span> <span class="symbol">:user_id</span>, <span class="symbol">:movie_id</span>, <span class="symbol">:rating</span>, <span class="symbol">:timestamp</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="params">(user_id, movie_id, rating, timestamp)</span></span></span><br><span class="line">    @user_id = user_id</span><br><span class="line">    @movie_id = movie_id</span><br><span class="line">    @rating = rating</span><br><span class="line">    @timestamp = timestamp</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span></span></span><br><span class="line">  <span class="comment"># define movie, user and rating storage</span></span><br><span class="line">  <span class="comment"># http://rubyquicktips.com/post/603292403/accessing-a-hash-with-either-string-or-symbol-keys</span></span><br><span class="line">  <span class="keyword">require</span> <span class="string">'active_support/hash_with_indifferent_access'</span> <span class="comment"># HashWithIndifferentAccess.new</span></span><br><span class="line">  movie_dict = &#123;&#125;</span><br><span class="line">  user_dict = &#123;&#125;</span><br><span class="line">  rating_list = []</span><br><span class="line">  detailed_rating_list = []</span><br><span class="line">  occupations = &#123;<span class="number">0</span> =&gt; <span class="string">'other'</span>, <span class="number">1</span> =&gt; <span class="string">'academic/educator'</span>, <span class="number">2</span> =&gt; <span class="string">'artist'</span>, <span class="number">3</span> =&gt; <span class="string">'clerical/admin'</span>, <span class="number">4</span> =&gt; <span class="string">'college/grad student'</span>,</span><br><span class="line">                 <span class="number">5</span> =&gt; <span class="string">'customer service'</span>, <span class="number">6</span> =&gt; <span class="string">'doctor/health care'</span>, <span class="number">7</span> =&gt; <span class="string">'executive/managerial'</span>, <span class="number">8</span> =&gt; <span class="string">'farmer'</span>,</span><br><span class="line">                 <span class="number">9</span> =&gt; <span class="string">'homemaker'</span>, <span class="number">10</span> =&gt; <span class="string">'K-12 student'</span>, <span class="number">11</span> =&gt; <span class="string">'lawyer'</span>, <span class="number">12</span> =&gt; <span class="string">'programmer'</span>, <span class="number">13</span> =&gt; <span class="string">'retired'</span>,</span><br><span class="line">                 <span class="number">14</span> =&gt; <span class="string">'sales/marketing'</span>, <span class="number">15</span> =&gt; <span class="string">'scientist'</span>, <span class="number">16</span> =&gt; <span class="string">'self-employed'</span>, <span class="number">17</span> =&gt; <span class="string">'technician/engineer'</span>,</span><br><span class="line">                 <span class="number">18</span> =&gt; <span class="string">'tradesman/craftsman'</span>, <span class="number">19</span> =&gt; <span class="string">'unemployed'</span>, <span class="number">20</span> =&gt; <span class="string">'writer'</span>&#125;</span><br><span class="line"></span><br><span class="line">  root_dir = <span class="string">'ml-1m'</span></span><br><span class="line">  <span class="comment"># http://stackoverflow.com/questions/377768/string-concatenation-and-ruby</span></span><br><span class="line">  <span class="comment"># http://stackoverflow.com/questions/597488/how-to-do-a-safe-join-pathname-in-ruby</span></span><br><span class="line">  <span class="comment"># http://ruby-doc.org/core-2.1.2/File.html</span></span><br><span class="line">  movie_file_path = File.join(root_dir, <span class="string">'movies.dat'</span>)</span><br><span class="line">  user_file_path = File.join(root_dir, <span class="string">'users.dat'</span>)</span><br><span class="line">  rating_file_path =File.join(root_dir, <span class="string">'ratings.dat'</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># http://stackoverflow.com/questions/6012930/read-lines-of-a-file-in-ruby</span></span><br><span class="line">  File.readlines(movie_file_path).each <span class="keyword">do</span> <span class="params">|line|</span></span><br><span class="line">    <span class="comment"># The structure of movie files is "MovieID::Title::Genres"</span></span><br><span class="line">    splitted_fields = line.split(<span class="string">'::'</span>)</span><br><span class="line">    movie = Movie.new(splitted_fields[<span class="number">0</span>], splitted_fields[<span class="number">1</span>], splitted_fields[<span class="number">2</span>])</span><br><span class="line">    movie_dict[splitted_fields[<span class="number">0</span>]] = movie</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  File.readlines(user_file_path).each <span class="keyword">do</span> <span class="params">|line|</span></span><br><span class="line">    <span class="comment"># The structure of user files is "UserID::Gender::Age::Occupation::Zipcode"</span></span><br><span class="line">    splitted_fields = line.split(<span class="string">'::'</span>)</span><br><span class="line">    user = User.new(splitted_fields[<span class="number">0</span>], splitted_fields[<span class="number">1</span>], splitted_fields[<span class="number">2</span>], splitted_fields[<span class="number">3</span>], splitted_fields[<span class="number">4</span>])</span><br><span class="line">    user_dict[splitted_fields[<span class="number">0</span>]] = user</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  File.readlines(rating_file_path).each <span class="keyword">do</span> <span class="params">|line|</span></span><br><span class="line">    <span class="comment"># The structure of movie files is "UserID::MovieID::Rating::Timestamp"</span></span><br><span class="line">    splitted_fields = line.split(<span class="string">'::'</span>)</span><br><span class="line">    rating = Rating.new(splitted_fields[<span class="number">0</span>], splitted_fields[<span class="number">1</span>], splitted_fields[<span class="number">2</span>], splitted_fields[<span class="number">3</span>])</span><br><span class="line">    rating_list.push rating</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  rating_list.each <span class="keyword">do</span> <span class="params">|rating|</span></span><br><span class="line">    detailed_rating_list.push(&#123;<span class="string">'rating'</span> =&gt; rating.rating,</span><br><span class="line">                               <span class="string">'movie_genres'</span> =&gt; movie_dict[rating.movie_id].genres,</span><br><span class="line">                               <span class="string">'user_gender'</span> =&gt; user_dict[rating.user_id].gender,</span><br><span class="line">                               <span class="string">'user_age'</span> =&gt; user_dict[rating.user_id].age,</span><br><span class="line">                               <span class="string">'user_occupation'</span> =&gt; occupations[user_dict[rating.user_id].occupation.to_i],</span><br><span class="line">                               <span class="string">'user_zipcode'</span> =&gt; user_dict[rating.user_id].zipcode&#125;)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># http://stackoverflow.com/questions/2777802/how-to-write-to-file-in-ruby</span></span><br><span class="line">  File.open(<span class="string">'detailed_rating_list.txt'</span>, <span class="string">'w'</span>) &#123; <span class="params">|detailed_rating_fd|</span></span><br><span class="line">    detailed_rating_list.each &#123; <span class="params">|detailed_rating|</span></span><br><span class="line">      detailed_rating_fd.write(<span class="string">"<span class="subst">#&#123;detailed_rating[<span class="string">'rating'</span>]&#125;</span>,<span class="subst">#&#123;detailed_rating[<span class="string">'movie_genres'</span>].split(<span class="string">'|'</span>)[<span class="number">0</span>]&#125;</span>,<span class="subst">#&#123;detailed_rating[<span class="string">'user_gender'</span>]&#125;</span>,<span class="subst">#&#123;detailed_rating[<span class="string">'user_age'</span>]&#125;</span>,<span class="subst">#&#123;detailed_rating[<span class="string">'user_occupation'</span>]&#125;</span>\n"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">main</span><br></pre></td></tr></table></figure>
+<p>参考资料</p>
+<ol>
+<li><a href="https://www.ruby-lang.org/en/documentation/ruby-from-other-languages/to-ruby-from-python/" target="_blank" rel="noopener">To Ruby From Python</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2015/04/26/让Android SDK安装后保留安装文件/" rel="next" title="让Android SDK安装后保留安装文件">
+                <i class="fa fa-chevron-left"></i> 让Android SDK安装后保留安装文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2015/05/05/在Android开发中使用Java8中的一些特性——lambada expression/" rel="prev" title="在Android开发中使用Java8中的一些特性——lambada expression">
+                在Android开发中使用Java8中的一些特性——lambada expression <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Chrome Extension,Chrome App,NaCl,Native Client,PNaCl,Portable Native Client," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="之前做过一些Chrome Extension方面的开发，最近无意间看到Chrome已经不再支持NPAPI插件了（Saying Goodbye to Our Old Friend NPAPI），查看其文档，现在做Chrome的扩展开发主要就是Chrome App、Chrome Extension、Native Clien">
+<meta name="keywords" content="Chrome Extension,Chrome App,NaCl,Native Client,PNaCl,Portable Native Client">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chrome的扩展学习">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2015/04/22/Chrome的扩展学习/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="之前做过一些Chrome Extension方面的开发，最近无意间看到Chrome已经不再支持NPAPI插件了（Saying Goodbye to Our Old Friend NPAPI），查看其文档，现在做Chrome的扩展开发主要就是Chrome App、Chrome Extension、Native Client三种了。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chrome的扩展学习">
+<meta name="twitter:description" content="之前做过一些Chrome Extension方面的开发，最近无意间看到Chrome已经不再支持NPAPI插件了（Saying Goodbye to Our Old Friend NPAPI），查看其文档，现在做Chrome的扩展开发主要就是Chrome App、Chrome Extension、Native Client三种了。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2015/04/22/Chrome的扩展学习/"/>
+
+
+
+
+
+  <title>Chrome的扩展学习 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2015/04/22/Chrome的扩展学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Chrome的扩展学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-22T13:55:16+00:00">
+                2015-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前做过一些Chrome Extension方面的开发，最近无意间看到Chrome已经不再支持NPAPI插件了（<a href="http://blog.chromium.org/2013/09/saying-goodbye-to-our-old-friend-npapi.html" target="_blank" rel="noopener">Saying Goodbye to Our Old Friend NPAPI</a>），查看其文档，现在做Chrome的扩展开发主要就是Chrome App、Chrome Extension、Native Client三种了。</p>
+<a id="more"></a>
+<p>Chrome Extension相对还算熟悉，新出现的Chrome App其实可以这样简单理解，是一种扩展的Chrome Extension，启动时不再在Chrome的工具栏（<a href="https://developer.chrome.com/extensions/browserAction" target="_blank" rel="noopener">Browser Actions</a>）、地址栏（<a href="https://developer.chrome.com/extensions/pageAction" target="_blank" rel="noopener">Page Actions</a>）、页面右键菜单项中添加功能，而是直接打开一个新的窗口，然后在里面运行由HTML、CSS、JavaScript的应用程序。还有一点是Manifest的版本现在是2，App是从<a href="https://developer.chrome.com/extensions/manifestVersion" target="_blank" rel="noopener">Manifest版本</a>2才开始支持的，所以App里的<span class="pl-s"><span class="pl-pds">“</span>manifest_version<span class="pl-pds">“必须是</span></span> <span class="pl-c1">2，Extension的<span class="pl-pds">“</span>manifest_version<span class="pl-pds">“可以是1或2，不过官方建议使用2。</span></span></p>
+<p>另外App分为Hosted Apps和Packaged Apps，Hosted顾名思义就是应用托管到服务器上（也有crx，但crx里只有manifest文件），Packaged就是把所有资源都打包到crx中，然后下载到Chrome里安装运行。以下引用官方的解释（<a href="https://developer.chrome.com/webstore/apps_vs_extensions" target="_blank" rel="noopener">Extensions and Apps in the Chrome Web Store</a>）。</p>
+<blockquote>
+<h2 id="Hosted-Apps-Packaged-Apps-and-Extensions"><a href="#Hosted-Apps-Packaged-Apps-and-Extensions" class="headerlink" title="Hosted Apps, Packaged Apps, and Extensions"></a>Hosted Apps, Packaged Apps, and Extensions</h2><p>There are actually two kinds of apps: hosted and packaged. A hosted app wraps an online website, so the CRX package can be as simple as a single manifest.json file pointing to the website. A packaged app contains the whole kit and kaboodle inside the CRX package—HTML, CSS, and so on, all run from the user’s hard drive.</p>
+<p>Packaged apps are a kind of missing link between extensions and hosted apps. They look the same as a hosted app to the user, but under the covers, they are really like traditional extensions with that special “launch” parameter. They have access to almost all functionality afforded to regular extensions—context menu, background pages, and so on. The only exception is that packaged apps can’t add buttons to the address bar.</p>
+<p>Returning to the example in the previous section, it’s perfectly valid for a packaged app to add an item to Google Chrome’s <a href="http://code.google.com/chrome/extensions/contextMenus.html" target="_blank" rel="noopener">context menu</a>. However, it’s completely invalid for a hosted app to do the same thing. In some respects, a packaged app lets you have your cake and eat it: the appearance of a packaged app with the power of an extension. But there are still plenty of reasons to use pure extensions and hosted apps.<br>体验了几个Chrome App，还是非常酷炫的，如<a href="https://chrome.google.com/webstore/detail/anydo/ocgddccilgpeepgglnlpchkpgamkgmld" target="_blank" rel="noopener">Any.do</a>、<a href="https://chrome.google.com/webstore/detail/mancala/cjlhjhpnhabnfepdfemepiilbjbkecpe" target="_blank" rel="noopener">Mancala</a>，后面有机会开发跨平台的桌面应用（游戏）就可以用Chrome App尝试！</p>
+</blockquote>
+<p>而Native Client（还分为Portable Native Client：PNaCl和普通的Native Client：NaCl, Chrome使用的是PNaCl）则是稍微底层一点的东西，即可以使用C、C++来调用更底层的一些API，如3D Graphic、File I/O、Audio等，它是作为App和Extension可选的模块放到crx里运行的。</p>
+<blockquote>
+<p><strong>Native Client</strong> is a sandbox for running compiled C and C++ code in the browser efficiently and securely, independent of the user’s operating system. <strong>Portable Native Client</strong> extends that technology with architecture independence, letting developers compile their code once to run in any website and on any architecture with ahead-of-time (AOT) translation.</p>
+<p>In short, Native Client brings the <strong>performance</strong> and <strong>low-level control</strong> of native code to modern web browsers, without sacrificing the <strong>security</strong> and <strong>portability</strong> of the web. Watch the video below for an overview of Native Client, including its goals, how it works, and how Portable Native Client lets developers run native compiled code on the web.</p>
+</blockquote>
+<p>其实在<a href="http://blog.chromium.org/2013/09/saying-goodbye-to-our-old-friend-npapi.html" target="_blank" rel="noopener">Saying Goodbye to Our Old Friend NPAPI</a>中他提到代替NPAPI的方式（见下面引用），只是<a href="http://developer.chrome.com/extensions/messaging.html#native-messaging" target="_blank" rel="noopener">Native Messaging API</a>是属于Extension的，<a href="https://support.google.com/chrome/a/answer/3019558?hl=en" target="_blank" rel="noopener">Legacy Browser Support</a>用的很少，简单阐述就是让Chrome不能处理的旧的网页调用其他浏览器（如IE）去处理。</p>
+<blockquote>
+<p>There are several alternatives to NPAPI. In cases where standard web technologies are not yet sufficient, developers and administrators can use <a href="https://developers.google.com/native-client/" target="_blank" rel="noopener">NaCl</a>, <a href="http://developer.chrome.com/apps/" target="_blank" rel="noopener">Apps</a>, <a href="http://developer.chrome.com/extensions/messaging.html#native-messaging" target="_blank" rel="noopener">Native Messaging API</a>, and <a href="https://support.google.com/chrome/a/answer/3019558?hl=en" target="_blank" rel="noopener">Legacy Browser Support</a> to transition from NPAPI. Moving forward, our goal is to evolve the standards-based web platform to cover the use cases once served by NPAPI.<br>参考资料</p>
+<ol>
+<li><a href="https://developer.chrome.com/apps/about_apps" target="_blank" rel="noopener">Chrome App</a></li>
+<li><a href="https://developer.chrome.com/extensions" target="_blank" rel="noopener">Chrome Extension</a></li>
+<li><a href="https://developer.chrome.com/native-client" target="_blank" rel="noopener">Native Client</a></li>
+<li><a href="https://developer.chrome.com/webstore/choosing" target="_blank" rel="noopener">Choosing an App Type</a></li>
+</ol>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Chrome-Extension/" rel="tag"># Chrome Extension</a>
+          
+            <a href="/tags/Chrome-App/" rel="tag"># Chrome App</a>
+          
+            <a href="/tags/NaCl/" rel="tag"># NaCl</a>
+          
+            <a href="/tags/Native-Client/" rel="tag"># Native Client</a>
+          
+            <a href="/tags/PNaCl/" rel="tag"># PNaCl</a>
+          
+            <a href="/tags/Portable-Native-Client/" rel="tag"># Portable Native Client</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2015/04/22/HTML5 Service Worker初体验/" rel="next" title="HTML5 Service Worker初体验">
+                <i class="fa fa-chevron-left"></i> HTML5 Service Worker初体验
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2015/04/26/让Android SDK安装后保留安装文件/" rel="prev" title="让Android SDK安装后保留安装文件">
+                让Android SDK安装后保留安装文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hosted-Apps-Packaged-Apps-and-Extensions"><span class="nav-number">1.</span> <span class="nav-text">Hosted Apps, Packaged Apps, and Extensions</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

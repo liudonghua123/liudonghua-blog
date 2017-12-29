@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="android,tcpdump," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="之前我写过一篇文章”非Android源码中编译tcpdump“，今天我终于使用AWS EC2作为代理服务器，完整的更新下载了Android源码（更新后，我的.repo居然有42G，checkout之后的纯代码有大概15G，Android源码也是越来越大了！一不小心免费的AWS的流量就超了7G多，$1.5就没了），所以就">
+<meta name="keywords" content="android,tcpdump">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 5.0源码编译tcpdump">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2014/12/05/Android 5.0源码编译tcpdump/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="之前我写过一篇文章”非Android源码中编译tcpdump“，今天我终于使用AWS EC2作为代理服务器，完整的更新下载了Android源码（更新后，我的.repo居然有42G，checkout之后的纯代码有大概15G，Android源码也是越来越大了！一不小心免费的AWS的流量就超了7G多，$1.5就没了），所以就想在Android源码中编译tcpdump，体会原汁原味。以下记录我编译的一些过">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.100Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 5.0源码编译tcpdump">
+<meta name="twitter:description" content="之前我写过一篇文章”非Android源码中编译tcpdump“，今天我终于使用AWS EC2作为代理服务器，完整的更新下载了Android源码（更新后，我的.repo居然有42G，checkout之后的纯代码有大概15G，Android源码也是越来越大了！一不小心免费的AWS的流量就超了7G多，$1.5就没了），所以就想在Android源码中编译tcpdump，体会原汁原味。以下记录我编译的一些过">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2014/12/05/Android 5.0源码编译tcpdump/"/>
+
+
+
+
+
+  <title>Android 5.0源码编译tcpdump | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2014/12/05/Android 5.0源码编译tcpdump/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android 5.0源码编译tcpdump</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-12-05T06:31:10+00:00">
+                2014-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前我写过一篇文章”<a href="http://202.203.209.55:8080/?p=372" target="_blank" rel="noopener">非Android源码中编译tcpdump</a>“，今天我终于使用AWS EC2作为代理服务器，完整的更新下载了Android源码（更新后，我的.repo居然有42G，checkout之后的纯代码有大概15G，Android源码也是越来越大了！一不小心免费的AWS的流量就超了7G多，$1.5就没了），所以就想在Android源码中编译tcpdump，体会原汁原味。以下记录我编译的一些过程。</p>
+<a id="more"></a>
+<ol>
+<li>首先整个源码编译一遍，我使用make -j8，大概两小时完成</li>
+<li><p>cd到external/tcpdump，修改Android.mk，让编译出的tcpdump可以在Android 5.0上运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">liudonghua@liudonghua-Ubuntu:~/android$ cd external/tcpdump/</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/tcpdump$ git diff</span><br><span class="line">diff --git a/Android.mk b/Android.mk</span><br><span class="line">index 348d8b0..8dc7a4e 100644</span><br><span class="line">--- a/Android.mk</span><br><span class="line">+++ b/Android.mk</span><br><span class="line">@@ -38,6 +38,9 @@ LOCAL_SRC_FILES:=\</span><br><span class="line"></span><br><span class="line"> LOCAL_CFLAGS := -O2 -g</span><br><span class="line"> LOCAL_CFLAGS += -DHAVE_CONFIG_H -D_U_="__attribute__((unused))"</span><br><span class="line">+LOCAL_CFLAGS += -pie -fPIE</span><br><span class="line">+</span><br><span class="line">+LOCAL_LDFLAGS := -pie -fPIE</span><br><span class="line"></span><br><span class="line"> LOCAL_C_INCLUDES += \</span><br><span class="line">        $(LOCAL_PATH)/missing\</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/tcpdump$</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行mm，后面的编译过程如下</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/tcpdump$ mm</span><br><span class="line">============================================</span><br><span class="line">PLATFORM_VERSION_CODENAME=REL</span><br><span class="line">PLATFORM_VERSION=5.0.50.50.50.50</span><br><span class="line">TARGET_PRODUCT=aosp_hammerhead</span><br><span class="line">TARGET_BUILD_VARIANT=userdebug</span><br><span class="line">TARGET_BUILD_TYPE=release</span><br><span class="line">TARGET_BUILD_APPS=</span><br><span class="line">TARGET_ARCH=arm</span><br><span class="line">TARGET_ARCH_VARIANT=armv7-a-neon</span><br><span class="line">TARGET_CPU_VARIANT=krait</span><br><span class="line">TARGET_2ND_ARCH=</span><br><span class="line">TARGET_2ND_ARCH_VARIANT=</span><br><span class="line">TARGET_2ND_CPU_VARIANT=</span><br><span class="line">HOST_ARCH=x86_64</span><br><span class="line">HOST_OS=linux</span><br><span class="line">HOST_OS_EXTRA=Linux-3.13.0-39-generic-x86_64-with-Ubuntu-14.04-trusty</span><br><span class="line">HOST_BUILD_TYPE=release</span><br><span class="line">BUILD_ID=AOSP</span><br><span class="line">OUT_DIR=out</span><br><span class="line">============================================</span><br><span class="line">PRODUCT_COPY_FILES device/generic/goldfish/data/etc/apns-conf.xml:system/etc/apns-conf.xml ignored.</span><br><span class="line">No private recovery resources for TARGET_DEVICE hammerhead</span><br><span class="line">make: Entering directory `/home/liudonghua/android'</span><br><span class="line">make: *** No rule to make target `out/target/product/hammerhead/obj/STATIC_LIBRARIES/libpcap_intermediates/export_includes', needed by `out/target/product/hammerhead/obj/EXECUTABLES/tcpdump_intermediates/import_includes'.  Stop.</span><br><span class="line">make: Leaving directory `/home/liudonghua/android'</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>### make failed to build some targets (1 seconds) ####</span><br><span class="line"></span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/tcpdump$cd ../libpcap</span><br><span class="line">/home/liudonghua/android/external/libpcap</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/libpcap$ mm</span><br><span class="line">.................................</span><br><span class="line">Export includes file: external/libpcap/Android.mk -- out/target/product/hammerhead/obj/STATIC_LIBRARIES/libpcap_intermediates/export_includes</span><br><span class="line">target StaticLib: libpcap (out/target/product/hammerhead/obj/STATIC_LIBRARIES/libpcap_intermediates/libpcap.a)</span><br><span class="line">make: Leaving directory `/home/liudonghua/android'</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>### make completed successfully (9 seconds) ####</span><br><span class="line"></span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/libpcap$</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/libpcap$ cd -</span><br><span class="line">/home/liudonghua/android/external/tcpdump</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/tcpdump$ mm</span><br><span class="line">.................................</span><br><span class="line">target Executable: tcpdump (out/target/product/hammerhead/obj/EXECUTABLES/tcpdump_intermediates/LINKED/tcpdump)</span><br><span class="line">target Symbolic: tcpdump (out/target/product/hammerhead/symbols/system/xbin/tcpdump)</span><br><span class="line">Export includes file: external/tcpdump/Android.mk -- out/target/product/hammerhead/obj/EXECUTABLES/tcpdump_intermediates/export_includes</span><br><span class="line">target Strip: tcpdump (out/target/product/hammerhead/obj/EXECUTABLES/tcpdump_intermediates/tcpdump)</span><br><span class="line">Install: out/target/product/hammerhead/system/xbin/tcpdump</span><br><span class="line">make: Leaving directory `/home/liudonghua/android'</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>### make completed successfully (34 seconds) ####</span><br><span class="line"></span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/tcpdump$</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android$ file out/target/product/hammerhead/obj/EXECUTABLES/tcpdump_intermediates/tcpdump</span><br><span class="line">out/target/product/hammerhead/obj/EXECUTABLES/tcpdump_intermediates/tcpdump: ELF 32-bit LSB  shared object, ARM, EABI5 version 1 (SYSV), dynamically linked (uses shared libs), stripped</span><br></pre></td></tr></table></figure>
+<p>如果之前没有源码编译过会mm libpcap时会有如下错误<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/libpcap$ mm</span><br><span class="line">============================================</span><br><span class="line">PLATFORM_VERSION_CODENAME=REL</span><br><span class="line">PLATFORM_VERSION=5.0.50.50.50.50</span><br><span class="line">TARGET_PRODUCT=aosp_arm</span><br><span class="line">TARGET_BUILD_VARIANT=eng</span><br><span class="line">TARGET_BUILD_TYPE=release</span><br><span class="line">TARGET_BUILD_APPS=</span><br><span class="line">TARGET_ARCH=arm</span><br><span class="line">TARGET_ARCH_VARIANT=armv7-a</span><br><span class="line">TARGET_CPU_VARIANT=generic</span><br><span class="line">TARGET_2ND_ARCH=</span><br><span class="line">TARGET_2ND_ARCH_VARIANT=</span><br><span class="line">TARGET_2ND_CPU_VARIANT=</span><br><span class="line">HOST_ARCH=x86_64</span><br><span class="line">HOST_OS=linux</span><br><span class="line">HOST_OS_EXTRA=Linux-3.13.0-39-generic-x86_64-with-Ubuntu-14.04-trusty</span><br><span class="line">HOST_BUILD_TYPE=release</span><br><span class="line">BUILD_ID=AOSP</span><br><span class="line">OUT_DIR=out</span><br><span class="line">============================================</span><br><span class="line">make: Entering directory `/home/liudonghua/android'</span><br><span class="line">make: *** No rule to make target `out/target/product/generic/obj/SHARED_LIBRARIES/libc++_intermediates/export_includes', needed by `out/target/product/generic/obj/STATIC_LIBRARIES/libpcap_intermediates/import_includes'.  Stop.</span><br><span class="line">make: Leaving directory `/home/liudonghua/android'</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>### make failed to build some targets (1 seconds) ####</span><br><span class="line"></span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android/external/libpcap$</span><br></pre></td></tr></table></figure></p>
+<p>其实仔细看m\mm\mmm的来源，我们完全可以用mma\mmma来代替解决编译依赖关系<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">liudonghua@liudonghua-Ubuntu:~/android$ head -n 20 build/envsetup.sh </span><br><span class="line">function hmm() &#123;</span><br><span class="line">cat &lt;&lt;EOF</span><br><span class="line">Invoke ". build/envsetup.sh" from your shell to add the following functions to your environment:</span><br><span class="line">- lunch:   lunch &lt;product_name&gt;-&lt;build_variant&gt;</span><br><span class="line">- tapas:   tapas [&lt;App1&gt; &lt;App2&gt; ...] [arm|x86|mips|armv5|arm64|x86_64|mips64] [eng|userdebug|user]</span><br><span class="line">- croot:   Changes directory to the top of the tree.</span><br><span class="line">- m:       Makes from the top of the tree.</span><br><span class="line">- mm:      Builds all of the modules in the current directory, but not their dependencies.</span><br><span class="line">- mmm:     Builds all of the modules in the supplied directories, but not their dependencies.</span><br><span class="line">           To limit the modules being built use the syntax: mmm dir/:target1,target2.</span><br><span class="line">- mma:     Builds all of the modules in the current directory, and their dependencies.</span><br><span class="line">- mmma:    Builds all of the modules in the supplied directories, and their dependencies.</span><br><span class="line">- cgrep:   Greps on all local C/C++ files.</span><br><span class="line">- ggrep:   Greps on all local Gradle files.</span><br><span class="line">- jgrep:   Greps on all local Java files.</span><br><span class="line">- resgrep: Greps on all local res/*.xml files.</span><br><span class="line">- sgrep:   Greps on all local source files.</span><br><span class="line">- godir:   Go to the directory containing a file.</span><br><span class="line"></span><br><span class="line">Look at the source to view more functions. The complete list is:</span><br><span class="line">liudonghua@liudonghua-Ubuntu:~/android$</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/tcpdump/" rel="tag"># tcpdump</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2014/12/04/Lua Windows下VS编译/" rel="next" title="Lua Windows下VS编译">
+                <i class="fa fa-chevron-left"></i> Lua Windows下VS编译
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2014/12/05/一次失败的替换Android系统文件/" rel="prev" title="一次失败的替换Android系统文件">
+                一次失败的替换Android系统文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

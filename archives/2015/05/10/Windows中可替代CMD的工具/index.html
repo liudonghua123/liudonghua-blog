@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Babun,Clink,Cmder,Conemu,Windows Shell," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="对于习惯Linux Bash Shell的用户，在Windows下操作，使用cmd会感觉那个东西好笨拙、难用。好在现在有一些工具可以在Windows下实现类似Bash Shell类似的体验。">
+<meta name="keywords" content="Babun,Clink,Cmder,Conemu,Windows Shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows中可替代CMD的工具">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2015/05/10/Windows中可替代CMD的工具/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="对于习惯Linux Bash Shell的用户，在Windows下操作，使用cmd会感觉那个东西好笨拙、难用。好在现在有一些工具可以在Windows下实现类似Bash Shell类似的体验。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://conemu-maximus5.googlecode.com/svn/files/ConEmuSplits3.png">
+<meta property="og:image" content="http://gooseberrycreative.com/cmder/img/main.jpg">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows中可替代CMD的工具">
+<meta name="twitter:description" content="对于习惯Linux Bash Shell的用户，在Windows下操作，使用cmd会感觉那个东西好笨拙、难用。好在现在有一些工具可以在Windows下实现类似Bash Shell类似的体验。">
+<meta name="twitter:image" content="http://conemu-maximus5.googlecode.com/svn/files/ConEmuSplits3.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2015/05/10/Windows中可替代CMD的工具/"/>
+
+
+
+
+
+  <title>Windows中可替代CMD的工具 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2015/05/10/Windows中可替代CMD的工具/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Windows中可替代CMD的工具</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-05-10T02:39:12+00:00">
+                2015-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对于习惯Linux Bash Shell的用户，在Windows下操作，使用cmd会感觉那个东西好笨拙、难用。好在现在有一些工具可以在Windows下实现类似Bash Shell类似的体验。</p>
+<a id="more"></a>
+<p>众所周知的一些工具如<a href="http://www.mingw.org/" target="_blank" rel="noopener">MinGW</a>（<a href="http://sourceforge.net/projects/msys2/" target="_blank" rel="noopener">MSYS2</a>）、<a href="http://www.cygwin.com/" target="_blank" rel="noopener">Cygwin</a>可以满足以上功能，但我不是很推荐，因为安装略微繁琐（需要联网、国内访问慢），而且那个shell窗口的界面和cmd一样，非常难看，缺少个性化配置。</p>
+<p>另外还有<a href="http://mridgers.github.io/clink/" target="_blank" rel="noopener">Clink</a>(主要提供Windows的readline库功能，这对于shell中命令自动补齐、命令历史浏览非常重要，并且提供lua扩展)、<a href="https://code.google.com/p/conemu-maximus5/" target="_blank" rel="noopener">conemu</a>、<a href="http://gooseberrycreative.com/cmder/" target="_blank" rel="noopener">Cmder</a>（其实封装了clink、conemu、<a href="https://github.com/msysgit/msysgit" target="_blank" rel="noopener">msysgit</a>）。</p>
+<p>最后就是我要重点推荐的<a href="http://babun.github.io/" target="_blank" rel="noopener">Babun</a>。</p>
+<p>ps: 在安装之前需要清空Windows下的HOME环境变量（”set HOME=”就可以清除了），然后在运行install脚本安装（如install /target “D:\Program_Files\babun-1.1.0”），如果忘了这一点，就会出现类似于<a href="https://github.com/babun/babun/issues/78" target="_blank" rel="noopener">Vim: missing color scheme “ir_black”</a>这样的错误，这时删除.babun重新安装吧！<br>并且注意安装完成之后也不能恢复Windows下的HOME环境变量，不过可以修改.babun/babun.bat文件，在其中添加如下第10行就可以解决HOME环境变量的问题。所以如果如果安装之前没有清空Windows下的HOME环境变量，也不想重装，那么也可以先创建/home/YOUR_USERNAME目录，然后unset HOME; babun install，最后同样修改.babun/babun.bat文件。<br>总之就是必须修改.babun/babun.bat重新定义babun中的HOME，否则只有清空Windows中的HOME（有风险，非常不建议）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@echo off</span><br><span class="line">setlocal enableextensions enabledelayedexpansion</span><br><span class="line"></span><br><span class="line">set SCRIPT_PATH=%~dp0</span><br><span class="line">set SCRIPT_PATH=%SCRIPT_PATH:\=/%</span><br><span class="line">set BABUN_HOME=%SCRIPT_PATH%</span><br><span class="line"></span><br><span class="line">:BEGIN</span><br><span class="line">set CYGWIN_HOME=%BABUN_HOME%\cygwin</span><br><span class="line">set HOME=%CYGWIN_HOME%\home\Liu.D.H</span><br><span class="line">if exist "%CYGWIN_HOME%\bin\mintty.exe" goto RUN</span><br><span class="line">if not exist "%CYGWIN_HOME%\bin\mintty.exe" goto NOTFOUND</span><br></pre></td></tr></table></figure>
+<p>当然还有微软自己在.Net时代改进的Shell——<a href="https://technet.microsoft.com/en-us/scriptcenter/powershell.aspx" target="_blank" rel="noopener">PowerShell</a>，但那东西有点奇葩，太依赖于Windows本身的特性，因此至少目前只能在Windows下工作。</p>
+<p>下面附一些截图</p>
+<p><img src="http://conemu-maximus5.googlecode.com/svn/files/ConEmuSplits3.png" alt=""></p>
+<p><img src="http://gooseberrycreative.com/cmder/img/main.jpg" alt=""></p>
+<video width="100%" controls><br>    <source src="/resources/2015/05/Introduction-to-the-Babun-Project-HD.mp4"><br></video>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Babun/" rel="tag"># Babun</a>
+          
+            <a href="/tags/Clink/" rel="tag"># Clink</a>
+          
+            <a href="/tags/Cmder/" rel="tag"># Cmder</a>
+          
+            <a href="/tags/Conemu/" rel="tag"># Conemu</a>
+          
+            <a href="/tags/Windows-Shell/" rel="tag"># Windows Shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2015/05/05/在Android开发中使用Java8中的一些特性——lambada expression/" rel="next" title="在Android开发中使用Java8中的一些特性——lambada expression">
+                <i class="fa fa-chevron-left"></i> 在Android开发中使用Java8中的一些特性——lambada expression
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2015/05/10/Java中的REPL/" rel="prev" title="Java中的REPL">
+                Java中的REPL <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

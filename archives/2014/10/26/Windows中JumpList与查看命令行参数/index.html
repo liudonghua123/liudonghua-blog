@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="jumplist,wmic," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="在Windows上有个很好的截图软件——winsnap，这个软件截的图默认边缘有立体的阴影效果，看上去很舒服；并且把这个程序Pin到任务栏上，右键应用程序可以看到一个非常快捷的JumpList菜单，可以全屏、应用程序、窗口、对象、区域截图，如下图所示。">
+<meta name="keywords" content="jumplist,wmic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows中JumpList与查看命令行参数">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2014/10/26/Windows中JumpList与查看命令行参数/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="在Windows上有个很好的截图软件——winsnap，这个软件截的图默认边缘有立体的阴影效果，看上去很舒服；并且把这个程序Pin到任务栏上，右键应用程序可以看到一个非常快捷的JumpList菜单，可以全屏、应用程序、窗口、对象、区域截图，如下图所示。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/winsnap_jumplist-300x291.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/jumplist-extender-300x226.jpg">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/JumpListEditor-300x119.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/jumplistlauncher-228x300.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/10/jump-list-manager-300x234.jpg">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows中JumpList与查看命令行参数">
+<meta name="twitter:description" content="在Windows上有个很好的截图软件——winsnap，这个软件截的图默认边缘有立体的阴影效果，看上去很舒服；并且把这个程序Pin到任务栏上，右键应用程序可以看到一个非常快捷的JumpList菜单，可以全屏、应用程序、窗口、对象、区域截图，如下图所示。">
+<meta name="twitter:image" content="http://65031141.ynu.edu.cn/resources/2014/10/winsnap_jumplist-300x291.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2014/10/26/Windows中JumpList与查看命令行参数/"/>
+
+
+
+
+
+  <title>Windows中JumpList与查看命令行参数 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2014/10/26/Windows中JumpList与查看命令行参数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Windows中JumpList与查看命令行参数</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-10-26T07:44:39+00:00">
+                2014-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在Windows上有个很好的截图软件——winsnap，这个软件截的图默认边缘有立体的阴影效果，看上去很舒服；并且把这个程序Pin到任务栏上，右键应用程序可以看到一个非常快捷的JumpList菜单，可以全屏、应用程序、窗口、对象、区域截图，如下图所示。<br><a href="/resources/2014/10/winsnap_jumplist.png"><img src="/resources/2014/10/winsnap_jumplist-300x291.png" alt="winsnap_jumplist"></a><br><a id="more"></a></p>
+<p>但昨天装了新版本的官方最新版本的winsnap，右键发现没有了JumpList功能，我比较常用的区域截图没有jumplist快捷启动方式真的很不方便，所以去网上找了一个之前的带有此功能的版本，然后就想办法添加JumpList到新版本中，首先得找到运行这几种模式的命令行参数，通过使用一下命令可以找出运行参数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic process where caption="winsnap.exe" get caption,commandline /value</span><br></pre></td></tr></table></figure>
+<p>五种模式的运行参数如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">"D:\Program_Files\WinSnapPortable\App\WinSnap\WinSnap.exe" /tbswitch /fullscreen</span><br><span class="line">"D:\Program_Files\WinSnapPortable\App\WinSnap\WinSnap.exe" /tbswitch /application</span><br><span class="line">"D:\Program_Files\WinSnapPortable\App\WinSnap\WinSnap.exe" /tbswitch /window</span><br><span class="line">"D:\Program_Files\WinSnapPortable\App\WinSnap\WinSnap.exe" /tbswitch /object</span><br><span class="line">"D:\Program_Files\WinSnapPortable\App\WinSnap\WinSnap.exe" /tbswitch /region</span><br></pre></td></tr></table></figure>
+<p>接下来就需要找办法添加/修改JumpList<br>其中一些很好的软件有</p>
+<ol>
+<li><a href="https://code.google.com/p/jumplist-extender/" target="_blank" rel="noopener">JumplistExtender</a>(开源的，有空可以学学JumpList)，可以在任意程序上添加任意JumpList<br><a href="/resources/2014/10/jumplist-extender.jpg"><img src="/resources/2014/10/jumplist-extender-300x226.jpg" alt="jumplist-extender"></a></li>
+<li><a href="http://jumplisteditor.blogspot.com/" target="_blank" rel="noopener">JumpListEditor</a>，与JumplistExtender功能差不多<br><a href="/resources/2014/10/JumpListEditor.png"><img src="/resources/2014/10/JumpListEditor-300x119.png" alt="JumpListEditor"></a></li>
+<li><a href="http://en.www.ali.dj/jumplist-launcher/" target="_blank" rel="noopener">jumplist-launcher</a>，可以在此程序上方便的添加任意JumpList<br><a href="/resources/2014/10/jumplistlauncher.png"><img src="/resources/2014/10/jumplistlauncher-228x300.png" alt="jumplistlauncher"></a></li>
+<li><a href="http://www.addictivetips.com/windows-tips/manage-windows-7-jump-list-items-in-taskbar-with-jump-list-manager/" target="_blank" rel="noopener">Jump List Manager</a>，与jumplist-launcher功能差不多<br><a href="/resources/2014/10/jump-list-manager.jpg"><img src="/resources/2014/10/jump-list-manager-300x234.jpg" alt="jump-list-manager"></a></li>
+</ol>
+<p><strong>不过目前暂时没找到一款可以修改已存在JumpList的程序，使用以上1、2中的软件添加新的JumpList会覆盖已有的，自己简略的看过一点点这方面的资料，感觉这水还是有点小深，后面如果有时间，想在<a href="https://code.google.com/p/jumplist-extender/" target="_blank" rel="noopener">JumplistExtender</a>上完善一下添加可以修改已有的JumpList得功能，那就完美了！</strong></p>
+<p>如果想深入学习JumpList可参考</p>
+<ol>
+<li><a href="http://windows.microsoft.com/en-us/windows7/products/features/jump-lists" target="_blank" rel="noopener">jump-lists</a></li>
+<li><a href="http://www.nirsoft.net/utils/jump_lists_view.html" target="_blank" rel="noopener">jump_lists_view</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jumplist/" rel="tag"># jumplist</a>
+          
+            <a href="/tags/wmic/" rel="tag"># wmic</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2014/10/24/Maven和Gradle一些常用的东西/" rel="next" title="Maven和Gradle一些常用的东西">
+                <i class="fa fa-chevron-left"></i> Maven和Gradle一些常用的东西
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2014/10/26/gcc_g++中的pic与pie/" rel="prev" title="gcc/g++中的pic与pie">
+                gcc/g++中的pic与pie <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java,debug,javac," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liudonghua's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="有时候debug单步跟踪时，特别是进入到系统库的实现中想查看某个变量的值，这时候就会出现”xxx cannot be resolved to a variable”，对于调试来说很郁闷。如下图所示 但是this是可以查看具体调试信息">
+<meta name="keywords" content="java,debug,javac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javac编译中的调试信息">
+<meta property="og:url" content="http://65031141.ynu.edu.cn/archives/2014/11/09/Javac编译中的调试信息/index.html">
+<meta property="og:site_name" content="liudonghua&#39;s blog">
+<meta property="og:description" content="有时候debug单步跟踪时，特别是进入到系统库的实现中想查看某个变量的值，这时候就会出现”xxx cannot be resolved to a variable”，对于调试来说很郁闷。如下图所示 但是this是可以查看具体调试信息">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/java_debug_vars.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/java_debug_this.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/javac_help.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/javac_sample_default.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/javac_sample_g.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/javac_sample_gnone.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/javac_sample_glines.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/javac_sample_gvars.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/javac_sample_gsource.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/eclipse_debug_info_settings.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/system_rt_library_sample.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/oracle_jdk_and_openjdk.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/oracle_jdk_and_openjdk_2.png">
+<meta property="og:image" content="http://65031141.ynu.edu.cn/resources/2014/11/oracle_jdk_differs_from_openjdk.png">
+<meta property="og:updated_time" content="2017-12-29T06:07:17.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Javac编译中的调试信息">
+<meta name="twitter:description" content="有时候debug单步跟踪时，特别是进入到系统库的实现中想查看某个变量的值，这时候就会出现”xxx cannot be resolved to a variable”，对于调试来说很郁闷。如下图所示 但是this是可以查看具体调试信息">
+<meta name="twitter:image" content="http://65031141.ynu.edu.cn/resources/2014/11/java_debug_vars.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://65031141.ynu.edu.cn/archives/2014/11/09/Javac编译中的调试信息/"/>
+
+
+
+
+
+  <title>Javac编译中的调试信息 | liudonghua's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liudonghua's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty of life is its rich and colorful, to make life interesting, constantly enrich it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://65031141.ynu.edu.cn/archives/2014/11/09/Javac编译中的调试信息/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Donghua Liu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liudonghua's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Javac编译中的调试信息</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-11-09T11:25:37+00:00">
+                2014-11-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>有时候debug单步跟踪时，特别是进入到系统库的实现中想查看某个变量的值，这时候就会出现”xxx cannot be resolved to a variable”，对于调试来说很郁闷。如下图所示</p>
+<p><a href="/resources/2014/11/java_debug_vars.png"><img src="/resources/2014/11/java_debug_vars.png" alt="java_debug_vars"></a><br>但是this是可以查看具体调试信息<br><a href="/resources/2014/11/java_debug_this.png"><img src="/resources/2014/11/java_debug_this.png" alt="java_debug_this"></a></p>
+<a id="more"></a>
+<p>所以就深入看了一下为什么会出现这个问题<br>以下是javac编译时的选项<br><a href="/resources/2014/11/javac_help.png"><img src="/resources/2014/11/javac_help.png" alt="javac_help"></a><br>下面以一个简单的小例子编译后查看class文件结构信息</p>
+<ol>
+<li>默认选项，即不加任何选项<br><a href="/resources/2014/11/javac_sample_default.png"><img src="/resources/2014/11/javac_sample_default.png" alt="javac_sample_default"></a></li>
+<li>使用-g选项，即包括所有调试信息<br><a href="/resources/2014/11/javac_sample_g.png"><img src="/resources/2014/11/javac_sample_g.png" alt="javac_sample_g"></a></li>
+<li>使用-g:none选项，即不包括任何调试信息<br><a href="/resources/2014/11/javac_sample_gnone.png"><img src="/resources/2014/11/javac_sample_gnone.png" alt="javac_sample_gnone"></a></li>
+<li>使用-g:lines选项，即只包括lines调试信息<br><a href="/resources/2014/11/javac_sample_glines.png"><img src="/resources/2014/11/javac_sample_glines.png" alt="javac_sample_glines"></a></li>
+<li>使用-g:vars选项，即只包括vars调试信息<br><a href="/resources/2014/11/javac_sample_gvars.png"><img src="/resources/2014/11/javac_sample_gvars.png" alt="javac_sample_gvars"></a></li>
+<li>使用-g:source选项，即只包括source调试信息<br><a href="/resources/2014/11/javac_sample_gsource.png"><img src="/resources/2014/11/javac_sample_gsource.png" alt="javac_sample_gsource"></a></li>
+</ol>
+<p>这些调试信息在Eclipse中可在这里设置<br><a href="/resources/2014/11/eclipse_debug_info_settings.png"><img src="/resources/2014/11/eclipse_debug_info_settings.png" alt="eclipse_debug_info_settings"></a></p>
+<p>从JDK中最重要的系统库rt.jar中提取一个class文件，如ThreadLocal，看一下包含哪些调试信息<br><a href="/resources/2014/11/system_rt_library_sample.png"><img src="/resources/2014/11/system_rt_library_sample.png" alt="system_rt_library_sample"></a><br>可以看出有lines和source调试信息，但没有vars，这就能解释系统库的方法中局部变量不能获取调试信息，jvm文档中也明确说明了”<a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.7.13" target="_blank" rel="noopener">LocalVariableTable</a>“的作用</p>
+<blockquote>
+<p>The <code>LocalVariableTable</code> attribute is an optional variable-length attribute in the <code>attributes</code> table of a <code>Code</code> (<a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.7.3" title="4.7.3. The Code Attribute" target="_blank" rel="noopener">§4.7.3</a>) attribute. It may be used by debuggers to determine the value of a given local variable during the execution of a method.</p>
+<p><a name="jvms-4.7.13-110"></a>If <code>LocalVariableTable</code> attributes are present in the <code>attributes</code> table of a given <code>Code</code> attribute, then they may appear in any order. There may be no more than one <code>LocalVariableTable</code> attribute per local variable in the <code>Code</code>attribute.<br>既然知道了原因，那怎样解决呢，最直接的方法是下载Java所有源码，然后使用-g选项编译，但我在网上查阅很多资料，最终的结论都是Oracle JDK的源码并没有公开，但OpenJDK（其开发维护人员也是Oracle的）是公开的，并且Oracle JDK是基于OpenJDK，和OpenJDK几乎相同，只是添加了一些不开源的商业库以及虚拟机部分的代码可能和OpenJDK的有些差异。<br><a href="/resources/2014/11/oracle_jdk_and_openjdk.png" title="http://openjdk.java.net/faq/"><img src="/resources/2014/11/oracle_jdk_and_openjdk.png" alt="oracle_jdk_and_openjdk">
+</a><a href="/resources/2014/11/oracle_jdk_and_openjdk_2.png" title="http://stackoverflow.com/questions/17360011/technically-what-is-the-main-difference-between-oracle-jdk-and-open-jdk"><img src="/resources/2014/11/oracle_jdk_and_openjdk_2.png" alt="oracle_jdk_and_openjdk_2"></a></p>
+</blockquote>
+<p><a href="/resources/2014/11/oracle_jdk_differs_from_openjdk.png" title="http://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-open-jdk-and-garbage-collection"><img src="/resources/2014/11/oracle_jdk_differs_from_openjdk.png" alt="oracle_jdk_differs_from_openjdk">
+</a></p>
+<p>所以想要具有完整调试信息的rt.jar，可以直接编译openjdk，但更好的方式是重新编译Oracle JDK自带的src.zip，然后和原来的rt.jar合并，可参考<a href="http://www.javalobby.org/java/forums/t103334.html" target="_blank" rel="noopener">Enabling debugging inside JRE classes</a>。</p>
+<p>那带有完整调试信息的类相比没有（完整）调试信息的类运行时有没有影响？<br>经过查阅资料，得出的结论是，影响甚微，Java主要的优化是代码优化和运行时环境优化，而不是编译时不添加调试信息。</p>
+<blockquote>
+<p><a href="http://stackoverflow.com/questions/218033/is-there-a-performance-difference-between-javac-debug-on-and-off" target="_blank" rel="noopener">In any language, debugging information is meta information. It by its nature increases the size of the object files, thus increasing load time. During execution outside a debugger, this information is actually completely ignored. As outlined (although not clearly) in the JVM spec the debug information is stored outside the bytecode stream. This means that at execution time there is no difference in the class file. If you want to be sure though, try it out :-).</a></p>
+<p><a href="http://stackoverflow.com/questions/218033/is-there-a-performance-difference-between-javac-debug-on-and-off" target="_blank" rel="noopener">Ps. Often for debugging there is value in turning off optimization. That <em>does</em> have a performance impact.</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/debug/" rel="tag"># debug</a>
+          
+            <a href="/tags/javac/" rel="tag"># javac</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/2014/11/09/Java中SimpleDateFormat与ThreadLocal/" rel="next" title="Java中SimpleDateFormat与ThreadLocal">
+                <i class="fa fa-chevron-left"></i> Java中SimpleDateFormat与ThreadLocal
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/archives/2014/11/11/求解子数组和最大，最小以及绝对值最小/" rel="prev" title="求解子数组和最大，最小以及绝对值最小">
+                求解子数组和最大，最小以及绝对值最小 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Donghua Liu</p>
+              <p class="site-description motion-element" itemprop="description">This is my blog site</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donghua Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
